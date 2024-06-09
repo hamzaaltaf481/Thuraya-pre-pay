@@ -30,9 +30,13 @@ export default function RefillUnits() {
               <FaArrowRight className=" inline-block" />
               Quick Refill
             </Link>
-            <h1 className="text-3xl font-bold text-black flex gap-4 items-center ">
+            <h1
+              className="text-3xl font-bold text-black flex gap-4 items-center "
+              style={{ color: "var(--green-color)" }}
+            >
               <FaArrowDown className=" inline-block" />
-              Refill Units
+              <p className="text-[#2f2f2f]">Refill</p>
+              Units
             </h1>
           </div>
 
@@ -59,7 +63,16 @@ export default function RefillUnits() {
               </div>
             ))}
           </div>
-          <button className="mt-10 px-4 py-2 bg-black text-white rounded flex items-center">
+          <hr
+            className="my-8 bottom-4 border-1 "
+            style={{ borderColor: "var(--green-color)" }}
+          />
+          <button
+            className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+            style={{
+              backgroundColor: "var(--blue-color)",
+            }}
+          >
             <FaArrowRight className="mr-2" />
             Proceed to payment
           </button>
