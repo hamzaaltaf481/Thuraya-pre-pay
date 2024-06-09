@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "f8b487d8-dd84-4395-8b3d-3ee8f6ffd3e1",
+		"name": "thuraya_api",
+		"description": "Backend API for thurayaprepay website",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4799556"
+	},
+	"item": [
+		{
+			"name": "migrate_tables",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/api/migrate",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"migrate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "0123456789aB",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "mrni8mare2@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "User1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "0123456789aB",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "mrni8mare@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest_login_refill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/login_refill",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login_refill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logged_in_login_refill",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0OTM0MiwianRpIjoiZmRlNTc2MWEtYzg2Yi00Yzc1LWJlZTktNmMxNGVlYWQzNmEwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDkzNDIsImNzcmYiOiJjM2NhZmRkNy0xZWM0LTQwZWEtOGYxOS1mMmMyOGFmMGQ1ZjUiLCJleHAiOjE3MzUzNDkzNDIsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6M30.v2aNPZHPnp7GLsccGXdo1JKQu3z_A62Hl_RHkOglFHk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/login_refill",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login_refill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest_purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"units\": [{\"quantity\": \"4\", \"price\": \"50\"},{\"quantity\": \"2\", \"price\": \"20\"}],\n  \"email\": \"mrni8mare@gmail.com\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logged_in_purchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzMxOTA5NiwianRpIjoiYTliMjg1NWMtZWYyNy00NWRmLTkxYmYtYTMxM2EwNGZjYTZiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczMTkwOTYsImNzcmYiOiJlNjA1NmJmYy0xZWEwLTQwNjUtOWRjZi05YWQzNDcwNGFkZWMiLCJleHAiOjE3MTczMTk5OTYsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6MX0.wqJ9P6n01DURuAqCfY55BCbKw4lQG-PYeEXwIJDLO_Y",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"units\": [{\"quantity\": \"4\", \"price\": \"50\"},{\"quantity\": \"2\", \"price\": \"20\"}]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "import_cards",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "po_number",
+							"value": "12345",
+							"type": "text"
+						},
+						{
+							"key": "pl_number",
+							"value": "987654",
+							"type": "text"
+						},
+						{
+							"key": "date_purchased",
+							"value": "05-12-2025",
+							"type": "text"
+						},
+						{
+							"key": "total_amount",
+							"value": "1000",
+							"type": "text"
+						},
+						{
+							"key": "payment_status",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "attachment_path",
+							"value": "/path/file",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/zain/mobile_data_flask/cards.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/import",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view-cards",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0NTQ4MCwianRpIjoiODFkMmY2YmEtOTE1NS00MjI3LWFmMWQtOGZkNWE3OGZlOGQ3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDU0ODAsImNzcmYiOiI1NmFkZDRiYi1lMjZhLTQ1OGEtYjM4Yi0yMjljYmY0MzBiZjEiLCJleHAiOjE3MzUzNDU0ODAsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.fCZ_KIapCNv_vc93_-a0mYj6sCuoOu-Zb_JWm1bs03Y",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-cards",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-cards"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,9 @@
+{
+    "indexUrl" : "https://services.thuraya.com/Bills/index.jsp",
+    "loginHandler" : "https://services.thuraya.com/Bills/LoginHandler.jsp",
+    "directRefilUrl" : "https://services.thuraya.com/Bills/DirectScratchRefill.jsp",
+    "detailsUrl" : "https://services.thuraya.com/Bills/details.jsp",
+    "loginRefill" : "https://services.thuraya.com/Bills/ScratchRefill.jsp",
+    "refillStatus": "https://services.thuraya.com/Bills/ScratchRefill.jsp?submittype=Status",
+    "scratchSuccessfulMessage": "Your transaction is under process, notification will be sent to your Thuraya phone"
+}
