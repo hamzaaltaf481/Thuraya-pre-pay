@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="navbar bg-[#2D3E50] text-white h-[100px] w-full top-0 z-10 fixed ">
+    <nav className="navbar bg-[#2D3E50] text-white h-[100px] w-full top-0 z-20 fixed ">
       <div className="flex">
-        <div className="logo flex pl-20 pt-8 gap-1">
-          {/* <Link to="/"> */}
+          <Link to="/" className="logo flex pl-20 pt-8 gap-1">
             <img src="./images/logo.png" className="w-[75px] h-[30px] mt-2 " />
             <h1 className="flex text-4xl font-bold  ">
               Thuraya<div className="text-[#7a9757]">Refill</div>
             </h1>
-          {/* </Link> */}
-        </div>
+          </Link>
 
         <ul className="nav-links flex pt-8 gap-5 ml-[800px] text-2xl font-bold ">
           <Link

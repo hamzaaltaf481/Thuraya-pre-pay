@@ -69,15 +69,15 @@ export default function LandingPage() {
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-      <div className="flex justify-center gap-60 items-center">
+      <div className="flex justify-center gap-30 items-center">
         <Link
           to="/quick_refill"
-          className="flex flex-col items-center w-[50%] h-[50%]  hover:bg-[#b6db948c] transition duration-900 ml-10 rounded-xl p-10"
+          className="flex flex-col items-center w-[40%] h-[40%]  hover:bg-[#b6db948c] transition duration-900 ml-10 rounded-xl p-10"
           style={{ color: "var(--blue-color)" }}
         >
           <div className="w-[100%] h-[100%] ml-10 " ref={phone}></div>
 
-          <h1 className=" flex text-center mt-[-100px] font-extrabold text-5xl justify-center items-center gap-5">
+          <h1 className=" flex text-center mt-[-80px] font-extrabold text-4xl justify-center items-center gap-5">
             <FaArrowRight
               className=" inline-block "
               style={{ color: "var(--green-color)" }}
@@ -87,11 +87,11 @@ export default function LandingPage() {
         </Link>
         <Link
           to="/refill_units"
-          className="flex flex-col items-center w-[50%] h-[50%] hover:bg-[#b6db948c] transition duration-900 mr-10 rounded-xl p-10"
+          className="flex flex-col items-center w-[40%] h-[40%] hover:bg-[#b6db948c] transition duration-900 mr-10 rounded-xl p-10"
           style={{ color: "var(--blue-color)" }}
         >
           <div className="w-[65%] h-[100%] pb-44  z-10" ref={cards}></div>
-          <h1 className=" flex text-center mt-[-100px] font-extrabold text-5xl justify-center items-center gap-5 z-0">
+          <h1 className=" flex text-center mt-[-100px] font-extrabold text-4xl justify-center items-center gap-5 z-0">
             <FaArrowRight
               className=" inline-block "
               style={{ color: "var(--green-color)" }}
