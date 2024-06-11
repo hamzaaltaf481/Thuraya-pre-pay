@@ -511,7 +511,6 @@ def view_cards():
     
     cards = session.query(Card)
     cards_dict = [card.to_dict() for card in cards]
-    print(cards_dict)
 
     for card_dict in cards_dict:
         cards_detail_dict = card_dict["card_details"]
