@@ -14,6 +14,7 @@ def forgot_password_handler(s, session, mail):
         token = s.dumps(user.email, salt=os.getenv("PASSWORD_RESET_SALT"))
         msg = Message('Password Reset Request', recipients=[user.email])
         link = url_for('reset_token', token=token, _external=True)
+        link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
         msg.body = f'To reset your password, visit the following link: {link}'
         mail.send(msg)
         print(msg)
