@@ -8,8 +8,8 @@ from flask import url_for
 
 
 def forgot_password_handler(s, session, mail):
-    data = request.get_json()
-    user = session.query(User).filter_by(email=data['email']).first()
+    data = request.form
+    user = session.query(User).filter_by(email=data.get('email')).first()
     if user:
         token = s.dumps(user.email, salt=os.getenv("PASSWORD_RESET_SALT"))
         msg = Message('Password Reset Request', recipients=[user.email])

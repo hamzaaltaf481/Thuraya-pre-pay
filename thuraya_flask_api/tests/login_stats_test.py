@@ -5,7 +5,7 @@ import requests
 # make request to localhost:5000/api/login_refill with json data phone: phone, price: 20, email: mrni8mare@gmail.com
 
 def test_stats():
-    dataframe1 = pd.read_excel('bulk_phone_nos.xlsx')
+    dataframe1 = pd.read_excel('QR_2022_&_2023.xlsx')
 
     for phone in dataframe1['Satellite Phone Number']:
         phone = str(phone)

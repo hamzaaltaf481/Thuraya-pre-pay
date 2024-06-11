@@ -37,7 +37,6 @@ def get_card(units, session):
         code = None
 
     key = os.getenv("ENCRYPTION_KEY")
-    print(key)
     cipher_suite = Fernet(key)
     number = code.scratch_code
     decrypted_number = cipher_suite.decrypt(number).decode('utf-8')
