@@ -100,6 +100,34 @@
 			"response": []
 		},
 		{
+			"name": "forgot_password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"mrni8mare@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/forgot-password",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "guest_login_refill",
 			"request": {
 				"method": "POST",
@@ -196,7 +224,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzMxOTA5NiwianRpIjoiYTliMjg1NWMtZWYyNy00NWRmLTkxYmYtYTMxM2EwNGZjYTZiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczMTkwOTYsImNzcmYiOiJlNjA1NmJmYy0xZWEwLTQwNjUtOWRjZi05YWQzNDcwNGFkZWMiLCJleHAiOjE3MTczMTk5OTYsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6MX0.wqJ9P6n01DURuAqCfY55BCbKw4lQG-PYeEXwIJDLO_Y",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzg3MDQxMywianRpIjoiZjdlNTllNTgtNTcyNy00N2Q4LWJhMTctNzhlYjJjYWIwMDI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTc4NzA0MTMsImNzcmYiOiI1ZDcxNTdhYi1hYjlkLTRhZGMtYjEzOC02ZmFlYjFlOGQzMTciLCJleHAiOjE3MzU4NzA0MTMsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6M30.mthX1TNelrpxVj4K9Lll2G_yHz8gn2Uy6Hu8Izd4ajk",
 						"type": "text"
 					}
 				],
@@ -269,13 +297,14 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/api/import",
+					"raw": "localhost:5000/api/admin/import",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"api",
+						"admin",
 						"import"
 					]
 				}

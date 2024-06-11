@@ -8,8 +8,9 @@
 # TODO: super-admin, sub-admin
 # TODO: add timeout for the captcha solver
 # TODO: maybe add multiple captcha solve requests
-# TODO: add cors as well
+# TODO: add last name
 # TODO: use form everywhere instead of json request input
+# TODO: create admin and sub admin panels
 
 from dotenv import load_dotenv
 import os
@@ -61,7 +62,7 @@ from flask_jwt_extended import JWTManager, decode_token
 load_dotenv()
 logger = setup_logger()
 app = Flask(__name__)
-CORS(app,origins=["http://localhost:3000","http://localhost:3000"])
+
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['JWT_SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['SECURITY_PASSWORD_SALT'] = os.getenv("SECURITY_PASSWORD_SALT")
@@ -74,6 +75,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 application = app
+CORS(app, origins=['http://localhost:3000','http://localhost:3001'])
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(os.getenv("SECRET_KEY"))
@@ -128,6 +130,7 @@ def start_driver():
             return jsonify({"message": "Phone or Price invalid!"}), 400
             
         card_number, card_id, selling_price = get_card(price, session)
+        log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
 
@@ -148,7 +151,7 @@ def start_driver():
         last_4_digits = phone[-4:]
 
         driver = webdriver.Chrome()
-        driver.minimize_window()
+        # driver.minimize_window()
         # driver.maximize_window()
         driver.get(constants["indexUrl"])
         time.sleep(0.1)
@@ -162,6 +165,7 @@ def start_driver():
 
         print("using password: "+password)
         logger.info("using password: "+password)
+        log_string = log_string + "using password: "+password + "\n"
 
         while True:
 
@@ -178,10 +182,10 @@ def start_driver():
                     log_string = log_string + "using password: "+password + "\n"
                     logger.info("using password: "+password)
                 elif password == "1234":
+                    password = last_4_digits
                     print("using password: "+password)
                     log_string = log_string + "using password: "+password + "\n"
                     logger.info("using password: "+password)
-                    password = last_4_digits
                 elif password == last_4_digits:
                     print("attempted all passwords")
                     log_string = log_string + "using password: "+password + "\n"
@@ -227,9 +231,7 @@ def start_driver():
                     logger.warning("sleeping for 10 seconds")
                     log_string = log_string + "IP timeout" + "\n"
                     log_string = log_string + "sleeping for 10 seconds" + "\n"
-                    time.sleep(10)
-                    continue
-                WebDriverWait(driver, float("inf")).until(staleness_of(body))
+                WebDriverWait(driver, 30).until(staleness_of(body))
             else:
                 break
 
@@ -246,6 +248,31 @@ def start_driver():
 
         current_url = driver.current_url
         if constants["indexUrl"] in current_url:
+
+            ################################
+            ################################
+            ################################
+            ################################
+            ################################
+
+
+            total_time = time.time() - start_time
+            with open("login_stats.csv", "a") as f:
+                writer = csv.writer(f, delimiter=",")
+                writer.writerow([total_time, phone, "failed", log_string])
+
+
+            # TODO: remove this jsonify        
+            return jsonify({"message": "Log in Failed"}), 500    
+
+
+            ################################
+            ################################
+            ################################
+            ################################
+            ################################
+
+
             print("emailing codes")
             log_string = log_string + "emailing codes" + "\n"
             email_codes_password(codes, email, log_string)
@@ -271,7 +298,7 @@ def start_driver():
         total_time = time.time() - start_time
         with open("login_stats.csv", "a") as f:
             writer = csv.writer(f, delimiter=",")
-            writer.writerow([total_time, phone, password])
+            writer.writerow([total_time, phone, password, log_string])
 
 
         # TODO: remove this jsonify        
@@ -337,6 +364,7 @@ def start_driver():
         # mail.send(msg)
         return jsonify({"message": "An error occurred"}), 500
 
+# ARCHIVED ROUTE
 @app.route("/api/card", methods=["POST"])
 def fill_card_data():
 
@@ -450,7 +478,7 @@ def migrate_db():
     migrate_tables()
     return jsonify({"message": "success"}), 200
 
-@app.route("/api/import", methods=["POST"])
+@app.route("/api/admin/import", methods=["POST"])
 def import_cards():
     file = request.files['file']
     

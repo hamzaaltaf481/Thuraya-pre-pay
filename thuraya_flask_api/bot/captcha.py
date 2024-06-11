@@ -36,7 +36,7 @@ def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
             driver.maximize_window()
             time.sleep(1)
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
-            driver.minimize_window()
+            # driver.minimize_window()
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
@@ -105,7 +105,7 @@ def solve_refill_captcha(error_page, driver, logger):
         if driver_info == driver:
             driver.maximize_window()
             time.sleep(1)
-            driver.minimize_window()
+            # driver.minimize_window()
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
             print("screenshot taken")
             logger.info("screenshot taken")
