@@ -5,10 +5,10 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-[#2D3E50] text-white h-[100px] w-full top-0 z-20 fixed ">
       <div className="flex">
-          <Link to="/" className="logo flex pl-20 pt-8 gap-1">
-            <img src="./images/logo.png" className="w-[75px] h-[30px] mt-2 " />
-            <h1 className="flex text-4xl font-bold  ">
-              Thuraya<div className="text-[#7a9757]">Refill</div>
+          <Link to="/" className="logo flex pl-20 pt-4 gap-1">
+            <img src="./images/lgg.png" className="w-[75px] h-[50px] mt-2 " />
+            <h1 className="flex text-4xl font-bold pt-2  ">
+              Thuraya<div className="text-[#7a9757]">PrePay</div>
             </h1>
           </Link>
 

@@ -24,8 +24,8 @@ export default function Login() {
             />
           </div>
           <div className="flex mt-6">
-            <button className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#2D3E50] focus:outline-none focus:bg-purple-600  pt-2 gap-1 shadow-md font-medium">
-              <h1 className=" text-xl ml-3" >
+            <button className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-purple-600  pt-2 gap-1 shadow-md font-medium">
+              <h1 className=" text-xl ml-3 " >
                 Login
               </h1>
               <img
