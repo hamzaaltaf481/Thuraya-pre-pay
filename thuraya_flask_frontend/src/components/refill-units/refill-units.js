@@ -16,7 +16,34 @@ const refillUnits = [
 ];
 
 export default function RefillUnits() {
-  // Set initial state to false
+  const [selectedUnits, setSelectedUnits] = useState({}); // Track selected units for each card
+  const handleUnitSelect = (unit) => {
+    setSelectedUnits((prevSelectedUnits) => ({
+      ...prevSelectedUnits,
+      [unit.units]: unit,
+    }));
+  };
+
+  const handleIncrement = (unit) => {
+    setSelectedUnits((prevSelectedUnits) => ({
+      ...prevSelectedUnits,
+      [unit.units]: {
+        ...prevSelectedUnits[unit.units],
+        quantity: Math.min(prevSelectedUnits[unit.units]?.quantity + 1 || 1, 3),
+      },
+    }));
+  };
+  
+
+  const handleDecrement = (unit) => {
+    setSelectedUnits((prevSelectedUnits) => ({
+      ...prevSelectedUnits,
+      [unit.units]: {
+        ...prevSelectedUnits[unit.units],
+        quantity: Math.max(prevSelectedUnits[unit.units]?.quantity - 1 || 1, 1),
+      },
+    }));
+  };
 
   return (
     <div className="relative flex flex-col justify-start min-h-screen overflow-hidden">
@@ -55,11 +82,22 @@ export default function RefillUnits() {
                   id={`unit-${unit.units}`}
                   className="mr-2"
                   disabled={unit.price === "Out of Stock"}
+                  onChange={() => handleUnitSelect(unit)}
                 />
+
                 <label htmlFor={`unit-${unit.units}`}>
                   <p className="text-xl font-bold">{unit.units} units</p>
                   <p>{unit.price}</p>
                 </label>
+                {selectedUnits[unit.units] && (
+            <div className="flex items-center mt-2 ml-12">
+              <button onClick={() => handleDecrement(unit)}>-</button>
+              <p className="mx-2 border-[2px] rounded-md w-12">{selectedUnits[unit.units].quantity}</p>
+              <button onClick={() => handleIncrement(unit)}>+</button>
+
+                </div>
+                )}
+                
               </div>
             ))}
           </div>
@@ -67,6 +105,13 @@ export default function RefillUnits() {
             className="my-8 bottom-4 border-1 "
             style={{ borderColor: "var(--green-color)" }}
           />
+          <h2>Summary</h2>
+          <ul className="flex gap-4 mt-2">
+            <li>Units</li>
+            <li>Quantity</li>
+            <li>Amount</li>
+          </ul>
+          {/* <h2>{selectedUnits[]}</h2> */}
           <button
             className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
             style={{
