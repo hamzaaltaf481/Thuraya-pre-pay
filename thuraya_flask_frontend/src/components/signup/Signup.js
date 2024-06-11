@@ -1,37 +1,52 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 export default function Signup() {
-  const[name,setName]= useState('')
+  const [name, setName] = useState("");
   // const[lname,setLname]= useState('')
-  const[email,setEmail]= useState('')
-  const[password,setPassword]= useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('password', password);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      // Show loading alert if response is not ready
+      swal("Loading", "Please wait...", "info");
 
       // Send form data to backend API
-      const response = await axios.post('http://localhost:5000/api/signup',formData).then((response)=>{
-        console.log(response)
-      })
-      // console.log('Form submitted successfully:', response);
-      // Show success message or handle other actions
+      const response = await axios.post(
+        "http://localhost:5000/api/signup",
+        formData
+      );
+      console.log(response);
+      if (response.status === 200) {
+        swal("Success!", "Form submitted successfully", "success");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3000);
+      } else {
+        throw new Error("Error submitting form");
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      // Show error message to the user
+      console.log("Error submitting form:", error);
+      // Show error message
+      swal(
+        "Error!",
+        `Error submitting form: ${error?.response.data.message}`,
+        "error"
+      );
     }
   };
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-      <div  className="w-full pt-10 pl-10 pr-10 pb-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
-        <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
-          SignUp
-        </h1>
+      <div className="w-full pt-10 pl-10 pr-10 pb-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
+        <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">SignUp</h1>
         <form onSubmit={handleSignUp} className="mt-6">
           <div className=" flex mb-2 gap-[10px]">
             <input
@@ -39,7 +54,7 @@ export default function Signup() {
               placeholder="First Name"
               className="block w-full h-[70px] px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
               value={name}
-        onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               type="Text"
@@ -62,14 +77,15 @@ export default function Signup() {
               placeholder="Password"
               className="block w-full h-[70px] px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
               value={password}
-        onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex mt-6">
-            <button type='submit' className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#2D3E50]  pt-2 gap-1 shadow-md font-medium">
-              <h1 className=" text-xl ml-3" >
-                Signup
-              </h1>
+            <button
+              type="submit"
+              className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#2D3E50]  pt-2 gap-1 shadow-md font-medium"
+            >
+              <h1 className=" text-xl ml-3">Signup</h1>
               <img
                 src="/images/arrow.png"
                 alt="i"
@@ -88,7 +104,10 @@ export default function Signup() {
         <p className="mt-8 text-sm font-light text-center text-gray-700">
           {" "}
           Have an account?{" "}
-          <Link to="/login" className="font-medium text-[#2D3E50] hover:underline">
+          <Link
+            to="/login"
+            className="font-medium text-[#2D3E50] hover:underline"
+          >
             Login
           </Link>
         </p>
