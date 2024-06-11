@@ -15,14 +15,11 @@
 from dotenv import load_dotenv
 import os
 import csv
-from cryptography.fernet import Fernet
-import re
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import time
 import json
-from datetime import datetime
 from bot.scrap import parse_data, check_refill_status
 from handlers.transaction import create_transaction
 from handlers.reset_password import reset_password
@@ -48,17 +45,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import staleness_of
-from werkzeug.security import generate_password_hash
 from logger.log import setup_logger
 from database.migrate import migrate_tables
-from database.database import get_card, get_codes
+from database.database import get_card
 from utils.utils import check_valid, email_codes_password
-from utils.import_file import import_csv
 from database.models.models import User, Card, PhoneNumber
 from database.database import database_session
 from itsdangerous import URLSafeTimedSerializer
-from flask_mail import Mail, Message
-from flask import url_for
+from flask_mail import Mail
 from flask_jwt_extended import JWTManager, decode_token
 
 load_dotenv()
