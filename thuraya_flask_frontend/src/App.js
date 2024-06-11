@@ -3,10 +3,11 @@ import "./App.css";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/Navbar";
-import Footer from "./Footer";
+
 import LandingPage from "./components/landing-page/landing_page";
 import QuickRefill from "./components/quick-refill/quick_refll";
 import RefillUnits from "./components/refill-units/refill-units";
+import Footer from "./components/footer/footer";
 function App() {
   return (
     // App.js
