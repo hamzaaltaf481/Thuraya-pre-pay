@@ -3,6 +3,8 @@ from cryptography.fernet import Fernet
 import os
 from database.models.models import Card
 from flask_jwt_extended import decode_token
+from datetime import datetime
+from utils.import_file import import_csv
 
 
 def view_cards_handler(session, request):
@@ -28,3 +30,19 @@ def view_cards_handler(session, request):
             card_detail_dict["scratch_code"] = decrypted_number
     
     return jsonify(cards_dict), 200
+
+
+def import_card_handler(request):
+    file = request.files['file']
+    
+    po_number = request.form.get("po_number")
+    pl_number = request.form.get("pl_number")
+    date_purchased = request.form.get("date_purchased")
+    date_purchased = datetime.strptime(date_purchased, '%d-%m-%Y')
+    total_amount = request.form.get("total_amount")
+    payment_status = request.form.get("payment_status")
+    payment_status = bool(payment_status)
+    attachment_path = request.form.get("attachment_path")
+    
+    import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file)
+    return jsonify({"message": "success"}), 200

@@ -31,7 +31,7 @@ from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
 from handlers.card import add_card_detail_handler
-from handlers.admin import view_cards_handler
+from handlers.admin import view_cards_handler, import_card_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -481,19 +481,8 @@ def migrate_db():
 
 @app.route("/api/admin/import", methods=["POST"])
 def import_cards():
-    file = request.files['file']
-    
-    po_number = request.form.get("po_number")
-    pl_number = request.form.get("pl_number")
-    date_purchased = request.form.get("date_purchased")
-    date_purchased = datetime.strptime(date_purchased, '%d-%m-%Y')
-    total_amount = request.form.get("total_amount")
-    payment_status = request.form.get("payment_status")
-    payment_status = bool(payment_status)
-    attachment_path = request.form.get("attachment_path")
-    
-    import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file)
-    return jsonify({"message": "success"}), 200
+    response, code = import_card_handler(request)
+    return response, code
 
 @app.route('/api/admin/add-card-detail', methods=['POST'])
 def add_card_detail():
