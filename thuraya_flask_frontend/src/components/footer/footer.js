@@ -100,9 +100,9 @@ const Footer = () => {
       </div>
       <div className="border-t mt-10 pt-4 text-center text-white text-sm">
         <p>
-          ThurayaRefill 2021. All rights reserved.
+          ThurayaPrePay 2024. All rights reserved.
           <br />
-          ThurayaRefill.com is fully owned and operated by Oodi Electronics
+          ThurayaPrePay.com is fully owned and operated by Oodi Electronics
           L.L.C.
         </p>
         <div className="mt-2">
