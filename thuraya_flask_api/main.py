@@ -151,7 +151,7 @@ def start_driver():
         last_4_digits = phone[-4:]
 
         driver = webdriver.Chrome()
-        # driver.minimize_window()
+        driver.minimize_window()
         # driver.maximize_window()
         driver.get(constants["indexUrl"])
         time.sleep(0.1)
