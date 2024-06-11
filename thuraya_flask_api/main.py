@@ -32,6 +32,7 @@ from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
 from handlers.card import add_card_detail_handler
 from handlers.admin import view_cards_handler, import_card_handler
+from handlers.purchase import purchase_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -412,67 +413,9 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
-    transaction_logs = ""
-    token = request.headers.get('Authorization')
-    data = request.get_json()
+    response, code = purchase_handler(request, session)
+    return response, code
     
-    if not token:
-        email=data.get('email')
-        print(email)
-        transaction_logs = transaction_logs + email + "\n"
-        new_user = User(email=email, country_region=data.get('country_region'), role='guest')
-        session.add(new_user)
-        session.commit()
-        user_id = new_user.id
-
-    else:
-        try:
-            payload = decode_token(token)
-            user_id = payload['user_id']
-            user = session.query(User).filter(User.id == user_id).first()
-            if user:
-                email = user.email
-        except Exception as e:
-            print(str(e))
-            return jsonify({"message": "Invalid token"}), 401
-    
-    transaction_logs = transaction_logs + str(user_id) + "\n"
-    print(user_id)
-
-    discount =0
-    try:
-        promo_code = data.get("promo_code")
-        # discount = find_discount(promo_code)
-        if promo_code != None:
-            transaction_logs = transaction_logs + str(promo_code) + "\n"
-
-    except:
-        promo_code = None
-        transaction_logs = transaction_logs + "no promo code" + "\n"
-
-    recharge_status = None
-    # ip_address = request.remote_addr
-    ip_address = "39.47.126.137"
-    # TODO: dynamic ip address
-    print(ip_address)
-    transaction_logs = transaction_logs + ip_address + "\n"
-
-    ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
-    user_agent = request.user_agent
-    units = data.get("units")
-
-    print(units)
-    transaction_logs = transaction_logs + str(units) + "\n"
-    transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session)
-
-    codes = get_codes(units, session)
-    transaction_logs = transaction_logs + str(codes) + "\n"
-    print("codes: ")
-    print(codes)
-
-    email_status, transaction_logs = email_codes_password(codes, email, transaction_logs)
-    create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
-    return jsonify({"message": "success"}), 200
 
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
