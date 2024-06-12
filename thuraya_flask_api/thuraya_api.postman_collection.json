@@ -129,6 +129,25 @@
 			"response": []
 		},
 		{
+			"name": "check-availability",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/api/check-availability",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"check-availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "guest_login_refill",
 			"request": {
 				"method": "POST",
@@ -314,9 +333,6 @@
 		},
 		{
 			"name": "view-cards",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "POST",
 				"header": [

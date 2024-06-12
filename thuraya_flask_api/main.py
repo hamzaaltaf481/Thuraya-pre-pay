@@ -31,6 +31,7 @@ from handlers.signup import signup_handler
 from handlers.card import add_card_detail_handler
 from handlers.admin import view_cards_handler, import_card_handler
 from handlers.purchase import purchase_handler
+from handlers.check_availability import check_availability_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -445,6 +446,11 @@ def purchase():
     return response, code
     
 
+@app.route("/api/check-availability", methods=["GET"])
+def check_availability():
+    response, code = check_availability_handler(session)
+    return response, code
+
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
     migrate_tables()
@@ -455,7 +461,7 @@ def import_cards():
     response, code = import_card_handler(request)
     return response, code
 
-@app.route('/api/admin/add-card-detail', methods=['POST'])
+@app.route('/api/admin/add-single-card', methods=['POST'])
 def add_card_detail():
     response, code = add_card_detail_handler(session)
     return response, code
