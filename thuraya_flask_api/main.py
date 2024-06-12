@@ -354,7 +354,7 @@ def start_driver():
         
         print("logged in")
         # create an instance of PhoneNumber model with password and phone_number and store in the database
-        phone_number_model = PhoneNumber(phone=phone, password=password)
+        phone_number_model = PhoneNumber(phone=phone, password=password, status="ACTIVE")
         session.add(phone_number_model)
         session.commit()
 
