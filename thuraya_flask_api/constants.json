@@ -5,5 +5,7 @@
     "detailsUrl" : "https://services.thuraya.com/Bills/details.jsp",
     "loginRefill" : "https://services.thuraya.com/Bills/ScratchRefill.jsp",
     "refillStatus": "https://services.thuraya.com/Bills/ScratchRefill.jsp?submittype=Status",
-    "scratchSuccessfulMessage": "Your transaction is under process, notification will be sent to your Thuraya phone"
+    "scratchSuccessfulMessage": "Your transaction is under process, notification will be sent to your Thuraya phone",
+    "rechargeUrl" : "https://www.thurayarecharge.com/",
+    "thurayaRechargeMyPhones" : "https://www.thurayarecharge.com/phones/"
 }
