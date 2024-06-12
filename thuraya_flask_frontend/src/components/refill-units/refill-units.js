@@ -76,23 +76,23 @@ export default function RefillUnits() {
                   unit.price === "Out of Stock" ? "text-gray-400" : "text-black"
                 }`}
               >
+                <label htmlFor={`unit-${unit.units}`} className="radio-button-label">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="refillUnit"
                   id={`unit-${unit.units}`}
                   className="mr-2"
                   disabled={unit.price === "Out of Stock"}
                   onChange={() => handleUnitSelect(unit)}
                 />
-
-                <label htmlFor={`unit-${unit.units}`}>
+                  
                   <p className="text-xl font-bold">{unit.units} units</p>
                   <p>{unit.price}</p>
                 </label>
                 {selectedUnits[unit.units] && (
             <div className="flex items-center mt-2 ml-12">
               <button onClick={() => handleDecrement(unit)}>-</button>
-              <p className="mx-2 border-[2px] rounded-md w-12">{selectedUnits[unit.units].quantity}</p>
+              <p className="mx-2 border-[2px] rounded-md w-12">{selectedUnits[unit.units].quantity ||1}</p>
               <button onClick={() => handleIncrement(unit)}>+</button>
 
                 </div>
