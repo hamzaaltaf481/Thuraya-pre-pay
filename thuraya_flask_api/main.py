@@ -82,7 +82,84 @@ jwt = JWTManager(app)
 def index():
     return jsonify({"status": "OK"}), 200
 
+@app.route("/api/quick_refill", methods=["POST"])
+def start_driver():
+    try:
+        start_time = time.time()
+        log_string = ""
+        logger.info("refill request received")
+        print("refill request received")
+        log_string = log_string + "refill request received" + "\n"
+        with open("constants.json") as f:
+            constants = json.load(f)
 
+        data = request.get_json()
+        phone = data.get("phone")
+        price = data.get("price")
+        token = request.headers.get('Authorization')
+
+        if not token:
+            email=data.get('email')
+            print(email)
+            log_string = log_string + email + "\n"
+            new_user = User(email=email, country_region=data.get('country_region'), role='guest')
+            session.add(new_user)
+            session.commit()
+            user_id = new_user.id
+
+        else:
+            try:
+                payload = decode_token(token)
+                user_id = payload['user_id']
+                user = session.query(User).filter(User.id == user_id).first()
+                if user:
+                    email = user.email
+            except Exception as e:
+                print(str(e))
+                return jsonify({"message": "Invalid token"}), 401
+            
+        valid = check_valid(phone, price)
+
+        if not valid:
+            return jsonify({"message": "Phone or Price invalid!"}), 400
+            
+        card_number, card_id, selling_price = get_card(price, session)
+        log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
+        codes = []
+        codes.append({"number": card_number, "price": selling_price, "id": card_id})
+
+        logger.info("phone: "+phone)
+        print("phone: "+phone)
+        logger.info("price: "+price)
+        print("price: "+price)
+        logger.info("email: "+email)
+        print("email: "+email)
+        log_string = log_string + "phone: "+phone + "\n"
+        log_string = log_string + "price: "+price + "\n"
+        log_string = log_string + "email: "+email + "\n"
+
+        ip_address = "39.47.126.137"
+        ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
+        user_agent = request.user_agent
+
+        last_4_digits = phone[-4:]
+
+        driver = webdriver.Chrome()
+
+        phone_number = session.query(PhoneNumber).filter(PhoneNumber.phone == phone).first()
+        if phone_number:
+            password = phone_number.password
+            # refill with the same thuraya service
+        else:
+            # refill with quick refill thuraya and check balance etc with the thuraya recharge website
+            pass
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"message": "An error occurred"}), 500
+
+
+# ARCHIVED ROUTE
 @app.route("/api/login_refill", methods=["POST"])
 def start_driver():
     try:

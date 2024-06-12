@@ -103,7 +103,8 @@ def migrate_tables():
         CREATE TABLE phone_numbers (
             id INT AUTO_INCREMENT PRIMARY KEY,
             phone VARCHAR(255),
-            password VARCHAR(255)
+            password VARCHAR(255),
+            status VARCHAR(255) DEFAULT 'ACTIVE'
             )
     """)
 

@@ -126,3 +126,4 @@ class PhoneNumber(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     phone = Column(String(255))
     password = Column(String(255))
+    status = Column(String(255), default='ACTIVE')
