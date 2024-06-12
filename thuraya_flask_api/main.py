@@ -15,6 +15,7 @@
 from dotenv import load_dotenv
 import os
 import csv
+import random
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -85,6 +86,39 @@ def index():
 
 @app.route("/api/login_refill", methods=["POST"])
 def start_driver():
+    response_code = random.randint(1, 4)
+
+    if response_code == 1: 
+        return jsonify({"message": "Invalid token"}), 401
+    elif response_code == 2:
+        return jsonify({"message": "Phone or Price invalid!"}), 400
+    elif response_code == 3:
+        return jsonify({"message": "success", "refill_status": "mailed"}), 200
+    elif response_code == 4:
+        return jsonify({
+        "message": "success",
+        "refill_status": "SUCCESS",
+        "previoud_balance": "10.10 $",
+        "new_balance": "30.10 $",
+        "scraped": {
+            "activation_date": "08/09/2020",
+            "balance": "10.10 $",
+            "call_limit": "30/11/2024",
+            "last_recharge": "150.00 $",
+            "status": "Active",
+            "total_refill": "150.00 $"
+        },
+        "scraped_after_refill": {
+            "activation_date": "08/09/2020",
+            "balance": "10.10 $",
+            "call_limit": "30/11/2024",
+            "last_recharge": "150.00 $",
+            "status": "Active",
+            "total_refill": "150.00 $"
+        }
+        }), 200
+    else:
+        return jsonify({"message": "An error occurred"}), 500
     try:
         start_time = time.time()
         log_string = ""
