@@ -28,8 +28,7 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.card import add_card_detail_handler
-from handlers.admin import view_cards_handler, import_card_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler
 from handlers.purchase import purchase_handler
 from handlers.check_availability import check_availability_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
