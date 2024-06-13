@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const refillUnits = [
@@ -14,15 +15,57 @@ const refillUnits = [
   { units: 1000, price: "$1,000.00" },
   { units: 2500, price: "$2,500.00" },
 ];
+const maxNoLength = 8;
 
 export default function QuickRefill() {
   const [thurayaNumber, setThurayaNumber] = useState("");
-  const [isInvalid, setIsInvalid] = useState(false); // Set initial state to false
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setThurayaNumber(value);
-    setIsInvalid(value.length !== 11); // Change validation to check for 12 digits
+  const token = localStorage.getItem("token");
+
+  const handleLoginRefill = async (price) => {
+    let response
+    try {
+      console.log("handled login refill call");
+       response = await axios.post(
+        "http://localhost:5000/api/login_refill", // Corrected the URL by adding "http://" prefix
+        {
+          phone: `${thurayaNumber}`,
+          price: `${price}`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Updated the Authorization header format
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+
+    } catch (error) {
+      console.log(error.response.statusText);
+    }
+  };
+
+
+  const handleGuestRefill = async (price) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/login_refill",
+        {
+          phone: "21297776",
+          price: `${price}`,
+          email: "rafayzia3690@gmail.com",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -49,18 +92,29 @@ export default function QuickRefill() {
           <p className="mt-2 text-lg text-gray-600">
             Enter your Thuraya number
           </p>
-          <input
-            type="text"
-            className={`mt-3 w-[30%] p-3 text-2xl border rounded-lg ${
-              isInvalid ? "border-red-500" : ""
-            }`}
-            placeholder="03 XXXXXXXXX"
-            value={thurayaNumber}
-            onChange={handleInputChange}
-          />
-          {thurayaNumber.length === 11 && ( // Show refill units only when 12 digits are entered
-            <>
-              <p className="mt-5 text-lg text-gray-600 ">Select refill units</p>
+          <div className="flex gap-5">
+            <input
+              type="text"
+              className={`mt-3 w-[7%] p-3 text-2xl border rounded-lg`}
+              value={"+88216"}
+            />
+            <input
+              type="text"
+              className={`mt-3 w-[10%] p-3 text-2xl border rounded-lg`}
+              placeholder="XXXXXXXX"
+              value={thurayaNumber}
+              onChange={(e) =>
+                setThurayaNumber(e.target.value.replace(/\D/g, "").slice(0, 8))
+              }
+              maxLength={8}
+            />
+          </div>
+
+          {thurayaNumber.length === maxNoLength && ( // Show refill units only when 12 digits are entered
+            <div className=" transition-transform duration-300 delay-500">
+              <p className="mt-5 text-lg text-gray-600  ">
+                Select refill units
+              </p>
               <div className="grid grid-cols-6  gap-10 mt-3">
                 {refillUnits.map((unit, index) => (
                   <div
@@ -77,6 +131,7 @@ export default function QuickRefill() {
                       id={`unit-${unit.units}`}
                       className="mr-2"
                       disabled={unit.price === "Out of Stock"}
+                      onClick={()=>{handleGuestRefill(unit.price)}}
                     />
                     <label htmlFor={`unit-${unit.units}`}>
                       <p className="text-xl font-bold">{unit.units} units</p>
@@ -89,25 +144,34 @@ export default function QuickRefill() {
                 className="my-8 bottom-4 border-1 "
                 style={{ borderColor: "var(--green-color)" }}
               />
-              <button
-                className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-                style={{
-                  backgroundColor: "var(--blue-color)",
-                }}
-              >
-                <FaArrowRight className="mr-2" />
-                Proceed to payment
-              </button>
-            </>
-          )}
-          {isInvalid && ( // Show error message when invalid
-            <p className="mt-2 text-red-600">
-              You've entered an invalid number. Please try again with the
-              correct Thuraya number.
-            </p>
+              {token ? (
+                <button
+                  className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+                  style={{
+                    backgroundColor: "var(--blue-color)",
+                  }}
+                  onClick={handleLoginRefill}
+                >
+                  <FaArrowRight className="mr-2" />
+                  Proceed to payment
+                </button>
+              ) : (
+                <button
+                  className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+                  style={{
+                    backgroundColor: "var(--blue-color)",
+                  }}
+                  onClick={handleGuestRefill}
+                >
+                  <FaArrowRight className="mr-2" />
+                  Proceed to payment as guest
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>
     </div>
   );
 }
+

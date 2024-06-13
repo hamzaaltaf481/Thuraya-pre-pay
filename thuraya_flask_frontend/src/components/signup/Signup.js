@@ -37,7 +37,7 @@ export default function Signup() {
       // Show error message
       swal(
         "Error!",
-        `Error submitting form: ${error?.response.data.message}`,
+        `Error submitting form: ${error?.response?.data?.message}`,
         "error"
       );
     }

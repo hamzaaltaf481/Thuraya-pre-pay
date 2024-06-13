@@ -35,7 +35,7 @@ export default function Login() {
     } catch (error) {
       console.log("Error logging in:", error);
       // Show error message
-      swal("Error!", `Error logging in: ${error?.response.data.message}`, "error");
+      swal("Error!", `Error logging in: ${error.response.data.message}`, "error");
     }
   };
 

@@ -3,9 +3,9 @@ import "./App.css";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/Navbar";
-import Forgetpass from "./components/forgetpass/forgetpass";
+// import Forgetpass from "./components/forgetpass/forgetpass";
 import LandingPage from "./components/landing-page/landing_page";
- // Fixed typo in component import
+
 import Footer from "./components/footer/footer";
 import QuickRefill from "./components/quick-refill/quick_refll";
 import RefillUnits from "./components/refill-units/refill-units";
