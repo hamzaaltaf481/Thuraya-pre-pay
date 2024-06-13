@@ -17,11 +17,21 @@ const refillUnits = [
 
 export default function RefillUnits() {
   const [selectedUnits, setSelectedUnits] = useState({}); // Track selected units for each card
+
   const handleUnitSelect = (unit) => {
-    setSelectedUnits((prevSelectedUnits) => ({
-      ...prevSelectedUnits,
-      [unit.units]: unit,
-    }));
+    if (selectedUnits[unit.units]) {
+      const newSelectedUnits = { ...selectedUnits };
+      delete newSelectedUnits[unit.units];
+      setSelectedUnits(newSelectedUnits);
+    } else {
+      setSelectedUnits((prevSelectedUnits) => ({
+        ...prevSelectedUnits,
+        [unit.units]: {
+          ...unit,
+          quantity: 1, // Initialize quantity to 1 when a unit is selected
+        },
+      }));
+    }
   };
 
   const handleIncrement = (unit) => {
@@ -29,7 +39,7 @@ export default function RefillUnits() {
       ...prevSelectedUnits,
       [unit.units]: {
         ...prevSelectedUnits[unit.units],
-        quantity: Math.min(prevSelectedUnits[unit.units]?.quantity + 1 || 1, 3),
+        quantity: Math.min(prevSelectedUnits[unit.units]?.quantity + 1 || 1, 10),
       },
     }));
   };
@@ -43,32 +53,33 @@ export default function RefillUnits() {
       },
     }));
   };
+
   const token = localStorage.getItem("token");
 
   return (
     <div className="relative flex flex-col justify-start min-h-screen overflow-hidden">
-      <div className="flex justify-between items-start gap-60 w-full px-20 ">
+      <div className="flex justify-between items-start gap-60 w-full px-20">
         <div className="w-full p-5">
-          <div className="flex  justify-between mt-32">
+          <div className="flex justify-between mt-32">
             <Link
               to="/quick_refill"
               className="text-3xl font-bold text-black flex gap-4 items-center opacity-40"
             >
-              <FaArrowRight className=" inline-block" />
+              <FaArrowRight className="inline-block" />
               Quick Refill
             </Link>
             <h1
-              className="text-3xl font-bold text-black flex gap-4 items-center "
+              className="text-3xl font-bold text-black flex gap-4 items-center"
               style={{ color: "var(--green-color)" }}
             >
-              <FaArrowDown className=" inline-block" />
+              <FaArrowDown className="inline-block" />
               <p className="text-[#2f2f2f]">Refill</p>
               Units
             </h1>
           </div>
 
-          <p className="mt-5 text-lg text-gray-600 ">Select refill units</p>
-          <div className="grid grid-cols-6  gap-10 mt-3">
+          <p className="mt-5 text-lg text-gray-600">Select refill units</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-10 mt-3">
             {refillUnits.map((unit, index) => (
               <div
                 key={index}
@@ -76,7 +87,6 @@ export default function RefillUnits() {
                   unit.price === "Out of Stock" ? "text-gray-400" : "text-black"
                 }`}
               >
-                <label htmlFor={`unit-${unit.units}`} className="radio-button-label">
                 <input
                   type="checkbox"
                   name="refillUnit"
@@ -84,55 +94,65 @@ export default function RefillUnits() {
                   className="mr-2"
                   disabled={unit.price === "Out of Stock"}
                   onChange={() => handleUnitSelect(unit)}
+                  checked={!!selectedUnits[unit.units]}
                 />
-                  
+                <label htmlFor={`unit-${unit.units}`}>
                   <p className="text-xl font-bold">{unit.units} units</p>
                   <p>{unit.price}</p>
                 </label>
                 {selectedUnits[unit.units] && (
-                  <div className="flex items-center mt-2 ml-12">
-                    <button onClick={() => handleDecrement(unit)}>-</button>
-                    <p className="mx-2 border-[2px] rounded-md w-12">
-                      {selectedUnits[unit.units].quantity}
-                    </p>
-                    <button onClick={() => handleIncrement(unit)}>+</button>
+                  <div className="flex items-center justify-center mt-2">
+                    <button
+                      className="px-2 py-1 border rounded-l"
+                      onClick={() => handleDecrement(unit)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      className="mx-2 border rounded text-center w-12"
+                      value={selectedUnits[unit.units].quantity}
+                      readOnly
+                    />
+                    <button
+                      className="px-2 py-1 border rounded-r"
+                      onClick={() => handleIncrement(unit)}
+                    >
+                      +
+                    </button>
                   </div>
                 )}
               </div>
             ))}
           </div>
           <hr
-            className="my-8 bottom-4 border-1 "
+            className="my-8 bottom-4 border-1"
             style={{ borderColor: "var(--green-color)" }}
           />
-          <h2>Summary</h2>
-          <ul className="flex gap-4 mt-2">
-            <li>Units</li>
-            <li>Quantity</li>
-            <li>Amount</li>
-          </ul>
-          {/* <h2>{selectedUnits[]}</h2> */}
-          {token ? (
+          <h2 className="font-bold text-lg mb-2">Summary</h2>
+          <div className="flex justify-between mb-4">
+            <span>Units</span>
+            <span>Quantity</span>
+            <span>Amount</span>
+          </div>
+          {Object.values(selectedUnits).map((unit) => (
+            <div className="flex justify-between mb-2" key={unit.units}>
+              <span>{unit.units} units</span>
+              <span>{unit.quantity}</span>
+              <span>${(unit.units * unit.quantity).toFixed(2)}</span>
+            </div>
+          ))}
+          <div className="mt-10 flex justify-center">
             <button
-              className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+              className="px-7 py-4 text-white text-xl rounded flex items-center"
               style={{
                 backgroundColor: "var(--blue-color)",
               }}
             >
               <FaArrowRight className="mr-2" />
-              Proceed to payment
+              {token ? "Proceed to payment" : "Proceed to payment as guest"}
             </button>
-          ) : (
-            <button
-              className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-              style={{
-                backgroundColor: "var(--blue-color)",
-              }}
-            >
-              <FaArrowRight className="mr-2" />
-              Proceed to payment as guest
-            </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
