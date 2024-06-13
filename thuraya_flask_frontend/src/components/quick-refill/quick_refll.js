@@ -23,26 +23,26 @@ export default function QuickRefill() {
   const token = localStorage.getItem("token");
 
   const handleLoginRefill = async (price) => {
-    let response
+ 
     try {
       console.log("handled login refill call");
-       response = await axios.post(
-        "http://localhost:5000/api/login_refill", // Corrected the URL by adding "http://" prefix
+       const response = await axios.post(
+        "http://localhost:5000/api/login_refill", 
         {
           phone: `${thurayaNumber}`,
           price: `${price}`,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Updated the Authorization header format
+            Authorization: `${token}`, 
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(response);
+      console.log("response",response);
 
     } catch (error) {
-      console.log(error.response.statusText);
+      console.log("error message",error.response.statusText);
     }
   };
 

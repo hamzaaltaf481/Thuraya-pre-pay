@@ -22,7 +22,6 @@ export default function Login() {
         "http://localhost:5000/api/login",
         formData
       );
-      console.log(response.data.access_token);
       if (response.status === 200) {
         swal("Success!", "Logged in successfully", "success");
         setTimeout(() => {
@@ -35,7 +34,7 @@ export default function Login() {
     } catch (error) {
       console.log("Error logging in:", error);
       // Show error message
-      swal("Error!", `Error logging in: ${error.response.data.message}`, "error");
+      swal("Error!", `${error.response.data.message}`, "error");
     }
   };
 
