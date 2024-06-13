@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
 
 const refillUnits = [
   { units: 10, price: "$10.00" },
@@ -58,6 +60,57 @@ export default function RefillUnits() {
   };
 
   const token = localStorage.getItem("token");
+  const handleLoginPurchase = async () => {
+    try {
+      const selectedUnitsArray = Object.values(selectedUnits);
+      const units = selectedUnitsArray.map((unit) => ({
+        quantity: unit.quantity,
+        price: unit.price.replace("$", ""),
+      }));
+      console.log("units", units);
+      const response = await axios.post(
+        "http://localhost:5000/api/purchase",
+        { units },
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      swal("Success!", `${response.data}`, "success");
+    } catch (error) {
+      console.error(error);
+      swal("Error!", `${error}`, "error");
+    }
+  };
+  const handleGuestPayment = async () => {
+    try {
+      const selectedUnitsArray = Object.values(selectedUnits);
+      const units = selectedUnitsArray.map((unit) => ({
+        quantity: `${unit.quantity}`,
+        price: unit.price.replace("$", ""),
+      }));
+      const response = await axios.post(
+        "http://localhost:5000/api/purchase",
+        {
+          units,
+          email: "rafayzia3690@gmail.com",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      swal("Success!", `${response.data}`, "success");
+    } catch (error) {
+      console.error(error);
+      swal("Error!", `${error}`, "error");
+    }
+  };
 
   return (
     <div className="relative flex flex-col justify-start min-h-screen overflow-hidden">
@@ -133,40 +186,54 @@ export default function RefillUnits() {
             style={{ borderColor: "var(--green-color)" }}
           />
           <h2 className="font-bold text-3xl mb-5">Summary</h2>
-          
-            <div className="flex mb-1 gap-6">
-              <span className="p-1 text-xl ">Units</span>
-              <span className="p-1 text-xl">Quantity</span>
-              <span className="p-1 text-xl">Amount</span>
-            </div>
 
-            {Object.values(selectedUnits).map((unit) => (
-              <>
-                <div className="flex mb-2 gap-16" key={unit.units}>
-                  <span className="p-1 justify-start">{unit.units}</span>
-                  <span className="p-1 justify-center">{unit.quantity}</span>
-                  <span className="p-1 justify-end">
-                    ${(unit.units * unit.quantity).toFixed(2)}
-                  </span>
-                </div>
-              
-                <hr></hr>
-              </>
-            ))}
-                <div className="flex gap-40">
-                  <span className=" font-bold">Total</span>
-                  <span>399</span>
-                </div>
+          <div className="flex mb-1 gap-6">
+            <span className="p-1 text-xl ">Units</span>
+            <span className="p-1 text-xl">Quantity</span>
+            <span className="p-1 text-xl">Amount</span>
+          </div>
+
+          {Object.values(selectedUnits).map((unit) => (
+            <>
+              <div className="flex mb-2 gap-16" key={unit.units}>
+                <span className="p-1 justify-start">{unit.units}</span>
+                <span className="p-1 justify-center">{unit.quantity}</span>
+                <span className="p-1 justify-end">
+                  ${(unit.units * unit.quantity).toFixed(2)}
+                </span>
+              </div>
+
+              <hr></hr>
+            </>
+          ))}
+          <div className="flex gap-40">
+            <span className=" font-bold">Total</span>
+            <span>399</span>
+          </div>
           <div className="mt-10 flex">
-            <button
-              className="px-7 py-4 text-white text-xl rounded flex items-center"
-              style={{
-                backgroundColor: "var(--blue-color)",
-              }}
-            >
-              <FaArrowRight className="mr-2" />
-              {token ? "Proceed to payment" : "Proceed to payment as guest"}
-            </button>
+            {token ? (
+              <button
+                className="px-7 py-4 text-white text-xl rounded flex items-center"
+                style={{
+                  backgroundColor: "var(--blue-color)",
+                }}
+                onClick={handleLoginPurchase}
+              >
+                <FaArrowRight className="mr-2" />
+                Proceed to payment
+              </button>
+            ) : (
+              <button
+                className="px-7 py-4 text-white text-xl rounded flex items-center"
+                style={{
+                  backgroundColor: "var(--blue-color)",
+                }}
+                onClick={handleGuestPayment}
+              >
+                <FaArrowRight className="mr-2" />
+                Proceed to payment as guest
+              </button>
+            )}
           </div>
         </div>
       </div>

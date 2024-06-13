@@ -8,14 +8,15 @@ import "./App.css";
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
 import Navbar from "./components/Navbar";
-// import Forgetpass from "./components/forgetpass/forgetpass";
+import Forgetpass from "./components/forgetpass/forgetpass";
 import LandingPage from "./components/landing-page/landing_page";
 
 import Footer from "./components/footer/footer";
 import QuickRefill from "./components/quick-refill/quick_refll";
-import RefillUnits from "./components/refill-units/refill-units";
+import RefillUnits from "./components/refill-units/refill_units";
 import userEvent from "@testing-library/user-event";
 import { useEffect } from "react";
+import ConfirmMail from "./components/confrim-mail/confrim_mail";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -33,11 +34,12 @@ function App() {
             path="/login"
             element={token ? <Navigate to="/" /> : <Login />}
           />
-          <Route exact path="/signup" element={<Signup />} /> // Changed
-          "/Signup" to "/signup" to match the route
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/forget-pass" element={<Forgetpass />} />
+          <Route exact path="/confirm_mail/:token" element={<ConfirmMail />} />
         </Routes>
       </div>
-      {/* <Forgetpass/> */}
+ 
       <Footer />
     </>
   );
