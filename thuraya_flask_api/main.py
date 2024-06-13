@@ -15,14 +15,12 @@
 from dotenv import load_dotenv
 import os
 import csv
-from cryptography.fernet import Fernet
-import re
+import random
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import time
 import json
-from datetime import datetime
 from bot.scrap import parse_data, check_refill_status
 from handlers.transaction import create_transaction
 from handlers.reset_password import reset_password
@@ -30,7 +28,9 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.card import add_card_detail_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler
+from handlers.purchase import purchase_handler
+from handlers.check_availability import check_availability_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -46,17 +46,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import staleness_of
-from werkzeug.security import generate_password_hash
 from logger.log import setup_logger
 from database.migrate import migrate_tables
-from database.database import get_card, get_codes
+from database.database import get_card
 from utils.utils import check_valid, email_codes_password
-from utils.import_file import import_csv
 from database.models.models import User, Card, PhoneNumber
 from database.database import database_session
 from itsdangerous import URLSafeTimedSerializer
-from flask_mail import Mail, Message
-from flask import url_for
+from flask_mail import Mail
 from flask_jwt_extended import JWTManager, decode_token
 
 load_dotenv()
@@ -89,6 +86,39 @@ def index():
 
 @app.route("/api/login_refill", methods=["POST"])
 def start_driver():
+    response_code = random.randint(1, 4)
+
+    if response_code == 1: 
+        return jsonify({"message": "Invalid token"}), 401
+    elif response_code == 2:
+        return jsonify({"message": "Phone or Price invalid!"}), 400
+    elif response_code == 3:
+        return jsonify({"message": "success", "refill_status": "mailed"}), 200
+    elif response_code == 4:
+        return jsonify({
+        "message": "success",
+        "refill_status": "SUCCESS",
+        "previoud_balance": "10.10 $",
+        "new_balance": "30.10 $",
+        "scraped": {
+            "activation_date": "08/09/2020",
+            "balance": "10.10 $",
+            "call_limit": "30/11/2024",
+            "last_recharge": "150.00 $",
+            "status": "Active",
+            "total_refill": "150.00 $"
+        },
+        "scraped_after_refill": {
+            "activation_date": "08/09/2020",
+            "balance": "10.10 $",
+            "call_limit": "30/11/2024",
+            "last_recharge": "150.00 $",
+            "status": "Active",
+            "total_refill": "150.00 $"
+        }
+        }), 200
+    else:
+        return jsonify({"message": "An error occurred"}), 500
     try:
         start_time = time.time()
         log_string = ""
@@ -411,67 +441,14 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
-    transaction_logs = ""
-    token = request.headers.get('Authorization')
-    data = request.get_json()
+    response, code = purchase_handler(request, session)
+    return response, code
     
-    if not token:
-        email=data.get('email')
-        print(email)
-        transaction_logs = transaction_logs + email + "\n"
-        new_user = User(email=email, country_region=data.get('country_region'), role='guest')
-        session.add(new_user)
-        session.commit()
-        user_id = new_user.id
 
-    else:
-        try:
-            payload = decode_token(token)
-            user_id = payload['user_id']
-            user = session.query(User).filter(User.id == user_id).first()
-            if user:
-                email = user.email
-        except Exception as e:
-            print(str(e))
-            return jsonify({"message": "Invalid token"}), 401
-    
-    transaction_logs = transaction_logs + str(user_id) + "\n"
-    print(user_id)
-
-    discount =0
-    try:
-        promo_code = data.get("promo_code")
-        # discount = find_discount(promo_code)
-        if promo_code != None:
-            transaction_logs = transaction_logs + str(promo_code) + "\n"
-
-    except:
-        promo_code = None
-        transaction_logs = transaction_logs + "no promo code" + "\n"
-
-    recharge_status = None
-    # ip_address = request.remote_addr
-    ip_address = "39.47.126.137"
-    # TODO: dynamic ip address
-    print(ip_address)
-    transaction_logs = transaction_logs + ip_address + "\n"
-
-    ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
-    user_agent = request.user_agent
-    units = data.get("units")
-
-    print(units)
-    transaction_logs = transaction_logs + str(units) + "\n"
-    transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session)
-
-    codes = get_codes(units, session)
-    transaction_logs = transaction_logs + str(codes) + "\n"
-    print("codes: ")
-    print(codes)
-
-    email_status, transaction_logs = email_codes_password(codes, email, transaction_logs)
-    create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
-    return jsonify({"message": "success"}), 200
+@app.route("/api/check-availability", methods=["GET"])
+def check_availability():
+    response, code = check_availability_handler(session)
+    return response, code
 
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
@@ -480,49 +457,18 @@ def migrate_db():
 
 @app.route("/api/admin/import", methods=["POST"])
 def import_cards():
-    file = request.files['file']
-    
-    po_number = request.form.get("po_number")
-    pl_number = request.form.get("pl_number")
-    date_purchased = request.form.get("date_purchased")
-    date_purchased = datetime.strptime(date_purchased, '%d-%m-%Y')
-    total_amount = request.form.get("total_amount")
-    payment_status = request.form.get("payment_status")
-    payment_status = bool(payment_status)
-    attachment_path = request.form.get("attachment_path")
-    
-    import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file)
-    return jsonify({"message": "success"}), 200
+    response, code = import_card_handler(request)
+    return response, code
 
-@app.route('/api/admin/add-card-detail', methods=['POST'])
+@app.route('/api/admin/add-single-card', methods=['POST'])
 def add_card_detail():
     response, code = add_card_detail_handler(session)
     return response, code
 
 @app.route('/api/admin/view-cards', methods=['POST'])
 def view_cards():
-    token = request.headers.get('Authorization')
-    payload = decode_token(token)
-    user_role = payload['user_role']
-
-    # TODO: uncomment this check after testing
-    # if user_role != "admin":
-    #     return jsonify({'message': 'Unauthorized'}), 401
-    
-    cards = session.query(Card)
-    cards_dict = [card.to_dict() for card in cards]
-    print(cards_dict)
-
-    for card_dict in cards_dict:
-        cards_detail_dict = card_dict["card_details"]
-        for card_detail_dict in cards_detail_dict:
-            scratch_code = card_detail_dict["scratch_code"]
-            key = os.getenv("ENCRYPTION_KEY")
-            cipher_suite = Fernet(key)
-            decrypted_number = cipher_suite.decrypt(scratch_code).decode('utf-8')
-            card_detail_dict["scratch_code"] = decrypted_number
-    
-    return jsonify(cards_dict)
+    response, code = view_cards_handler(session, request)
+    return response, code
 
 
 @app.route('/api/signup', methods=['POST'])

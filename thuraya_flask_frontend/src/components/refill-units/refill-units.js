@@ -33,7 +33,6 @@ export default function RefillUnits() {
       },
     }));
   };
-  
 
   const handleDecrement = (unit) => {
     setSelectedUnits((prevSelectedUnits) => ({
@@ -44,6 +43,7 @@ export default function RefillUnits() {
       },
     }));
   };
+  const token = localStorage.getItem("token");
 
   return (
     <div className="relative flex flex-col justify-start min-h-screen overflow-hidden">
@@ -90,14 +90,14 @@ export default function RefillUnits() {
                   <p>{unit.price}</p>
                 </label>
                 {selectedUnits[unit.units] && (
-            <div className="flex items-center mt-2 ml-12">
-              <button onClick={() => handleDecrement(unit)}>-</button>
-              <p className="mx-2 border-[2px] rounded-md w-12">{selectedUnits[unit.units].quantity ||1}</p>
-              <button onClick={() => handleIncrement(unit)}>+</button>
-
-                </div>
+                  <div className="flex items-center mt-2 ml-12">
+                    <button onClick={() => handleDecrement(unit)}>-</button>
+                    <p className="mx-2 border-[2px] rounded-md w-12">
+                      {selectedUnits[unit.units].quantity}
+                    </p>
+                    <button onClick={() => handleIncrement(unit)}>+</button>
+                  </div>
                 )}
-                
               </div>
             ))}
           </div>
@@ -112,15 +112,27 @@ export default function RefillUnits() {
             <li>Amount</li>
           </ul>
           {/* <h2>{selectedUnits[]}</h2> */}
-          <button
-            className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-            style={{
-              backgroundColor: "var(--blue-color)",
-            }}
-          >
-            <FaArrowRight className="mr-2" />
-            Proceed to payment
-          </button>
+          {token ? (
+            <button
+              className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+              style={{
+                backgroundColor: "var(--blue-color)",
+              }}
+            >
+              <FaArrowRight className="mr-2" />
+              Proceed to payment
+            </button>
+          ) : (
+            <button
+              className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+              style={{
+                backgroundColor: "var(--blue-color)",
+              }}
+            >
+              <FaArrowRight className="mr-2" />
+              Proceed to payment as guest
+            </button>
+          )}
         </div>
       </div>
     </div>

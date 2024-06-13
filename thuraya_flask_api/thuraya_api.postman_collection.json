@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f8b487d8-dd84-4395-8b3d-3ee8f6ffd3e1",
+		"_postman_id": "6d429968-9984-4185-9559-db0c710bba6a",
 		"name": "thuraya_api",
 		"description": "Backend API for thurayaprepay website",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -105,13 +105,14 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"mrni8mare@gmail.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "mrni8mare@gmail.com",
+							"type": "text"
 						}
-					}
+					]
 				},
 				"url": {
 					"raw": "localhost:5000/api/forgot-password",
@@ -122,6 +123,25 @@
 					"path": [
 						"api",
 						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check-availability",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/api/check-availability",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"check-availability"
 					]
 				}
 			},
@@ -313,11 +333,8 @@
 		},
 		{
 			"name": "view-cards",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
@@ -344,6 +361,71 @@
 						"api",
 						"admin",
 						"view-cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-single-card",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "card_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "serial_number",
+							"value": "132456",
+							"type": "text"
+						},
+						{
+							"key": "scratch_code",
+							"value": "42345678901234",
+							"type": "text"
+						},
+						{
+							"key": "units",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "purchase_price",
+							"value": "17",
+							"type": "text"
+						},
+						{
+							"key": "selling_price",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "expiry_date",
+							"value": "03-12-2025",
+							"type": "text"
+						},
+						{
+							"key": "remarks",
+							"value": "new card",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/add-single-card",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"add-single-card"
 					]
 				}
 			},

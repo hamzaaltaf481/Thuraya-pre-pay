@@ -10,7 +10,7 @@ def login_handler(session):
     if not user or not check_password_hash(user.password, request.form.get("password")):
         return jsonify({'message': 'Login Unsuccessful. Please check email and password'}), 401
     
-    if user.email_confirmed == False:
+    if user.email_confirmed == False or user.email_confirmed == None:
         return jsonify({'message': 'Email not confirmed'}), 401
     
     additional_claims = {"user_role": user.role, "user_id": user.id}
