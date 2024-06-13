@@ -19,10 +19,12 @@ const maxNoLength = 8;
 
 export default function QuickRefill() {
   const [thurayaNumber, setThurayaNumber] = useState("");
+  const [unitPrice, setUnitPrice] = useState(0);
+
 
   const token = localStorage.getItem("token");
 
-  const handleLoginRefill = async (price) => {
+  const handleLoginRefill = async () => {
  
     try {
       console.log("handled login refill call");
@@ -30,7 +32,7 @@ export default function QuickRefill() {
         "http://localhost:5000/api/login_refill", 
         {
           phone: `${thurayaNumber}`,
-          price: `${price}`,
+          price: `${unitPrice}`,
         },
         {
           headers: {
@@ -47,13 +49,13 @@ export default function QuickRefill() {
   };
 
 
-  const handleGuestRefill = async (price) => {
+  const handleGuestRefill = async () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/login_refill",
         {
           phone: "21297776",
-          price: `${price}`,
+          price: `${unitPrice}`,
           email: "rafayzia3690@gmail.com",
         },
         {
@@ -131,7 +133,7 @@ export default function QuickRefill() {
                       id={`unit-${unit.units}`}
                       className="mr-2"
                       disabled={unit.price === "Out of Stock"}
-                      onClick={()=>{handleGuestRefill(unit.price)}}
+                      onClick={()=>{setUnitPrice(unit.price)}}
                     />
                     <label htmlFor={`unit-${unit.units}`}>
                       <p className="text-xl font-bold">{unit.units} units</p>
