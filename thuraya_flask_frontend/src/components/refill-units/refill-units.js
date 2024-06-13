@@ -39,7 +39,10 @@ export default function RefillUnits() {
       ...prevSelectedUnits,
       [unit.units]: {
         ...prevSelectedUnits[unit.units],
-        quantity: Math.min(prevSelectedUnits[unit.units]?.quantity + 1 || 1, 10),
+        quantity: Math.min(
+          prevSelectedUnits[unit.units]?.quantity + 1 || 1,
+          10
+        ),
       },
     }));
   };
@@ -129,20 +132,32 @@ export default function RefillUnits() {
             className="my-8 bottom-4 border-1"
             style={{ borderColor: "var(--green-color)" }}
           />
-          <h2 className="font-bold text-lg mb-2">Summary</h2>
-          <div className="flex justify-between mb-4">
-            <span>Units</span>
-            <span>Quantity</span>
-            <span>Amount</span>
-          </div>
-          {Object.values(selectedUnits).map((unit) => (
-            <div className="flex justify-between mb-2" key={unit.units}>
-              <span>{unit.units} units</span>
-              <span>{unit.quantity}</span>
-              <span>${(unit.units * unit.quantity).toFixed(2)}</span>
+          <h2 className="font-bold text-3xl mb-5">Summary</h2>
+          
+            <div className="flex mb-1 gap-6">
+              <span className="p-1 text-xl ">Units</span>
+              <span className="p-1 text-xl">Quantity</span>
+              <span className="p-1 text-xl">Amount</span>
             </div>
-          ))}
-          <div className="mt-10 flex justify-center">
+
+            {Object.values(selectedUnits).map((unit) => (
+              <>
+                <div className="flex mb-2 gap-16" key={unit.units}>
+                  <span className="p-1 justify-start">{unit.units}</span>
+                  <span className="p-1 justify-center">{unit.quantity}</span>
+                  <span className="p-1 justify-end">
+                    ${(unit.units * unit.quantity).toFixed(2)}
+                  </span>
+                </div>
+              
+                <hr></hr>
+              </>
+            ))}
+                <div className="flex gap-40">
+                  <span className=" font-bold">Total</span>
+                  <span>399</span>
+                </div>
+          <div className="mt-10 flex">
             <button
               className="px-7 py-4 text-white text-xl rounded flex items-center"
               style={{
