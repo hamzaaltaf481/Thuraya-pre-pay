@@ -76,16 +76,16 @@ export default function RefillUnits() {
                   unit.price === "Out of Stock" ? "text-gray-400" : "text-black"
                 }`}
               >
+                <label htmlFor={`unit-${unit.units}`} className="radio-button-label">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="refillUnit"
                   id={`unit-${unit.units}`}
                   className="mr-2"
                   disabled={unit.price === "Out of Stock"}
                   onChange={() => handleUnitSelect(unit)}
                 />
-
-                <label htmlFor={`unit-${unit.units}`}>
+                  
                   <p className="text-xl font-bold">{unit.units} units</p>
                   <p>{unit.price}</p>
                 </label>
