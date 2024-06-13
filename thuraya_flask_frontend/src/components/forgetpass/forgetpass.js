@@ -17,6 +17,9 @@ const Forgetpass = () => {
       );
       if (response.status === 200) {
         swal("Success!", "Password reset link sent to your email", "success");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3000);
       } else {
         throw new Error("Error sending password reset link");
       }
