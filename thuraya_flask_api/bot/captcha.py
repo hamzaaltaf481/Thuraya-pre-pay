@@ -125,7 +125,6 @@ def solve_refill_captcha(error_page, driver, logger, log_string, solver):
                 print("unsolvable captcha. Check screenshot taken")
                 log_string = log_string + "unsolvable captcha. Check screenshot taken" + "\n"
                 logger.warning("unsolvable captcha. Check screenshot taken")
-                # TODO: fix error: local variable 'result' referenced before assignment
                 return None, None
             
         else:

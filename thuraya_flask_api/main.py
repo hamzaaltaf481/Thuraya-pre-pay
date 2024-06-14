@@ -1,15 +1,11 @@
 # TODO: train the captcha solver model
 # TODO: make the logs proper and readable in the database
-# TODO: investigate why does selenium maxmizes randomly in refill
 # TODO: cpanel deployment
-# TODO: iot for kids
-# TODO: robotics for kids
 # TODO: exception handling for all the requests
-# TODO: super-admin, sub-admin
 # TODO: add timeout for the captcha solver
 # TODO: maybe add multiple captcha solve requests
 # TODO: add last name
-# TODO: use form everywhere instead of json request input
+# TODO: make sure to use json for refill and purchase and form elswewhere
 # TODO: create admin and sub admin panels
 # TODO: add admin checks when going into production
 

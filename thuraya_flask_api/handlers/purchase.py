@@ -38,6 +38,7 @@ def purchase_handler(request, session):
     discount =0
     try:
         promo_code = data.get("promo_code")
+        # TODO: discount and promo code
         # discount = find_discount(promo_code)
         if promo_code != None:
             transaction_logs = transaction_logs + str(promo_code) + "\n"
