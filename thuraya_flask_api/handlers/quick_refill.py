@@ -60,9 +60,6 @@ def quick_refill_handler(request, session, logger):
         if error:
             return jsonify({"message": error}), 400
         log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
-        # TODO: will be only used in case we need to email the user
-        codes = []
-        codes.append({"number": card_number, "price": selling_price, "id": card_id})
 
         logger.info("phone: "+phone)
         print("phone: "+phone)
@@ -89,31 +86,23 @@ def quick_refill_handler(request, session, logger):
         # TODO: not sure about the point of this
         last_4_digits = phone[-4:]
 
-        phone_number = session.query(PhoneNumber).filter(PhoneNumber.phone == phone).first()
-        if phone_number:
-            print("password for phone found")
-            log_string = log_string + "password for phone found" + "\n"
-            logger.info("password for phone found")
-            password = phone_number.password
-            # TODO: refill with the same thuraya service
-            # TODO: discuss maybe not needed
-        else:
-            print("password for phone not found")
-            log_string = log_string + "password for phone not found" + "\n"
-            logger.info("password for phone not found")
-            log_string, old_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
-            if error:
-                return jsonify({"message": "Invalid Account"}), 400
-            if refill_allowed != "Yes":
-                print("Refill not allowed")
-                log_string = log_string + "Refill not allowed" + "\n"
-                logger.info("Refill not allowed")
-                # TODO: maybe send email in this case
-                return jsonify({"message": "Refill not allowed. Phone is inactive."}), 400
-            perform_quick_refill(log_string, logger, card_number, phone)
-            log_string, new_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
-            return jsonify({"message": "Refill successful", "new_balance": new_balance, "old_balance": old_balance, "expiry date": last_active_date}), 200
-
+        print("password for phone not found")
+        log_string = log_string + "password for phone not found" + "\n"
+        logger.info("password for phone not found")
+        log_string, old_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        if error:
+            return jsonify({"message": "Invalid Account"}), 400
+        if refill_allowed != "Yes":
+            print("Refill not allowed")
+            log_string = log_string + "Refill not allowed" + "\n"
+            logger.info("Refill not allowed")
+            # TODO: maybe send email in this case
+            codes = []
+            codes.append({"number": card_number, "price": selling_price, "id": card_id})
+            return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
+        perform_quick_refill(log_string, logger, card_number, phone)
+        log_string, new_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        return jsonify({"message": "Refill successful", "new_balance": new_balance, "old_balance": old_balance, "expiry date": last_active_date}), 200
 
     except Exception as e:
         print(str(e))
@@ -227,5 +216,4 @@ def perform_quick_refill(log_string, logger, card_number, phone):
     print("refill successful")
     log_string = log_string + "refill successful" + "\n"
     logger.info("refill successful")
-    time.sleep(3)
 
