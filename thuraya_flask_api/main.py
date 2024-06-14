@@ -12,6 +12,10 @@
 # TODO: add first and last name in the login url
 # TODO: add validation to new password to reset password
 # TODO: make the message more detailed. but can mess up the frontend 
+# TODO: use single database session and remove the connect database function
+# TODO: use mail by flask and dont use the created mail object
+# TODO: format all code maybe
+# TODO: ask Sir if to send the reciept to the user email for refill
 
 from dotenv import load_dotenv
 import os

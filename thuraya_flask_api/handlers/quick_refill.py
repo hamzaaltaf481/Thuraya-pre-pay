@@ -41,6 +41,9 @@ def quick_refill_handler(request, session, logger):
             session.add(new_user)
             session.commit()
             user_id = new_user.id
+            print("guest user")
+            log_string = log_string + "guest user" + "\n"
+            logger.info("guest user")
 
         else:
             try:
@@ -49,6 +52,9 @@ def quick_refill_handler(request, session, logger):
                 user = session.query(User).filter(User.id == user_id).first()
                 if user:
                     email = user.email
+                    print("logged in user")
+                    log_string = log_string + "logged in user" + "\n"
+                    logger.info("logged in user")
             except Exception as e:
                 print(str(e))
                 return jsonify({"message": "Invalid token"}), 401
@@ -94,6 +100,9 @@ def quick_refill_handler(request, session, logger):
         log_string, previoud_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
+        print(codes)
+        log_string = log_string + str(codes) + "\n"
+        logger.info(str(codes))
         if error:
             return jsonify({"message": "Invalid Account"}), 400
         if refill_allowed != "Yes":
