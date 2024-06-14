@@ -29,7 +29,7 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
@@ -476,6 +476,11 @@ def add_card_detail():
 @app.route('/api/admin/view-cards', methods=['POST'])
 def view_cards():
     response, code = view_cards_handler(session, request)
+    return response, code
+
+@app.route('/api/admin/view-scratch-codes', methods=['POST'])
+def view_scratch_codes():
+    response, code = view_scratch_codes_handler(session, request)
     return response, code
 
 
