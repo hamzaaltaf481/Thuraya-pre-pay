@@ -56,7 +56,9 @@ def quick_refill_handler(request, session, logger):
         if not valid:
             return jsonify({"message": "Phone or Price invalid!"}), 400
             
-        card_number, card_id, selling_price = get_card(price, session)
+        card_number, card_id, selling_price, error = get_card(price, session)
+        if error:
+            return jsonify({"message": error}), 400
         log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
         # TODO: will be only used in case we need to email the user
         codes = []
@@ -166,6 +168,7 @@ def perform_quick_refill(log_string, logger, card_number, phone):
         constants = json.load(f)
     
     options = webdriver.ChromeOptions()
+    # TODO: add or remove these after proper testing
     # options.add_argument("--no-sandbox")
     # options.add_argument("--disable-dev-shm-usage")
     # options.add_argument("--disable-gpu")

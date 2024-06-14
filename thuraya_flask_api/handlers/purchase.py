@@ -61,7 +61,9 @@ def purchase_handler(request, session):
     transaction_logs = transaction_logs + str(units) + "\n"
     transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session)
 
-    codes = get_codes(units, session)
+    codes, error = get_codes(units, session)
+    if error:
+        return jsonify({"message": error}), 400
     transaction_logs = transaction_logs + str(codes) + "\n"
     print("codes: ")
     print(codes)
