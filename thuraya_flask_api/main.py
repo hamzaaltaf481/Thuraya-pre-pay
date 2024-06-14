@@ -11,6 +11,7 @@
 # TODO: add last name
 # TODO: use form everywhere instead of json request input
 # TODO: create admin and sub admin panels
+# TODO: add admin checks when going into production
 
 from dotenv import load_dotenv
 import os
