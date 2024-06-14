@@ -148,7 +148,7 @@ def find_details(phone, log_string, logger):
         print(response_json["Current Status"])
         log_string = log_string + "balance: " + response_json["Current Status"] + "\n"
         logger.info("current status: " + response_json["Current Status"])
-
+        # TODO: maybe no need to return current status
         return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], response_json["Current Status"], None
 
 
@@ -156,16 +156,7 @@ def perform_quick_refill(log_string, logger, card_number, phone):
     with open("constants.json") as f:
         constants = json.load(f)
     
-    options = webdriver.ChromeOptions()
-    # TODO: add or remove these after proper testing
-    # options.add_argument("--no-sandbox")
-    # options.add_argument("--disable-dev-shm-usage")
-    # options.add_argument("--disable-gpu")
-    # options.add_argument("--disable-features=NetworkService")
-    # options.add_argument("--disable-features=NetworkServiceInProcess")
-    # options.add_argument("--disable-features=NetworkServiceInProcess")
-
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
     driver.minimize_window()
     print("driver initiated")
     log_string = log_string + "driver initiated" + "\n"

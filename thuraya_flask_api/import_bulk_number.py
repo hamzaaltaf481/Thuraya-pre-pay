@@ -2,8 +2,6 @@ import csv
 from database.models.models import PhoneNumber
 from database.database import database_session
 
-# TODO: remove the 88216 from the phone number in phone number table for consistency
-
 def run_test():
     session = database_session()
     with open('passwords_complete.csv', mode='r') as file:

@@ -8,6 +8,10 @@
 # TODO: make sure to use json for refill and purchase and form elswewhere
 # TODO: create admin and sub admin panels
 # TODO: add admin checks when going into production
+# TODO: add first name and last name in signup
+# TODO: add first and last name in the login url
+# TODO: add validation to new password to reset password
+# TODO: make the message more detailed. but can mess up the frontend 
 
 from dotenv import load_dotenv
 import os
