@@ -16,6 +16,8 @@ from bot.bot import fill_refill_captcha_code, fill_scratch_data
 from bot.captcha import solve_refill_captcha, write_correct_statistic
 import os
 from twocaptcha import TwoCaptcha
+from handlers.transaction import create_transaction
+from handlers.transaction import create_transaction_detail
 
 
 load_dotenv()
@@ -90,6 +92,8 @@ def quick_refill_handler(request, session, logger):
         log_string = log_string + "password for phone not found" + "\n"
         logger.info("password for phone not found")
         log_string, old_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        codes = []
+        codes.append({"number": card_number, "price": selling_price, "id": card_id})
         if error:
             return jsonify({"message": "Invalid Account"}), 400
         if refill_allowed != "Yes":
@@ -97,11 +101,28 @@ def quick_refill_handler(request, session, logger):
             log_string = log_string + "Refill not allowed" + "\n"
             logger.info("Refill not allowed")
             # TODO: maybe send email in this case
-            codes = []
-            codes.append({"number": card_number, "price": selling_price, "id": card_id})
             return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
         perform_quick_refill(log_string, logger, card_number, phone)
+        discount = 0
+        try:
+            promo_code = data.get("promo_code")
+            # discount = find_discount(promo_code)
+            if promo_code != None:
+                log_string = log_string + str(promo_code) + "\n"
+        except:
+            promo_code = None
+            print("no promo code")
+            log_string = log_string + "no promo code" + "\n"
+            logger.info("no promo code")
+
         log_string, new_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill", "stripe", session)
+        create_transaction_detail(promo_code, transaction_id, log_string, discount, False, "", session, codes)
+
+        time.sleep(3)
+        total_time = time.time() - start_time
+        with open("request_cycle_stats.csv", "a") as f:
+            f.write(f"{total_time}\n")
         return jsonify({"message": "Refill successful", "new_balance": new_balance, "old_balance": old_balance, "expiry date": last_active_date}), 200
 
     except Exception as e:
