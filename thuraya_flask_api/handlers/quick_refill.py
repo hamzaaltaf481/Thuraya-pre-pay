@@ -91,7 +91,7 @@ def quick_refill_handler(request, session, logger):
         print("password for phone not found")
         log_string = log_string + "password for phone not found" + "\n"
         logger.info("password for phone not found")
-        log_string, old_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        log_string, previoud_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
         if error:
@@ -123,7 +123,7 @@ def quick_refill_handler(request, session, logger):
         total_time = time.time() - start_time
         with open("request_cycle_stats.csv", "a") as f:
             f.write(f"{total_time}\n")
-        return jsonify({"message": "Refill successful", "new_balance": new_balance, "old_balance": old_balance, "expiry date": last_active_date}), 200
+        return jsonify({"message": "Refill successful", "new_balance": new_balance, "previoud_balance": previoud_balance, "expiry date": last_active_date}), 200
 
     except Exception as e:
         print(str(e))
