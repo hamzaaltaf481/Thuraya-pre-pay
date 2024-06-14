@@ -13,11 +13,11 @@ def connect_to_database():
         host=os.getenv("MYSQL_HOST"),
         user=os.getenv("MYSQL_USER"),
         password=os.getenv("MYSQL_PASSWORD"),
-        database=os.getenv("MYSQL_DB")
+        database=os.getenv("MYSQL_DB"),
     )
 
     return db
-
+    
 def database_session():
     engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}")
     Session = sessionmaker(bind=engine)
