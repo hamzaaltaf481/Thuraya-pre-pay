@@ -124,5 +124,12 @@ class TransactionDetail(Base):
     card_detail = relationship('CardDetail', back_populates='transaction_details')
 
 
+class FailedTransactions(Base):
+    __tablename__ = 'failed_transactions'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    log_string = Column(Text)
+    date_time = Column(DateTime)
+
 def migrate_tables(session):
     Base.metadata.create_all(bind=session.get_bind())

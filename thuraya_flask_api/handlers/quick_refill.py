@@ -1,6 +1,6 @@
 import time
 import json
-from database.models.models import User
+from database.models.models import User, FailedTransactions
 import requests
 from flask_jwt_extended import decode_token
 from flask import jsonify
@@ -19,14 +19,14 @@ from twocaptcha import TwoCaptcha
 from handlers.transaction import create_transaction
 from handlers.transaction import create_transaction_detail
 from utils.check_balance import find_details
-
+from datetime import datetime
 
 load_dotenv()
 
 def quick_refill_handler(request, session, logger):
+    log_string = ""
     try:
         start_time = time.time()
-        log_string = ""
         logger.info("refill request received")
         print("refill request received")
         log_string = log_string + "refill request received" + "\n"
@@ -136,6 +136,13 @@ def quick_refill_handler(request, session, logger):
 
     except Exception as e:
         print(str(e))
+        # create an instance of failed_transaction
+        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.datetime.now())
+        session.add(failed_transaction)
+
+        # commit the transaction
+        session.commit()
+        print(log_string)
         return jsonify({"message": "An error occurred"}), 500
 
 
