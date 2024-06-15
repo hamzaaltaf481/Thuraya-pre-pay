@@ -14,8 +14,8 @@ def purchase_handler(request, session):
     
     if not token:
         email=data.get('email')
-        print(email)
-        transaction_logs = transaction_logs + email + "\n"
+        transaction_logs = transaction_logs + "guest user" + "\n"
+        print("guest user")
         new_user = User(email=email, country_region=data.get('country_region'), role='guest')
         session.add(new_user)
         session.commit()
@@ -28,12 +28,16 @@ def purchase_handler(request, session):
             user = session.query(User).filter(User.id == user_id).first()
             if user:
                 email = user.email
+                transaction_logs = transaction_logs + "logged in user" + "\n"
+                print("logged in user")
         except Exception as e:
             print(str(e))
             return jsonify({"message": "Invalid token"}), 401
     
-    transaction_logs = transaction_logs + str(user_id) + "\n"
-    print(user_id)
+    transaction_logs = transaction_logs + "email: " + email + "\n"
+    print("email: " + email)
+    transaction_logs = transaction_logs + "user_id: " + str(user_id) + "\n"
+    print("user_id: " + str(user_id))
 
     discount =0
     try:
@@ -51,21 +55,21 @@ def purchase_handler(request, session):
     # ip_address = request.remote_addr
     ip_address = "39.47.126.137"
     # TODO: dynamic ip address
-    print(ip_address)
-    transaction_logs = transaction_logs + ip_address + "\n"
+    print("ip_address:" + ip_address)
+    transaction_logs = transaction_logs + "ip_address: " + ip_address + "\n"
 
     ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
     user_agent = request.user_agent
     units = data.get("units")
 
-    print(units)
-    transaction_logs = transaction_logs + str(units) + "\n"
+    print("units: " + str(units))
+    transaction_logs = transaction_logs + "units: " + str(units) + "\n"
     transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session)
 
     codes, error = get_codes(units, session)
     if error:
         return jsonify({"message": error}), 400
-    transaction_logs = transaction_logs + str(codes) + "\n"
+    transaction_logs = transaction_logs + "codes: " +str(codes) + "\n"
     print("codes: ")
     print(codes)
 

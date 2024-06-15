@@ -32,18 +32,17 @@ def email_codes_password(card_numbers, email, transaction_logs):
     password = ''.join(secrets.choice(alphabet) for i in range(10))
     print(password)
 
-    transaction_logs = transaction_logs + password + "\n"
-    transaction_logs = transaction_logs + str(card_numbers) + "\n"
+    transaction_logs = transaction_logs + "password: " +password + "\n"
 
     card_numbers = str(card_numbers)
     pdf_filename = create_pdf(card_numbers, email)
 
-    print(pdf_filename)
-    transaction_logs = transaction_logs + pdf_filename + "\n"
+    print("pdf_filename: " + pdf_filename)
+    transaction_logs = transaction_logs + "pdf_filename: " +pdf_filename + "\n"
 
 
     protected_pdf_filename = protect_pdf(password, pdf_filename, email)
-    transaction_logs = transaction_logs + protected_pdf_filename + "\n"
+    transaction_logs = transaction_logs + "protected_pdf_filename: " + protected_pdf_filename + "\n"
 
 
     send_email(

@@ -16,6 +16,9 @@
 # TODO: use mail by flask and dont use the created mail object
 # TODO: format all code maybe
 # TODO: ask Sir if to send the reciept to the user email for refill
+# TODO: maybe need another route for balance and refill allowed and expiry status 
+# TODO: add logger to purchase
+# TODO: add timestamps for all tables
 
 from dotenv import load_dotenv
 import os
