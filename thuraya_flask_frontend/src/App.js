@@ -24,7 +24,6 @@ function App() {
       <Navbar />
       <div className=" overflow-hidden">
         <Routes>
-          {/* <Route exact path="/" element={ token? <LandingPage /> : <Navigate to="/login" />} /> */}
           <Route exact path="/" element={<LandingPage />} />
           <Route exact path="/quick_refill" element={<QuickRefill />} />
           <Route exact path="/refill_units" element={<RefillUnits />} />
@@ -33,11 +32,9 @@ function App() {
             path="/login"
             element={token ? <Navigate to="/" /> : <Login />}
           />
-          <Route exact path="/signup" element={<Signup />} /> // Changed
-          "/Signup" to "/signup" to match the route
+          <Route exact path="/signup" element={<Signup />} />
         </Routes>
       </div>
-      {/* <Forgetpass/> */}
       <Footer />
     </>
   );
