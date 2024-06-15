@@ -192,6 +192,7 @@ def perform_quick_refill(log_string, logger, card_number, phone):
             logger.info("captcha solution entered")
             WebDriverWait(driver, float("inf")).until(staleness_of(body))
 
+    driver.quit()
     write_correct_statistic()
     print("refill successful")
     log_string = log_string + "refill successful" + "\n"
