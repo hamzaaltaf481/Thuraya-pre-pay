@@ -148,6 +148,63 @@
 			"response": []
 		},
 		{
+			"name": "balance_check",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "21297776",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/balance_check",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"balance_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WIP-new-quick-refill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/quick_refill",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"quick_refill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "guest_login_refill",
 			"request": {
 				"method": "POST",
@@ -272,7 +329,7 @@
 			"response": []
 		},
 		{
-			"name": "import_cards",
+			"name": "admin-import_cards",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -312,7 +369,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/home/zain/mobile_data_flask/cards.csv"
+							"src": "/home/zain/hamzaaltaf/myapp/thuraya_flask_api/cards.csv"
 						}
 					]
 				},
@@ -332,7 +389,7 @@
 			"response": []
 		},
 		{
-			"name": "view-cards",
+			"name": "admin-view-cards",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -342,15 +399,6 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "localhost:5000/api/admin/view-cards",
 					"host": [
@@ -367,7 +415,7 @@
 			"response": []
 		},
 		{
-			"name": "add-single-card",
+			"name": "admin-add-single-card",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -426,6 +474,36 @@
 						"api",
 						"admin",
 						"add-single-card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-view-scratch-codes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "card_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-scratch-codes",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-scratch-codes"
 					]
 				}
 			},
