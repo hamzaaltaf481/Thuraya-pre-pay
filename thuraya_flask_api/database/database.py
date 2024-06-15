@@ -8,6 +8,7 @@ from database.models.models import CardDetail, Card
 
 load_dotenv()
 
+#ARCHIVED
 def connect_to_database():
     db = mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
