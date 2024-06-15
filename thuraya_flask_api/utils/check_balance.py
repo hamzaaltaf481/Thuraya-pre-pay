@@ -13,14 +13,11 @@ def find_details(phone, log_string, logger):
 
     # convert response to json
     response_json = response.json()
+    print("response_json: ")
+    print(response_json)
+
 
     try:
-        error = response_json["Error"]
-        print("Invalid Account")
-        log_string = log_string + "Invalid Account" + "\n"
-        logger.info("Invalid Account")
-        return log_string, None, None, None, None, error
-    except:
         print("balance: ")
         print(response_json["Credit Available"])
         log_string = log_string + "balance: " + response_json["Credit Available"] + "\n"
@@ -42,3 +39,9 @@ def find_details(phone, log_string, logger):
         logger.info("current status: " + response_json["Current Status"])
         # TODO: maybe no need to return current status
         return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], response_json["Current Status"], None
+    except:
+        error = response_json["Error"]
+        print("Invalid Account")
+        log_string = log_string + "Invalid Account" + "\n"
+        logger.info("Invalid Account")
+        return log_string, None, None, None, None, error

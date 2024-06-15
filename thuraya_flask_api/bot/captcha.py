@@ -106,8 +106,8 @@ def solve_refill_captcha(error_page, driver, logger, log_string, solver):
             driver.maximize_window()
             time.sleep(3)
             # TODO: adjust this value
-            # driver.minimize_window()
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
+            driver.minimize_window()
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
