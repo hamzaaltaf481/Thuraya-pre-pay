@@ -6,10 +6,8 @@
 # TODO: create admin and sub admin panels
 # TODO: add admin checks when going into production
 # TODO: make the message more detailed. but can mess up the frontend 
-# TODO: use mail by flask and dont use the created mail object
 # TODO: format all code maybe
 # TODO: ask Sir if to send the reciept to the user email for refill
-# TODO: add logger to purchase
 # TODO: add timestamps for all tables
 # TODO: move the archived code to new folder
 
