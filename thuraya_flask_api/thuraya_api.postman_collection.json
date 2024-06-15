@@ -177,7 +177,7 @@
 			"response": []
 		},
 		{
-			"name": "guest-new-quick-refill",
+			"name": "guest_new_quick_refill",
 			"request": {
 				"method": "POST",
 				"header": [],
