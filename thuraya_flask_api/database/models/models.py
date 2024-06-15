@@ -48,7 +48,7 @@ class CardDetail(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     card_id = Column(Integer, ForeignKey('cards.id'))
     serial_number = Column(Integer)
-    scratch_code = Column(Integer)
+    scratch_code = Column(String(255))
     units = Column(Integer)
     purchase_price = Column(Integer)
     selling_price = Column(Integer)
@@ -123,10 +123,6 @@ class TransactionDetail(Base):
     transaction = relationship('UserTransaction', back_populates='transaction_details')
     card_detail = relationship('CardDetail', back_populates='transaction_details')
 
-class PhoneNumber(Base):
-    __tablename__ = 'phone_numbers'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    phone = Column(String(255))
-    password = Column(String(255))
-    status = Column(String(255), default='ACTIVE')
+def migrate_tables(session):
+    Base.metadata.create_all(bind=session.get_bind())

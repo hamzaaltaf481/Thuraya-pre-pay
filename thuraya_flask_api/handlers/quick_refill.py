@@ -1,6 +1,6 @@
 import time
 import json
-from database.models.models import User, PhoneNumber
+from database.models.models import User
 import requests
 from flask_jwt_extended import decode_token
 from flask import jsonify

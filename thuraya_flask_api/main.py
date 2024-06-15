@@ -54,10 +54,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.expected_conditions import staleness_of
 from logger.log import setup_logger
-from database.migrate import migrate_tables
 from database.database import get_card
 from utils.utils import check_valid, email_codes_password
-from database.models.models import User, Card, PhoneNumber
+from database.models.models import User, Card, migrate_tables
 from database.database import database_session
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail
@@ -470,7 +469,7 @@ def check_availability():
 
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
-    migrate_tables()
+    migrate_tables(session)
     return jsonify({"message": "success"}), 200
 
 @app.route("/api/admin/import", methods=["POST"])

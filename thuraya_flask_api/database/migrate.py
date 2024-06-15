@@ -1,5 +1,6 @@
 from database.database import connect_to_database
 
+# ARCHIVED
 def migrate_tables():
     db = connect_to_database()
     cursor = db.cursor()
