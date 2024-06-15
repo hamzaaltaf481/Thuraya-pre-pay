@@ -1,10 +1,7 @@
 # TODO: train the captcha solver model
-# TODO: make the logs proper and readable in the database
 # TODO: cpanel deployment
 # TODO: exception handling for all the requests
 # TODO: add timeout for the captcha solver
-# TODO: maybe add multiple captcha solve requests
-# TODO: add last name
 # TODO: make sure to use json for refill and purchase and form elswewhere
 # TODO: create admin and sub admin panels
 # TODO: add admin checks when going into production
@@ -16,7 +13,6 @@
 # TODO: use mail by flask and dont use the created mail object
 # TODO: format all code maybe
 # TODO: ask Sir if to send the reciept to the user email for refill
-# TODO: maybe need another route for balance and refill allowed and expiry status 
 # TODO: add logger to purchase
 # TODO: add timestamps for all tables
 
@@ -462,7 +458,7 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
-    response, code = purchase_handler(request, session)
+    response, code = purchase_handler(request, session, logger)
     return response, code
     
 
