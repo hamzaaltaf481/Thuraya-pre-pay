@@ -66,13 +66,55 @@ export default function QuickRefill() {
         }
       );
       console.log(response.data);
+    setTimeout(() => {
+      console.log("30 seconds have passed");
+    }, 30000);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="static">
+    <>
+   
+        {isOpen == true && (
+           <div id="slider" className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden">
+          <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
+            <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
+              <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
+                Enter Your Email
+              </h1>
+              <form className="mt-6">
+                <div className="mb-2 mt-6">
+                  <input
+                    type="eamil"
+                    placeholder=" Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="block w-full h-[70px] px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
+                  />
+                </div>
+
+                <div className="flex mt-6">
+                  <button
+                    onClick={handleGuestRefill}
+                    className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
+                  >
+                    <h1 className=" text-xl ml-3 ">Enter</h1>
+                    <img
+                      src="/images/arrow.png"
+                      alt="i"
+                      className="w-[20.25px] h-[24px] mt-1"
+                    />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+        )}
+     
+      <div className="static">
       <div className="  relative flex flex-col justify-start min-h-screen overflow-hidden">
         <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-20 ">
           <div className="w-full p-5">
@@ -181,43 +223,10 @@ export default function QuickRefill() {
             )}
           </div>
         </div>
-      <div className=" absolute ml-[600px] my-[-285px]">
-        {isOpen == true && (
-          <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
-            <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
-              <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
-                Enter Your Email
-              </h1>
-              <form className="mt-6">
-                <div className="mb-2 mt-6">
-                  <input
-                    type="eamil"
-                    placeholder=" Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full h-[70px] px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
-                  />
-                </div>
-
-                <div className="flex mt-6">
-                  <button
-                    onClick={handleGuestRefill}
-                    className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
-                  >
-                    <h1 className=" text-xl ml-3 ">Enter</h1>
-                    <img
-                      src="/images/arrow.png"
-                      alt="i"
-                      className="w-[20.25px] h-[24px] mt-1"
-                    />
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
+      
       </div>
     </div>
+    </>
+    
   );
 }
