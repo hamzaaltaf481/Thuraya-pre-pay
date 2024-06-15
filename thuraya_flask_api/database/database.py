@@ -34,14 +34,14 @@ def get_card(units, session):
         session.commit()
     else:
         print("no card found for the price")
-        code = None
+        return None, None, None, "No card found for the price"
 
     key = os.getenv("ENCRYPTION_KEY")
     cipher_suite = Fernet(key)
     number = code.scratch_code
     decrypted_number = cipher_suite.decrypt(number).decode('utf-8')
     print(decrypted_number[-4:])
-    return decrypted_number, code.id, code.selling_price
+    return decrypted_number, code.id, code.selling_price, None
 
 def get_codes(units, session):
     codes = []
@@ -49,7 +49,9 @@ def get_codes(units, session):
         quantity = unit["quantity"]
         price = unit["price"]
         for _ in range(int(quantity)):
-            number, id, selling_price = get_card(price, session)
+            number, id, selling_price, error = get_card(price, session)
+            if error:
+                return None, error
             codes.append({"number": number, "price": selling_price, "id": id})
     
-    return codes
+    return codes, None

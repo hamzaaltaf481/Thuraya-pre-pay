@@ -74,7 +74,7 @@ export default function Login() {
               />
             </button>
             <a
-              href="#"
+              href="/forget-pass"
               className="text-md text-[#2D3E50] hover:underline ml-[210px] mt-4"
             >
               Forget Password?

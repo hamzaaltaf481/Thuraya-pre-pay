@@ -36,7 +36,7 @@ def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
             driver.maximize_window()
             time.sleep(1)
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
-            driver.minimize_window()
+            # driver.minimize_window()
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
@@ -77,7 +77,7 @@ def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
     return code
 
 
-def solve_refill_captcha(error_page, driver, logger):
+def solve_refill_captcha(error_page, driver, logger, log_string, solver):
 
     if error_page == True:
         top_left = (995, 900)
@@ -104,37 +104,44 @@ def solve_refill_captcha(error_page, driver, logger):
         driver_info = QUICK_REFILL_CAPTCHA_QUEUE[0]
         if driver_info == driver:
             driver.maximize_window()
-            time.sleep(1)
-            driver.minimize_window()
+            time.sleep(3)
+            # TODO: adjust this value
+            # driver.minimize_window()
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
             print("screenshot taken")
+            log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
             screenshot.save(f"images/{id}.png")
 
-            QUICK_REFILL_CAPTCHA_QUEUE.pop(0)
-            break
+            print("sending solve request")
+            log_string = log_string + "sending solve request" + "\n"
+            logger.info("sending solve request")
+
+            try:
+                result = solver.normal(f"images/{id}.png")
+                QUICK_REFILL_CAPTCHA_QUEUE.pop(0)
+                break
+            except:
+                print("unsolvable captcha. Check screenshot taken")
+                log_string = log_string + "unsolvable captcha. Check screenshot taken" + "\n"
+                logger.warning("unsolvable captcha. Check screenshot taken")
+                return None, None
+            
         else:
             time.sleep(1)
 
-    solver = TwoCaptcha(os.getenv("CAPTCHA_SOLVER_API_KEY"))
-    print("sending solve request")
-    logger.info("sending solve request")
-    
-    try:
-        result = solver.normal(f"images/{id}.png")
-    except:
-        print("unsolvable captcha. Check screenshot taken")
-        logger.warning("unsolvable captcha. Check screenshot taken")
     
     code = result.get("code")
+    captcha_id = result.get("captchaId")
 
     with open("statistics.csv", "a", encoding="utf-8") as f:
         writer = csv.writer(f, delimiter=",")
         writer.writerow([id, code, "incorrect"])
 
     print("twoCaptcha response: "+code)
+    log_string = log_string + "twoCaptcha response: "+code + "\n"
     logger.info("twoCaptcha response: "+code)
-    return code
+    return code, captcha_id
 
 
 def write_correct_statistic():

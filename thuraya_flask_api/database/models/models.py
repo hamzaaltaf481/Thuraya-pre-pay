@@ -32,11 +32,14 @@ class Card(Base):
 
     card_details = relationship('CardDetail', back_populates='card')
 
-    def to_dict(self):
+    def to_dict_with_cards(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.card_details:
             data['card_details'] = [card_detail.to_dict() for card_detail in self.card_details]
         return data
+    
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
 
 class CardDetail(Base):
@@ -126,3 +129,4 @@ class PhoneNumber(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     phone = Column(String(255))
     password = Column(String(255))
+    status = Column(String(255), default='ACTIVE')
