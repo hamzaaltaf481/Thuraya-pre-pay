@@ -454,7 +454,7 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
-    response, code = purchase_handler(request, session, logger)
+    response, code = purchase_handler(request, session, logger, mail)
     return response, code
     
 

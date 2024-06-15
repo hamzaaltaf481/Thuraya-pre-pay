@@ -7,7 +7,7 @@ from handlers.transaction import create_transaction_detail, create_transaction
 from utils.utils import email_codes_password
 
 
-def purchase_handler(request, session, logger):
+def purchase_handler(request, session, logger, mail):
     transaction_logs = ""
     token = request.headers.get('Authorization')
     data = request.get_json()
@@ -85,6 +85,6 @@ def purchase_handler(request, session, logger):
     logger.info("codes: ")
     logger.info(codes)
 
-    email_status, transaction_logs = email_codes_password(codes, email, transaction_logs)
+    email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
     create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
     return jsonify({"message": "success"}), 200
