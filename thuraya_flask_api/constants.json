@@ -5,5 +5,25 @@
     "detailsUrl" : "https://services.thuraya.com/Bills/details.jsp",
     "loginRefill" : "https://services.thuraya.com/Bills/ScratchRefill.jsp",
     "refillStatus": "https://services.thuraya.com/Bills/ScratchRefill.jsp?submittype=Status",
-    "scratchSuccessfulMessage": "Your transaction is under process, notification will be sent to your Thuraya phone"
+    "scratchSuccessfulMessage": "Your transaction is under process, notification will be sent to your Thuraya phone",
+    "rechargeUrl" : "https://www.thurayarecharge.com/",
+    "thurayaRechargeMyPhones" : "https://www.thurayarecharge.com/phones/",
+    "thurayaRefillQuickRefill" : "https://www.thurayarefill.com/?path=quick_refill",
+    "balanceAPI" : "https://www.thurayarefill.com/thuraya-refill-backend/api/device_status",
+    "balanceAPIHeaders": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "origin": "https://www.thurayarefill.com",
+        "priority": "u=1, i",
+        "referer": "https://www.thurayarefill.com/?path=quick_refill",
+        "sec-ch-ua": "'Chromium';v='124', 'Google Chrome';v='124', 'Not-A.Brand';v='99'",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "'Linux'",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "x-localization": "en"
+    }
 }

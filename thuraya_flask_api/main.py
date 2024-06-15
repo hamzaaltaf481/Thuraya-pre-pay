@@ -1,16 +1,20 @@
 # TODO: train the captcha solver model
-# TODO: make the logs proper and readable in the database
-# TODO: investigate why does selenium maxmizes randomly in refill
 # TODO: cpanel deployment
-# TODO: iot for kids
-# TODO: robotics for kids
 # TODO: exception handling for all the requests
-# TODO: super-admin, sub-admin
 # TODO: add timeout for the captcha solver
-# TODO: maybe add multiple captcha solve requests
-# TODO: add last name
-# TODO: use form everywhere instead of json request input
+# TODO: make sure to use json for refill and purchase and form elswewhere
 # TODO: create admin and sub admin panels
+# TODO: add admin checks when going into production
+# TODO: add first name and last name in signup
+# TODO: add first and last name in the login url
+# TODO: add validation to new password to reset password
+# TODO: make the message more detailed. but can mess up the frontend 
+# TODO: use single database session and remove the connect database function
+# TODO: use mail by flask and dont use the created mail object
+# TODO: format all code maybe
+# TODO: ask Sir if to send the reciept to the user email for refill
+# TODO: add logger to purchase
+# TODO: add timestamps for all tables
 
 from dotenv import load_dotenv
 import os
@@ -28,9 +32,11 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler
 from handlers.purchase import purchase_handler
+from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
+from handlers.balance import balance_check_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -83,7 +89,18 @@ jwt = JWTManager(app)
 def index():
     return jsonify({"status": "OK"}), 200
 
+@app.route("/api/quick_refill", methods=["POST"])
+def quick_refill():
+    response, code = quick_refill_handler(request, session, logger)
+    return response, code
 
+@app.route("/api/balance_check", methods=["POST"])
+def balance_check():
+    response, code = balance_check_handler(request, session, logger)
+    return response, code
+
+
+# ARCHIVED ROUTE
 @app.route("/api/login_refill", methods=["POST"])
 def start_driver():
     response_code = random.randint(1, 4)
@@ -181,7 +198,7 @@ def start_driver():
         last_4_digits = phone[-4:]
 
         driver = webdriver.Chrome()
-        driver.minimize_window()
+        # driver.minimize_window()
         # driver.maximize_window()
         driver.get(constants["indexUrl"])
         time.sleep(0.1)
@@ -311,7 +328,7 @@ def start_driver():
         
         print("logged in")
         # create an instance of PhoneNumber model with password and phone_number and store in the database
-        phone_number_model = PhoneNumber(phone=phone, password=password)
+        phone_number_model = PhoneNumber(phone=phone, password=password, status="ACTIVE")
         session.add(phone_number_model)
         session.commit()
 
@@ -441,7 +458,7 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
-    response, code = purchase_handler(request, session)
+    response, code = purchase_handler(request, session, logger)
     return response, code
     
 
@@ -468,6 +485,11 @@ def add_card_detail():
 @app.route('/api/admin/view-cards', methods=['POST'])
 def view_cards():
     response, code = view_cards_handler(session, request)
+    return response, code
+
+@app.route('/api/admin/view-scratch-codes', methods=['POST'])
+def view_scratch_codes():
+    response, code = view_scratch_codes_handler(session, request)
     return response, code
 
 

@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash
 
 
 def login_handler(session):
-    user = session.query(User).filter_by(email=request.form.get("email")).first()
+    user = session.query(User).filter_by(email=request.form.get("email")).filter(User.role != 'guest').first()
     if not user or not check_password_hash(user.password, request.form.get("password")):
         return jsonify({'message': 'Login Unsuccessful. Please check email and password'}), 401
     
