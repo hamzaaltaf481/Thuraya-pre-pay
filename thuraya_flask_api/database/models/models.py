@@ -2,6 +2,13 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, T
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import inspect
+from datetime import datetime
+import csv
+from cryptography.fernet import Fernet
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 Base = declarative_base()
 
@@ -133,4 +140,55 @@ class FailedTransactions(Base):
     date_time = Column(DateTime)
 
 def migrate_tables(session):
-    Base.metadata.create_all(bind=session.get_bind())
+    # TODO: delete this before going production
+    engine = session.get_bind()
+    if Base.metadata.tables:
+        Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    seed_data(session)
+
+def seed_data(session):
+    
+    po_number = 123456
+    pl_number = 654321
+    date_purchased = "01-01-2022"
+    date_purchased = datetime.strptime(date_purchased, '%d-%m-%Y')
+    total_amount = 1000
+    payment_status = "True"
+    payment_status = bool(payment_status)
+    attachment_path = "/path/to/attachment"
+
+    card = Card(
+        po_number=po_number,
+        pl_number=pl_number,
+        date_purchased=date_purchased,
+        total_amount=total_amount,
+        payment_status=payment_status,
+        attachment_path=attachment_path
+    )
+
+    session.add(card)
+    session.commit()
+    file_path = "cards.csv"
+    key = os.getenv("ENCRYPTION_KEY")
+
+    for i in range(100):
+        with open(file_path, 'r') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                print(row)
+                expiry_date = datetime.strptime(row[5], '%d-%m-%Y')
+                cipher_suite = Fernet(key.encode('utf-8'))
+                encrypted_scratch_code = cipher_suite.encrypt(row[1].encode('utf-8'))
+                card_detail = CardDetail(
+                    card_id=card.id,
+                    serial_number=row[0],
+                    scratch_code=encrypted_scratch_code,
+                    units=row[2],
+                    purchase_price=row[3],
+                    selling_price=row[4],
+                    expiry_date=expiry_date,
+                    card_status=False,
+                )
+                session.add(card_detail)
+            session.commit()
