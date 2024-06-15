@@ -33,7 +33,7 @@ def signup_handler(session, s, mail):
     location = ip_info.json()
     from_location = {"city": location["city"], "region": location["region"], "country": location["country"]}
 
-    new_user = User(email=email, password=hashed_password, name=request.form.get("name"), country_region=str(from_location), role='customer')
+    new_user = User(email=email, password=hashed_password, first_name=request.form.get("first_name"), last_name=request.form.get("last_name"), country_region=str(from_location), role='customer')
     session.add(new_user)
     session.commit()
 

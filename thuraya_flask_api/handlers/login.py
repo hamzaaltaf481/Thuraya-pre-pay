@@ -17,4 +17,4 @@ def login_handler(session):
     expires = timedelta(minutes=300000)
     # TODO: make expire time lower for prod
     access_token = create_access_token(identity=user.email, additional_claims=additional_claims, expires_delta=expires)
-    return jsonify({'message': 'Logged in successfully', 'access_token': access_token}), 200
+    return jsonify({'message': 'Logged in successfully', 'access_token': access_token, 'first_name': user.first_name, 'last_name': user.last_name}), 200
