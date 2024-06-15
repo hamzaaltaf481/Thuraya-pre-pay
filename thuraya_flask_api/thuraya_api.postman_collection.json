@@ -45,8 +45,13 @@
 							"type": "text"
 						},
 						{
-							"key": "name",
+							"key": "first_name",
 							"value": "User1",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Last1",
 							"type": "text"
 						}
 					]
