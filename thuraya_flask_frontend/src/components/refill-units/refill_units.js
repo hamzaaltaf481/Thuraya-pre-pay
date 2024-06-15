@@ -72,6 +72,7 @@ export default function RefillUnits() {
   const token = localStorage.getItem("token");
   const handleLoginPurchase = async () => {
     try {
+      swal("Loading", "Please wait...", "info");
       const selectedUnitsArray = Object.values(selectedUnits);
       const units = selectedUnitsArray.map((unit) => ({
         quantity: unit.quantity,
@@ -88,8 +89,7 @@ export default function RefillUnits() {
           },
         }
       );
-      console.log(response);
-      swal("Success!", `${response}`, "success");
+      swal("Success!", `${response.data.message}`, "success");
       fetchRefillUnits(); // Reload the latest data from the API
     } catch (error) {
       console.error(error);
@@ -104,7 +104,7 @@ export default function RefillUnits() {
         quantity: `${unit.quantity}`,
         price: unit.price.replace("$", ""),
       }));
-      console.log("units", units);
+      
       const response = await axios.post(
         "http://localhost:5000/api/purchase",
         {
@@ -117,13 +117,19 @@ export default function RefillUnits() {
           },
         }
       );
-      console.log(response);
       swal("Success!", `${response.data.message}`, "success");
       fetchRefillUnits(); // Reload the latest data from the API
     } catch (error) {
       console.error(error);
       swal("Error!", `${error}`, "error");
     }
+  };
+
+  // Calculate total dynamically
+  const calculateTotal = () => {
+    return Object.values(selectedUnits).reduce((total, unit) => {
+      return total + (unit.units * unit.quantity);
+    }, 0);
   };
 
   return (
@@ -222,7 +228,7 @@ export default function RefillUnits() {
           ))}
           <div className="flex gap-40">
             <span className=" font-bold">Total</span>
-            <span>399</span>
+            <span>${calculateTotal()}</span>
           </div>
           <div className="mt-10 flex">
             {token ? (
