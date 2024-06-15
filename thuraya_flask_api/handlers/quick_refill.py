@@ -18,6 +18,7 @@ import os
 from twocaptcha import TwoCaptcha
 from handlers.transaction import create_transaction
 from handlers.transaction import create_transaction_detail
+from utils.check_balance import find_details
 
 
 load_dotenv()
@@ -94,13 +95,14 @@ def quick_refill_handler(request, session, logger):
         # TODO: not sure about the point of this
         last_4_digits = phone[-4:]
 
-        # TODO: maybe current status not needed
-        log_string, previous_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
         print(codes)
         log_string = log_string + str(codes) + "\n"
         logger.info(str(codes))
+
+        # TODO: maybe current status not needed
+        log_string, previous_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
         if error:
             return jsonify({"message": "Invalid Account"}), 400
         if refill_allowed != "Yes":
@@ -130,54 +132,12 @@ def quick_refill_handler(request, session, logger):
         total_time = time.time() - start_time
         with open("request_cycle_stats.csv", "a") as f:
             f.write(f"{total_time}\n")
-        return jsonify({"message": "Refill successful", "new_balance": new_balance, "previous_balance": previous_balance, "expiry date": last_active_date}), 200
+        return jsonify({"message": "Refill successful", "new_balance": new_balance, "previous_balance": previous_balance, "expiry_date": last_active_date}), 200
 
     except Exception as e:
         print(str(e))
         return jsonify({"message": "An error occurred"}), 500
 
-
-
-def find_details(phone, log_string, logger):
-    with open("constants.json") as f:
-        constants = json.load(f)
-    
-    data = {"msisdn":f"88216{phone}"}
-
-    response = requests.post(constants["balanceAPI"], headers=constants["balanceAPIHeaders"], data=json.dumps(data))
-    # wait for the retrieval of info
-
-    # convert response to json
-    response_json = response.json()
-
-    try:
-        error = response_json["Error"]
-        print("Invalid Account")
-        log_string = log_string + "Invalid Account" + "\n"
-        logger.info("Invalid Account")
-        return log_string, None, None, None, None, error
-    except:
-        print("balance: ")
-        print(response_json["Credit Available"])
-        log_string = log_string + "balance: " + response_json["Credit Available"] + "\n"
-        logger.info("balance: " + response_json["Credit Available"])
-
-        print("refill allowed: ")
-        print(response_json["Refill Allowed"])
-        log_string = log_string + "balance: " + response_json["Refill Allowed"] + "\n"
-        logger.info("refill allowed: " + response_json["Refill Allowed"])
-
-        print("expiry date: ")
-        print(response_json["Last Active Date"])
-        log_string = log_string + "balance: " + response_json["Last Active Date"] + "\n"
-        logger.info("expiry date: " + response_json["Last Active Date"])
-
-        print("current status: ")
-        print(response_json["Current Status"])
-        log_string = log_string + "balance: " + response_json["Current Status"] + "\n"
-        logger.info("current status: " + response_json["Current Status"])
-        # TODO: maybe no need to return current status
-        return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], response_json["Current Status"], None
 
 
 def perform_quick_refill(log_string, logger, card_number, phone):

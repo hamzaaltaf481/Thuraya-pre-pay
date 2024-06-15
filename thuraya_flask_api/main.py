@@ -40,6 +40,7 @@ from handlers.admin import view_cards_handler, import_card_handler, add_card_det
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
+from handlers.balance import balance_check_handler
 from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
 from bot.bot import (
     fill_login_data,
@@ -95,6 +96,11 @@ def index():
 @app.route("/api/quick_refill", methods=["POST"])
 def quick_refill():
     response, code = quick_refill_handler(request, session, logger)
+    return response, code
+
+@app.route("/api/balance_check", methods=["POST"])
+def balance_check():
+    response, code = balance_check_handler(request, session, logger)
     return response, code
 
 
