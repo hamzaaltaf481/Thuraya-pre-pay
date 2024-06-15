@@ -3,6 +3,8 @@ import { FaArrowRight } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
+
 
 const refillUnits = [
   { units: 10, price: "$10.00" },
@@ -27,7 +29,7 @@ export default function QuickRefill() {
   const handleLoginRefill = async () => {
  
     try {
-      console.log("handled login refill call");
+      swal("Loading", "Please wait...", "info");
        const response = await axios.post(
         "http://localhost:5000/api/login_refill", 
         {
@@ -51,6 +53,7 @@ export default function QuickRefill() {
 
   const handleGuestRefill = async () => {
     try {
+      swal("Loading", "Please wait...", "info");
       const response = await axios.post(
         "http://localhost:5000/api/login_refill",
         {
@@ -85,7 +88,7 @@ export default function QuickRefill() {
             </h1>
             <Link
               to="/refill_units"
-              className="text-3xl font-bold text-black flex gap-4 items-center opacity-40"
+              className="text-3xl font-  text-black flex gap-4 items-center opacity-40"
             >
               <FaArrowRight className=" inline-block" />
               Refill Units

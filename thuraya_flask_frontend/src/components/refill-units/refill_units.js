@@ -1,24 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 
-const refillUnits = [
-  { units: 10, price: "$10.00" },
-  { units: 20, price: "Out of Stock" },
-  { units: 39, price: "$39.00" },
-  { units: 50, price: "$50.00" },
-  { units: 80, price: "$80.00" },
-  { units: 160, price: "$160.00" },
-  { units: 500, price: "$500.00" },
-  { units: 1000, price: "$1,000.00" },
-  { units: 2500, price: "$2,500.00" },
-];
+let refillUnitsAvailability = {};
 
 export default function RefillUnits() {
   const [selectedUnits, setSelectedUnits] = useState({}); // Track selected units for each card
+  const [refillUnits, setRefillUnits] = useState([]);
+
+  const fetchRefillUnits = () => {
+    axios.get("http://localhost:5000/api/check-availability")
+      .then((response) => {
+        console.log("response", response.data)
+        refillUnitsAvailability = response.data;
+        const units = Object.keys(refillUnitsAvailability).map((unit) => ({
+          units: parseInt(unit),
+          price: refillUnitsAvailability[unit] > 0 ? `$${unit}` : "Out of Stock",
+          maxQuantity: refillUnitsAvailability[unit]
+        }));
+        setRefillUnits(units);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    fetchRefillUnits();
+  }, []);
 
   const handleUnitSelect = (unit) => {
     if (selectedUnits[unit.units]) {
@@ -43,7 +53,7 @@ export default function RefillUnits() {
         ...prevSelectedUnits[unit.units],
         quantity: Math.min(
           prevSelectedUnits[unit.units]?.quantity + 1 || 1,
-          10
+          unit.maxQuantity
         ),
       },
     }));
@@ -78,8 +88,9 @@ export default function RefillUnits() {
           },
         }
       );
-      console.log(response.data);
-      swal("Success!", `${response.data}`, "success");
+      console.log(response);
+      swal("Success!", `${response}`, "success");
+      fetchRefillUnits(); // Reload the latest data from the API
     } catch (error) {
       console.error(error);
       swal("Error!", `${error}`, "error");
@@ -87,11 +98,13 @@ export default function RefillUnits() {
   };
   const handleGuestPayment = async () => {
     try {
+      swal("Loading", "Please wait...", "info");
       const selectedUnitsArray = Object.values(selectedUnits);
       const units = selectedUnitsArray.map((unit) => ({
         quantity: `${unit.quantity}`,
         price: unit.price.replace("$", ""),
       }));
+      console.log("units", units);
       const response = await axios.post(
         "http://localhost:5000/api/purchase",
         {
@@ -104,8 +117,9 @@ export default function RefillUnits() {
           },
         }
       );
-      console.log(response.data);
-      swal("Success!", `${response.data}`, "success");
+      console.log(response);
+      swal("Success!", `${response.data.message}`, "success");
+      fetchRefillUnits(); // Reload the latest data from the API
     } catch (error) {
       console.error(error);
       swal("Error!", `${error}`, "error");
