@@ -16,6 +16,7 @@ import QuickRefill from "./components/quick-refill/quick_refll";
 import RefillUnits from "./components/refill-units/refill-units";
 import userEvent from "@testing-library/user-event";
 import { useEffect } from "react";
+import Admin from "./components/admin/Admin";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -31,7 +32,7 @@ function App() {
           <Route
             exact
             path="/login"
-            element={token ? <Navigate to="/" /> : <Login />}
+            element={token ? <Navigate to="/Login" /> : <Login />}
           />
           <Route exact path="/signup" element={<Signup />} /> // Changed
           "/Signup" to "/signup" to match the route
@@ -39,6 +40,7 @@ function App() {
       </div>
       {/* <Forgetpass/> */}
       <Footer />
+     
     </>
   );
 }
