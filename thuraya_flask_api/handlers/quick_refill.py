@@ -111,7 +111,7 @@ def quick_refill_handler(request, session, logger):
             logger.info("Refill not allowed")
             # TODO: maybe send email in this case
             return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
-        perform_quick_refill(log_string, logger, card_number, phone)
+        log_string = perform_quick_refill(log_string, logger, card_number, phone)
         discount = 0
         try:
             promo_code = data.get("promo_code")
@@ -141,7 +141,7 @@ def quick_refill_handler(request, session, logger):
 
 
 def perform_quick_refill(log_string, logger, card_number, phone):
-    return
+    return log_string
     with open("constants.json") as f:
         constants = json.load(f)
     
@@ -196,4 +196,6 @@ def perform_quick_refill(log_string, logger, card_number, phone):
     print("refill successful")
     log_string = log_string + "refill successful" + "\n"
     logger.info("refill successful")
+
+    return log_string
 

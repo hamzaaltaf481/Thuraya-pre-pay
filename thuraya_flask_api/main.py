@@ -15,6 +15,7 @@
 # TODO: ask Sir if to send the reciept to the user email for refill
 # TODO: add logger to purchase
 # TODO: add timestamps for all tables
+# TODO: move the archived code to new folder
 
 from dotenv import load_dotenv
 import os
