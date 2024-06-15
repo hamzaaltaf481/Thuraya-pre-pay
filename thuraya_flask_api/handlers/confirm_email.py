@@ -9,8 +9,7 @@ def confirm_email_handler(session, s, token):
     except:
         return jsonify({'message': 'The confirmation link is invalid or has expired.'}), 400
 
-    user = session.query(User).filter_by(email=email).first()
-
+    user = session.query(User).filter_by(email=email, role='customer').first()
     if user.email_confirmed:
         return jsonify({'message': 'Account already confirmed. Please login.'}), 200
 
