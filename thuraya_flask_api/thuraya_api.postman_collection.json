@@ -177,10 +177,44 @@
 			"response": []
 		},
 		{
-			"name": "WIP-new-quick-refill",
+			"name": "guest-new-quick-refill",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/quick_refill",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"quick_refill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logged_in_new_quick_refill",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODQ1NjU4NiwianRpIjoiNTFkMzA1ZWItYTg0Ny00NGU4LWIwYzktNjhlODNhMDc4NWFlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTg0NTY1ODYsImNzcmYiOiI4MDE5ZTE3MC04YTZjLTRkYmUtODc5Mi0yMTM1ZTZkODRkZDYiLCJleHAiOjE3MzY0NTY1ODYsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6MX0.p-c4F6n1bynk7d27jhEJ063EE2DZIFU-AAxQflDiUDg",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",

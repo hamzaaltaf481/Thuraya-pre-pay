@@ -141,6 +141,7 @@ def quick_refill_handler(request, session, logger):
 
 
 def perform_quick_refill(log_string, logger, card_number, phone):
+    return
     with open("constants.json") as f:
         constants = json.load(f)
     
