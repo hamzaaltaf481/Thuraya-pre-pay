@@ -21,13 +21,15 @@ export default function QuickRefill() {
   const token = localStorage.getItem("token");
 
   const fetchRefillUnits = () => {
-    axios.get("http://localhost:5000/api/check-availability")
+    axios
+      .get("http://localhost:5000/api/check-availability")
       .then((response) => {
-        console.log("response", response.data)
+        console.log("response", response.data);
         refillUnitsAvailability = response.data;
         const units = Object.keys(refillUnitsAvailability).map((unit) => ({
           units: parseInt(unit),
-          price: refillUnitsAvailability[unit] > 0 ? `$${unit}` : "Out of Stock",
+          price:
+            refillUnitsAvailability[unit] > 0 ? `$${unit}` : "Out of Stock",
         }));
         setRefillUnits(units);
       })
@@ -55,18 +57,32 @@ export default function QuickRefill() {
         }
       );
       console.log("response", response);
-      swal({
-        title: "Success!",
-        text: `${response.data.message ? `Message: ${response.data.message}` : ''}\n${response.data.new_balance ? `New Balance: ${response.data.new_balance}` : ''}\n${response.data.previoud_balance ? `Previous Balance: ${response.data.previoud_balance}` : ''}\n${response.data.refill_status ? `Refill Status: ${response.data.refill_status}` : ''}`,
-        icon: "success",
-        timer: 5000,
-        buttons: false
-      });
-
+      setTimeout(() => {
+        swal({
+          title: "Success!",
+          text: `${
+            response.data.message ? `Message: ${response.data.message}` : ""
+          }\n${
+            response.data.new_balance
+              ? `New Balance: ${response.data.new_balance}`
+              : ""
+          }\n${
+            response.data.previoud_balance
+              ? `Previous Balance: ${response.data.previoud_balance}`
+              : ""
+          }\n${
+            response.data.refill_status
+              ? `Refill Status: ${response.data.refill_status}`
+              : ""
+          }`,
+          icon: "success",
+          timer: 5000,
+          buttons: false,
+        });
+      }, 5000);
     } catch (error) {
       console.log("error message", error);
       swal("Error!", `${error.response.data.message}`, "error");
-
     }
   };
 
@@ -86,20 +102,42 @@ export default function QuickRefill() {
           },
         }
       );
-      console.log(response.data);
-    setTimeout(() => {
-      console.log("30 seconds have passed");
-    }, 30000);
+
+      console.log("response", response);
+      swal({
+        title: "Success!",
+        text: `${
+          response.data.message ? `Message: ${response.data.message}` : ""
+        }\n${
+          response.data.new_balance
+            ? `New Balance: ${response.data.new_balance}`
+            : ""
+        }\n${
+          response.data.previoud_balance
+            ? `Previous Balance: ${response.data.previoud_balance}`
+            : ""
+        }\n${
+          response.data.refill_status
+            ? `Refill Status: ${response.data.refill_status}`
+            : ""
+        }`,
+        icon: "success",
+        timer: 5000,
+        buttons: false,
+      });
     } catch (error) {
       console.error(error);
+      swal("Error!", `${error.response.data.message}`, "error");
     }
   };
 
   return (
     <>
-   
-        {isOpen === true && (
-           <div id="slider" className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden">
+      {isOpen === true && (
+        <div
+          id="slider"
+          className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden"
+        >
           <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
             <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
               <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
@@ -132,122 +170,122 @@ export default function QuickRefill() {
               </form>
             </div>
           </div>
-          </div>
-        )}
-     
-      <div className="static">
-      <div className="  relative flex flex-col justify-start min-h-screen overflow-hidden">
-        <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-20 ">
-          <div className="w-full p-5">
-            <div className="flex  justify-between mt-32">
-              <h1
-                className="text-3xl font-bold  flex gap-4 items-center"
-                style={{ color: "var(--green-color)" }}
-              >
-                <FaArrowDown className="inline-block" />
-                <p className="text-[#2f2f2f]">Quick</p>
-                Refills
-              </h1>
-              <Link
-                to="/refill_units"
-                className="text-3xl font-bold text-black flex gap-4 items-center opacity-40"
-              >
-                <FaArrowRight className=" inline-block" />
-                Refill Units
-              </Link>
-            </div>
-            <p className="mt-2 text-lg text-gray-600">
-              Enter your Thuraya number
-            </p>
-            <div className="flex gap-5">
-              <input
-                type="text"
-                className={`mt-3 w-[7%] p-3 text-2xl border rounded-lg`}
-                value={"+88216"}
-              />
-              <input
-                type="text"
-                className={`mt-3 w-[10%] p-3 text-2xl border rounded-lg`}
-                placeholder="XXXXXXXX"
-                value={thurayaNumber}
-                onChange={(e) =>
-                  setThurayaNumber(
-                    e.target.value.replace(/\D/g, "").slice(0, 8)
-                  )
-                }
-                maxLength={8}
-              />
-            </div>
+        </div>
+      )}
 
-            {thurayaNumber.length === maxNoLength && ( // Show refill units only when 12 digits are entered
-              <div className=" transition-transform duration-300 delay-500">
-                <p className="mt-5 text-lg text-gray-600  ">
-                  Select refill units
-                </p>
-                <div className="grid grid-cols-6  gap-10 mt-3">
-                  {refillUnits.map((unit, index) => (
-                    <div
-                      key={index}
-                      className={`p-4 border rounded-lg text-center ${
-                        unit.price === "Out of Stock"
-                          ? "text-gray-400"
-                          : "text-black"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="refillUnit"
-                        id={`unit-${unit.units}`}
-                        className="mr-2"
-                        disabled={unit.price === "Out of Stock"}
-                        onClick={() => {
-                          setUnitPrice(unit.price);
-                        }}
-                      />
-                      <label htmlFor={`unit-${unit.units}`}>
-                        <p className="text-xl font-bold">{unit.units} units</p>
-                        <p>{unit.price}</p>
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                <hr
-                  className="my-8 bottom-4 border-1 "
-                  style={{ borderColor: "var(--green-color)" }}
+      <div className="static">
+        <div className="  relative flex flex-col justify-start min-h-screen overflow-hidden">
+          <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-20 ">
+            <div className="w-full p-5">
+              <div className="flex  justify-between mt-32">
+                <h1
+                  className="text-3xl font-bold  flex gap-4 items-center"
+                  style={{ color: "var(--green-color)" }}
+                >
+                  <FaArrowDown className="inline-block" />
+                  <p className="text-[#2f2f2f]">Quick</p>
+                  Refills
+                </h1>
+                <Link
+                  to="/refill_units"
+                  className="text-3xl font-bold text-black flex gap-4 items-center opacity-40"
+                >
+                  <FaArrowRight className=" inline-block" />
+                  Refill Units
+                </Link>
+              </div>
+              <p className="mt-2 text-lg text-gray-600">
+                Enter your Thuraya number
+              </p>
+              <div className="flex gap-5">
+                <input
+                  type="text"
+                  className={`mt-3 w-[7%] p-3 text-2xl border rounded-lg`}
+                  value={"+88216"}
                 />
-                {token ? (
-                  <button
-                    className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-                    style={{
-                      backgroundColor: "var(--blue-color)",
-                    }}
-                    onClick={handleLoginRefill}
-                  >
-                    <FaArrowRight className="mr-2" />
-                    Proceed to payment
-                  </button>
-                ) : (
-                  <>
+                <input
+                  type="text"
+                  className={`mt-3 w-[10%] p-3 text-2xl border rounded-lg`}
+                  placeholder="XXXXXXXX"
+                  value={thurayaNumber}
+                  onChange={(e) =>
+                    setThurayaNumber(
+                      e.target.value.replace(/\D/g, "").slice(0, 8)
+                    )
+                  }
+                  maxLength={8}
+                />
+              </div>
+
+              {thurayaNumber.length === maxNoLength && ( // Show refill units only when 12 digits are entered
+                <div className=" transition-transform duration-300 delay-500">
+                  <p className="mt-5 text-lg text-gray-600  ">
+                    Select refill units
+                  </p>
+                  <div className="grid grid-cols-6  gap-10 mt-3">
+                    {refillUnits.map((unit, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 border rounded-lg text-center ${
+                          unit.price === "Out of Stock"
+                            ? "text-gray-400"
+                            : "text-black"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="refillUnit"
+                          id={`unit-${unit.units}`}
+                          className="mr-2"
+                          disabled={unit.price === "Out of Stock"}
+                          onClick={() => {
+                            setUnitPrice(unit.price);
+                          }}
+                        />
+                        <label htmlFor={`unit-${unit.units}`}>
+                          <p className="text-xl font-bold">
+                            {unit.units} units
+                          </p>
+                          <p>{unit.price}</p>
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <hr
+                    className="my-8 bottom-4 border-1 "
+                    style={{ borderColor: "var(--green-color)" }}
+                  />
+                  {token ? (
                     <button
                       className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
                       style={{
                         backgroundColor: "var(--blue-color)",
                       }}
-                      onClick={handlePopup}
+                      onClick={handleLoginRefill}
                     >
                       <FaArrowRight className="mr-2" />
-                      Proceed to payment as guest
+                      Proceed to payment
                     </button>
-                  </>
-                )}
-              </div>
-            )}
+                  ) : (
+                    <>
+                      <button
+                        className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+                        style={{
+                          backgroundColor: "var(--blue-color)",
+                        }}
+                        onClick={handlePopup}
+                      >
+                        <FaArrowRight className="mr-2" />
+                        Proceed to payment as guest
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      
       </div>
-    </div>
     </>
-    
   );
 }
