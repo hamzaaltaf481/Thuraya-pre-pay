@@ -11,6 +11,9 @@
 # TODO: add timestamps for all tables
 # TODO: move the archived code to new folder
 # TODO: use single driver and use tabs for all the requests
+# TODO: increase resolution of screenshot before solve request
+# TODO: add the http protocol to .env. Maybe remove .env from .gitignore
+# TODO: add logs for even when the return is not 200
 
 from dotenv import load_dotenv
 import os
