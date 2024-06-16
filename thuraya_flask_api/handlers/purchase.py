@@ -92,7 +92,7 @@ def purchase_handler(request, session, logger, mail):
         return jsonify({"message": "success"}), 200
     except Exception as e:
         print(str(e))
-        failed_transaction = FailedTransactions(log_string=transaction_logs, date_time=datetime.datetime.now())
+        failed_transaction = FailedTransactions(log_string=transaction_logs, date_time=datetime.now())
         session.add(failed_transaction)
         # commit the transaction
         session.commit()
