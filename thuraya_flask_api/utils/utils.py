@@ -52,10 +52,6 @@ def email_codes_password(card_numbers, email, transaction_logs, mail):
         message="Password protected pdf file is attached",
         from_addr=os.getenv("SMTP_MAIL"),
         to_addr=email,
-        smtp_server=os.getenv("SMTP_SERVER"),
-        smtp_port=os.getenv("SMTP_PORT"),
-        username=os.getenv("SMTP_MAIL"),
-        password=os.getenv("SMTP_PASSWORD"), 
         attachment_path=protected_pdf_filename, 
     )
 
@@ -65,10 +61,6 @@ def email_codes_password(card_numbers, email, transaction_logs, mail):
         message="Password for the refill Codes PDF file: " + password,
         from_addr=os.getenv("SMTP_MAIL"),
         to_addr=email,
-        smtp_server=os.getenv("SMTP_SERVER"),
-        smtp_port=os.getenv("SMTP_PORT"),
-        username=os.getenv("SMTP_MAIL"),
-        password=os.getenv("SMTP_PASSWORD"), 
     )
 
     print("emails sent")
@@ -104,7 +96,7 @@ def create_pdf(card_numbers, email):
     return pdf_filename
 
 
-def send_email(mail, subject, message, from_addr, to_addr, smtp_server, smtp_port, username, password, attachment_path=None):
+def send_email(mail, subject, message, from_addr, to_addr, attachment_path=None):
     msg = Message(subject, sender=from_addr, recipients=[to_addr])
     msg.body = message
 

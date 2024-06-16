@@ -11,9 +11,6 @@
 # TODO: add timestamps for all tables
 # TODO: move the archived code to new folder
 # TODO: use single driver and use tabs for all the requests
-# TODO: use botdetectorcaptcha myself for captcha solving
-# TODO: add backend redirect for confirm email
-# TODO: 
 
 from dotenv import load_dotenv
 import os
