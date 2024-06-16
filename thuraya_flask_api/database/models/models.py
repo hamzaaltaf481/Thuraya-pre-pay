@@ -172,7 +172,7 @@ def seed_data(session):
     file_path = "cards.csv"
     key = os.getenv("ENCRYPTION_KEY")
 
-    for i in range(100):
+    for i in range(10):
         with open(file_path, 'r') as f:
             reader = csv.reader(f)
             for row in reader:
