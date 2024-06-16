@@ -34,6 +34,8 @@ def quick_refill_handler(request, session, logger):
         data = request.get_json()
         phone = data.get("phone")
         price = data.get("price")
+        # remove $ from price
+        price = price.replace("$", "")
         token = request.headers.get('Authorization')
 
         if not token:
