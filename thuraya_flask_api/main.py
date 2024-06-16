@@ -10,6 +10,10 @@
 # TODO: ask Sir if to send the reciept to the user email for refill
 # TODO: add timestamps for all tables
 # TODO: move the archived code to new folder
+# TODO: use single driver and use tabs for all the requests
+# TODO: use botdetectorcaptcha myself for captcha solving
+# TODO: add backend redirect for confirm email
+# TODO: 
 
 from dotenv import load_dotenv
 import os
@@ -496,8 +500,8 @@ def signup():
 
 @app.route('/api/confirm_email/<token>')
 def confirm_email(token):
-    response, code = confirm_email_handler(session, s, token)
-    return response, code
+    response = confirm_email_handler(session, s, token)
+    return response
 
 
 @app.route('/api/login', methods=['POST'])

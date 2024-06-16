@@ -40,7 +40,7 @@ def signup_handler(session, s, mail):
     token = s.dumps(email, salt=os.getenv("PASSWORD_RESET_SALT"))
     msg = Message('Confirm Email', recipients=[email])
     link = url_for('confirm_email', token=token, _external=True)
-    link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
+    # link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
     msg.body = 'Your email confirmation link is {}'.format(link)
     mail.send(msg)
 
