@@ -12,16 +12,15 @@ const ConfirmMail = () => {
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
-        "https://your-backend-api.com/confirm_email",
-        { token }
+        `https://localhost:3000/confirm_email/${token}`,
       );
-      setMessage(response.data.message);
+      console.log(response.data)
+      setMessage(response.data);
       swal("Success!", "Email confrim in successfully", "success");
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (error) {
-     
       swal("Error!", "Failed to confirm email. Please try again.", "error");
     }
   };
@@ -40,7 +39,6 @@ const ConfirmMail = () => {
         >
           Confirm Email
         </button>
-       
       </div>
     </div>
   );

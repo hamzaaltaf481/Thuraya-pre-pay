@@ -3,15 +3,16 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 export default function Signup() {
-  const [name, setName] = useState("");
-  // const[lname,setLname]= useState('')
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("name", name);
+      formData.append("first_name", fname);
+      formData.append("last_name", lname);
       formData.append("email", email);
       formData.append("password", password);
 
@@ -27,7 +28,11 @@ export default function Signup() {
       if (response.status === 200) {
         swal("Success!", "Form submitted successfully", "success");
         setTimeout(() => {
-          window.location.href = "/login";
+          swal(
+            "Confirm Email!",
+            "Kindly confirm your email before login",
+            "info"
+          );
         }, 3000);
       } else {
         throw new Error("Error submitting form");
@@ -35,12 +40,12 @@ export default function Signup() {
     } catch (error) {
       console.log("Error submitting form:", error);
       // Show error message
-      swal(
-        "Error!",
-        `Error submitting form: ${error?.response?.data?.message}`,
-        "error"
-      );
+      swal("Error!", `Error submitting form: ${error}`, "error");
     }
+    setEmail("");
+    setFname("");
+    setLname("");
+    setPassword("");
   };
 
   return (
@@ -53,12 +58,14 @@ export default function Signup() {
               type="Text"
               placeholder="First Name"
               className="block w-full h-[70px] px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={fname}
+              onChange={(e) => setFname(e.target.value)}
             />
             <input
               type="Text"
               placeholder="Last Name"
+              onChange={(e) => setLname(e.target.value)}
+              value={lname}
               className="block w-full px-4 py-2 mt-2 text-[#2D3E50] bg-white border-[2px] rounded-xl focus:border-[#2D3E50] focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40 shadow-md text-xl font-medium"
             />
           </div>

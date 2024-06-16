@@ -35,7 +35,7 @@ function App() {
           />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/forget-pass" element={<Forgetpass />} />
-          <Route exact path="/confirm_mail/:token" element={<ConfirmMail />} />
+          <Route exact path="/confirm_email/:token" element={<ConfirmMail />} />
         </Routes>
       </div>
  

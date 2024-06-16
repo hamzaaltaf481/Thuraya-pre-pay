@@ -1,22 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
-
-const refillUnits = [
-  { units: 10, price: "$10.00" },
-  { units: 20, price: "Out of Stock" },
-  { units: 39, price: "$39.00" },
-  { units: 50, price: "$50.00" },
-  { units: 80, price: "$80.00" },
-  { units: 160, price: "$160.00" },
-  { units: 500, price: "$500.00" },
-  { units: 1000, price: "$1,000.00" },
-  { units: 2500, price: "$2,500.00" },
-];
+let refillUnitsAvailability = {};
 const maxNoLength = 8;
 
 export default function QuickRefill() {
@@ -24,11 +13,30 @@ export default function QuickRefill() {
   const [email, setEmail] = useState("");
   const [unitPrice, setUnitPrice] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [refillUnits, setRefillUnits] = useState([]);
 
   const handlePopup = () => {
     return setIsOpen(true);
   };
   const token = localStorage.getItem("token");
+
+  const fetchRefillUnits = () => {
+    axios.get("http://localhost:5000/api/check-availability")
+      .then((response) => {
+        console.log("response", response.data)
+        refillUnitsAvailability = response.data;
+        const units = Object.keys(refillUnitsAvailability).map((unit) => ({
+          units: parseInt(unit),
+          price: refillUnitsAvailability[unit] > 0 ? `$${unit}` : "Out of Stock",
+        }));
+        setRefillUnits(units);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    fetchRefillUnits();
+  }, []);
 
   const handleLoginRefill = async () => {
     try {
@@ -47,8 +55,18 @@ export default function QuickRefill() {
         }
       );
       console.log("response", response);
+      swal({
+        title: "Success!",
+        text: `${response.data.message ? `Message: ${response.data.message}` : ''}\n${response.data.new_balance ? `New Balance: ${response.data.new_balance}` : ''}\n${response.data.previoud_balance ? `Previous Balance: ${response.data.previoud_balance}` : ''}\n${response.data.refill_status ? `Refill Status: ${response.data.refill_status}` : ''}`,
+        icon: "success",
+        timer: 5000,
+        buttons: false
+      });
+
     } catch (error) {
-      console.log("error message", error.response.statusText);
+      console.log("error message", error);
+      swal("Error!", `${error.response.data.message}`, "error");
+
     }
   };
 
@@ -80,7 +98,7 @@ export default function QuickRefill() {
   return (
     <>
    
-        {isOpen == true && (
+        {isOpen === true && (
            <div id="slider" className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden">
           <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
             <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
