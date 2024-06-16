@@ -1,6 +1,5 @@
 from datetime import datetime
 import csv
-from database.database import database_session
 import os
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
@@ -8,7 +7,7 @@ from database.models.models import Card, CardDetail
 
 load_dotenv()
 
-def import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file):
+def import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file, session):
 
     file_path = file.filename
     file.save(file_path)
@@ -21,8 +20,6 @@ def import_csv(po_number, pl_number, date_purchased, total_amount, payment_statu
         payment_status=payment_status,
         attachment_path=attachment_path
     )
-
-    session = database_session()
 
     session.add(card)
     session.commit()

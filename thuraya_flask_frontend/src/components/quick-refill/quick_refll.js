@@ -44,7 +44,7 @@ export default function QuickRefill() {
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
-        "http://localhost:5000/api/login_refill",
+        "http://localhost:5000/api/quick_refill",
         {
           phone: `${thurayaNumber}`,
           price: `${unitPrice}`,
@@ -90,7 +90,7 @@ export default function QuickRefill() {
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
-        "http://localhost:5000/api/login_refill",
+        "http://localhost:5000/api/quick_refill",
         {
           phone: `${thurayaNumber}`,
           price: `${unitPrice}`,

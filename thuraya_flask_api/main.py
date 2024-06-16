@@ -14,6 +14,9 @@
 # TODO: increase resolution of screenshot before solve request
 # TODO: add the http protocol to .env. Maybe remove .env from .gitignore
 # TODO: add logs for even when the return is not 200
+# TODO: design the admin frontend with html
+# TODO: add second input with confirm email
+# TODO: minor adjustments in the frontend
 
 from dotenv import load_dotenv
 import os
@@ -55,10 +58,11 @@ from logger.log import setup_logger
 from database.database import get_card
 from utils.utils import check_valid, email_codes_password
 from database.models.models import User, Card, migrate_tables
-from database.database import database_session
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail
 from flask_jwt_extended import JWTManager, decode_token
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 logger = setup_logger()
@@ -80,8 +84,19 @@ CORS(app, origins=['http://localhost:3000','http://localhost:3001'])
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(os.getenv("SECRET_KEY"))
-session = database_session()
 jwt = JWTManager(app)
+engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}")
+Session = sessionmaker(bind=engine)
+
+# IN CASE OF DB ISSUES
+# @app.route("/api/rollback", methods=["GET"])
+# def rollback():
+#     session = Session()
+#     try:
+#         session.commit()
+#     except:
+#         session.rollback()
+#     return jsonify({"status": "OK"}), 200
 
 @app.route("/api", methods=["GET"])
 def index():
@@ -89,11 +104,13 @@ def index():
 
 @app.route("/api/quick_refill", methods=["POST"])
 def quick_refill():
+    session = Session()
     response, code = quick_refill_handler(request, session, logger)
     return response, code
 
 @app.route("/api/balance_check", methods=["POST"])
 def balance_check():
+    session = Session()
     response, code = balance_check_handler(request, session, logger)
     return response, code
 
@@ -456,43 +473,51 @@ def fill_card_data():
 
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
+    session = Session()
     response, code = purchase_handler(request, session, logger, mail)
     return response, code
     
 
 @app.route("/api/check-availability", methods=["GET"])
 def check_availability():
+    session = Session()
     response, code = check_availability_handler(session)
     return response, code
 
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
+    session = Session()
     migrate_tables(session)
     return jsonify({"message": "success"}), 200
 
 @app.route("/api/admin/import", methods=["POST"])
 def import_cards():
-    response, code = import_card_handler(request)
+    session = Session()
+    response, code = import_card_handler(request, session)
     return response, code
 
 @app.route('/api/admin/add-single-card', methods=['POST'])
 def add_card_detail():
+    session = Session()
     response, code = add_card_detail_handler(session)
     return response, code
 
 @app.route('/api/admin/view-cards', methods=['POST'])
 def view_cards():
+    session = Session()
     response, code = view_cards_handler(session, request)
     return response, code
 
 @app.route('/api/admin/view-scratch-codes', methods=['POST'])
 def view_scratch_codes():
+    session = Session()
     response, code = view_scratch_codes_handler(session, request)
     return response, code
 
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
+    session = Session()
     response, code = signup_handler(session, s, mail)
     return response, code
 
@@ -500,23 +525,27 @@ def signup():
 
 @app.route('/api/confirm_email/<token>')
 def confirm_email(token):
+    session = Session()
     response = confirm_email_handler(session, s, token)
     return response
 
 
 @app.route('/api/login', methods=['POST'])
 def login():
+    session = Session()
     response, code = login_handler(session)
     return response, code
 
 
 @app.route('/api/forgot-password', methods=['POST'])
 def forgot_password():
+    session = Session()
     response, code = forgot_password_handler(s, session, mail)
     return response, code
 
 @app.route('/api/reset-password/<token>', methods=['POST'])
 def reset_token(token):
+    session = Session()
     response, code = reset_password(s, token, session)
     return response, code
 

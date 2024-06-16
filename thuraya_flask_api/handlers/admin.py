@@ -55,7 +55,7 @@ def view_scratch_codes_handler(session, request):
     return jsonify(card_dict), 200
 
 
-def import_card_handler(request):
+def import_card_handler(request, session):
 
     token = request.headers.get('Authorization')
     # TODO: add check for if decoding fails
@@ -77,7 +77,7 @@ def import_card_handler(request):
     payment_status = bool(payment_status)
     attachment_path = request.form.get("attachment_path")
     
-    import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file)
+    import_csv(po_number, pl_number, date_purchased, total_amount, payment_status, attachment_path, file, session)
     return jsonify({"message": "success"}), 200
 
 
