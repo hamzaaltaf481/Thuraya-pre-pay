@@ -20,15 +20,8 @@
 
 from dotenv import load_dotenv
 import os
-import csv
-import random
-import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import time
-import json
-from bot.scrap import parse_data, check_refill_status
-from handlers.transaction import create_transaction
 from handlers.reset_password import reset_password
 from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
@@ -39,28 +32,11 @@ from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
 from handlers.balance import balance_check_handler
-from bot.captcha import solve_login_captcha, solve_refill_captcha, write_correct_statistic
-from bot.bot import (
-    fill_login_data,
-    fill_scratch_data,
-    fill_login_captcha_code,
-    fill_refill_captcha_code,
-    fill_login_refill,
-    check_clicked
-)
-from handlers.transaction import create_transaction_detail
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.expected_conditions import staleness_of
 from logger.log import setup_logger
-from database.database import get_card
-from utils.utils import check_valid, email_codes_password
-from database.models.models import User, Card, migrate_tables
+from database.models.models import migrate_tables
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail
-from flask_jwt_extended import JWTManager, decode_token
+from flask_jwt_extended import JWTManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
