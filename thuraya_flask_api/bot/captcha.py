@@ -77,7 +77,7 @@ def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
     return code
 
 
-def solve_refill_captcha(error_page, driver, logger, log_string, solver):
+def solve_refill_captcha(error_page, logger, log_string, solver, new_tab_handle):
 
     if error_page == True:
         top_left = (995, 900)
@@ -91,7 +91,7 @@ def solve_refill_captcha(error_page, driver, logger, log_string, solver):
     width = bottom_right[0] - top_left[0]
     height = bottom_right[1] - top_left[1]
 
-    QUICK_REFILL_CAPTCHA_QUEUE.append(driver)
+    QUICK_REFILL_CAPTCHA_QUEUE.append(new_tab_handle)
 
     for i in range(1000):
         
@@ -101,13 +101,11 @@ def solve_refill_captcha(error_page, driver, logger, log_string, solver):
         except:
             id = 0
         
-        driver_info = QUICK_REFILL_CAPTCHA_QUEUE[0]
-        if driver_info == driver:
-            driver.maximize_window()
-            time.sleep(3)
+        tab_handle_info = QUICK_REFILL_CAPTCHA_QUEUE[0]
+        if tab_handle_info == new_tab_handle:
+            time.sleep(1)
             # TODO: adjust this value
             screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
-            driver.minimize_window()
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")

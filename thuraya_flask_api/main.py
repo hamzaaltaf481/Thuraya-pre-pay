@@ -39,6 +39,7 @@ from flask_mail import Mail
 from flask_jwt_extended import JWTManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from selenium import webdriver
 
 load_dotenv()
 logger = setup_logger()
@@ -81,7 +82,7 @@ def index():
 @app.route("/api/quick_refill", methods=["POST"])
 def quick_refill():
     session = Session()
-    response, code = quick_refill_handler(request, session, logger)
+    response, code = quick_refill_handler(request, session, logger, driver)
     return response, code
 
 @app.route("/api/balance_check", methods=["POST"])
@@ -169,4 +170,6 @@ def reset_token(token):
     return response, code
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    driver = webdriver.Chrome()
+    driver.maximize_window()
+    app.run(debug=True, use_reloader=False)

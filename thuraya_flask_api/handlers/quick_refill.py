@@ -23,7 +23,9 @@ from datetime import datetime
 
 load_dotenv()
 
-def quick_refill_handler(request, session, logger):
+QUICK_REFILL_QUEUE = []
+
+def quick_refill_handler(request, session, logger, driver):
     log_string = ""
     try:
         start_time = time.time()
@@ -65,6 +67,7 @@ def quick_refill_handler(request, session, logger):
         valid = check_valid(phone, price)
 
         if not valid:
+            # TODO: log here and return error message
             return jsonify({"message": "Phone or Price invalid!"}), 400
             
         card_number, card_id, selling_price, error = get_card(price, session)
@@ -113,7 +116,7 @@ def quick_refill_handler(request, session, logger):
             logger.info("Refill not allowed")
             # TODO: maybe send email in this case
             return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
-        log_string = perform_quick_refill(log_string, logger, card_number, phone)
+        log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
         discount = 0
         try:
             promo_code = data.get("promo_code")
@@ -149,18 +152,30 @@ def quick_refill_handler(request, session, logger):
 
 
 
-def perform_quick_refill(log_string, logger, card_number, phone):
+def perform_quick_refill(log_string, logger, card_number, phone, driver):
     return log_string
     with open("constants.json") as f:
         constants = json.load(f)
     
-    driver = webdriver.Chrome()
-    driver.minimize_window()
+    for z in range(100): 
+        if len(QUICK_REFILL_QUEUE) > 1:
+            time.sleep(1)
+        else:
+            break
+
+
+    direct_refill_url = constants["directRefilUrl"]
+    driver.execute_script("window.open('');")
+    new_tab_handle = driver.window_handles[-1]
+    QUICK_REFILL_QUEUE.append(new_tab_handle)
+    driver.switch_to.window(new_tab_handle)
+    driver.get(direct_refill_url)
+    WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.ID, 'captchaCode')))
+
     print("driver initiated")
     log_string = log_string + "driver initiated" + "\n"
     logger.info("driver initiated")
 
-    driver.get(constants["directRefilUrl"])
     solver = TwoCaptcha(os.getenv("CAPTCHA_SOLVER_API_KEY"))
 
     while True:
@@ -171,6 +186,10 @@ def perform_quick_refill(log_string, logger, card_number, phone):
                 solver.report(captcha_id, True)
             except:
                 pass
+            # close the current tab chrome
+            QUICK_REFILL_QUEUE.remove(new_tab_handle)
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
             break
         else:
             body = driver.find_element(By.TAG_NAME, "body")
@@ -190,7 +209,7 @@ def perform_quick_refill(log_string, logger, card_number, phone):
                 logger.warning("captcha not solved")
                 error_page = True
 
-            code, captcha_id = solve_refill_captcha(error_page, driver, logger, log_string, solver)
+            code, captcha_id = solve_refill_captcha(error_page, logger, log_string, solver, new_tab_handle)
             if code == None:
                 driver.refresh()
                 continue 
@@ -201,7 +220,6 @@ def perform_quick_refill(log_string, logger, card_number, phone):
             logger.info("captcha solution entered")
             WebDriverWait(driver, float("inf")).until(staleness_of(body))
 
-    driver.quit()
     write_correct_statistic()
     print("refill successful")
     log_string = log_string + "refill successful" + "\n"
