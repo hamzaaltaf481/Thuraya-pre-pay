@@ -5,6 +5,7 @@ import time
 from dotenv import load_dotenv
 from twocaptcha import TwoCaptcha
 from selenium.webdriver.common.by import By
+from PIL import Image
 
 load_dotenv()
 LOGIN_CAPTCHA_QUEUE = []
@@ -96,6 +97,10 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
             # TODO: adjust this value
             captcha_element = driver.find_element(By.ID, "theForm_CaptchaImage")
             captcha_element.screenshot(f"images/{id}.png")
+
+            im = Image.open(f"images/{id}.png")
+            im_resized = im.resize((600, 120))
+            im_resized.save(f"resized_images/{id}.png", dpi=(600,120))
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
@@ -105,7 +110,7 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
             logger.info("sending solve request")
 
             try:
-                result = solver.normal(f"images/{id}.png")
+                result = solver.normal(f"resized_images/{id}.png")
                 QUICK_REFILL_CAPTCHA_QUEUE.pop(0)
                 break
             except:
