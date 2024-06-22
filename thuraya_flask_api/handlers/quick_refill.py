@@ -142,7 +142,7 @@ def quick_refill_handler(request, session, logger, driver):
     except Exception as e:
         print(str(e))
         # create an instance of failed_transaction
-        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.datetime.now())
+        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.now())
         session.add(failed_transaction)
 
         # commit the transaction
@@ -184,6 +184,7 @@ def perform_quick_refill(log_string, logger, card_number, phone, driver):
         if constants["scratchSuccessfulMessage"] in html_content:
             try:
                 solver.report(captcha_id, True)
+                print("captcha reported as solved")
             except:
                 pass
             # close the current tab chrome
@@ -202,6 +203,7 @@ def perform_quick_refill(log_string, logger, card_number, phone, driver):
             if "captcha error" in html_content:
                 try:
                     solver.report(captcha_id, False)
+                    print("captcha reported as not solved")
                 except:
                     pass
                 print("captcha not solved")
@@ -209,10 +211,10 @@ def perform_quick_refill(log_string, logger, card_number, phone, driver):
                 logger.warning("captcha not solved")
                 error_page = True
 
-            code, captcha_id = solve_refill_captcha(error_page, logger, log_string, solver, new_tab_handle)
-            if code == None:
+            code, captcha_id = solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver)
+            if code is None:
                 driver.refresh()
-                continue 
+                continue
 
             fill_refill_captcha_code(driver, code)
             print("captcha solution entered")
