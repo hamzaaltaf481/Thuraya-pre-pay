@@ -17,9 +17,11 @@
 # TODO: design the admin frontend with html
 # TODO: add second input with confirm email
 # TODO: minor adjustments in the frontend
+# TODO: with the current main config does not auto reload the server with changes
+# TODO: signup as a captcha solver to check and optimize
 
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from handlers.reset_password import reset_password
@@ -40,6 +42,7 @@ from flask_jwt_extended import JWTManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 load_dotenv()
 logger = setup_logger()
@@ -170,6 +173,10 @@ def reset_token(token):
     return response, code
 
 if __name__ == "__main__":
-    driver = webdriver.Chrome()
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     app.run(debug=True, use_reloader=False)
