@@ -4,6 +4,7 @@ import pyautogui
 import time
 from dotenv import load_dotenv
 from twocaptcha import TwoCaptcha
+from selenium.webdriver.common.by import By
 
 load_dotenv()
 LOGIN_CAPTCHA_QUEUE = []
@@ -77,19 +78,7 @@ def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
     return code
 
 
-def solve_refill_captcha(error_page, logger, log_string, solver, new_tab_handle):
-
-    if error_page == True:
-        top_left = (995, 900)
-        bottom_right = (1140, 933)
-        pass
-    else:
-
-        top_left = (990, 883)
-        bottom_right = (1140, 915)
-
-    width = bottom_right[0] - top_left[0]
-    height = bottom_right[1] - top_left[1]
+def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
 
     QUICK_REFILL_CAPTCHA_QUEUE.append(new_tab_handle)
 
@@ -105,11 +94,11 @@ def solve_refill_captcha(error_page, logger, log_string, solver, new_tab_handle)
         if tab_handle_info == new_tab_handle:
             time.sleep(1)
             # TODO: adjust this value
-            screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
+            captcha_element = driver.find_element(By.ID, "theForm_CaptchaImage")
+            captcha_element.screenshot(f"images/{id}.png")
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
-            screenshot.save(f"images/{id}.png")
 
             print("sending solve request")
             log_string = log_string + "sending solve request" + "\n"
