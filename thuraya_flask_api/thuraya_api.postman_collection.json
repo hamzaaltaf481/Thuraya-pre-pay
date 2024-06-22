@@ -222,7 +222,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",
+					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -238,68 +238,6 @@
 					"path": [
 						"api",
 						"quick_refill"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "guest_login_refill",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\", \"email\": \"mrni8mare@gmail.com\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/login_refill",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"login_refill"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "logged_in_login_refill",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0OTM0MiwianRpIjoiZmRlNTc2MWEtYzg2Yi00Yzc1LWJlZTktNmMxNGVlYWQzNmEwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDkzNDIsImNzcmYiOiJjM2NhZmRkNy0xZWM0LTQwZWEtOGYxOS1mMmMyOGFmMGQ1ZjUiLCJleHAiOjE3MzUzNDkzNDIsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6M30.v2aNPZHPnp7GLsccGXdo1JKQu3z_A62Hl_RHkOglFHk",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"phone\": \"21297776\", \"price\": \"20\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/login_refill",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"login_refill"
 					]
 				}
 			},

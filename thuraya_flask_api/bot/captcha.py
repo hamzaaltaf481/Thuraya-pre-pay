@@ -99,8 +99,8 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
             captcha_element.screenshot(f"images/{id}.png")
 
             im = Image.open(f"images/{id}.png")
-            im_resized = im.resize((600, 120))
-            im_resized.save(f"resized_images/{id}.png", dpi=(600,120))
+            im_resized = im.resize((300, 60))
+            im_resized.save(f"images_resized/{id}.png", dpi=(300,300))
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
@@ -110,7 +110,7 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
             logger.info("sending solve request")
 
             try:
-                result = solver.normal(f"resized_images/{id}.png")
+                result = solver.normal(f"images_resized/{id}.png")
                 QUICK_REFILL_CAPTCHA_QUEUE.pop(0)
                 break
             except:
