@@ -78,62 +78,6 @@ QUICK_REFILL_CAPTCHA_QUEUE=[]
 #     return code
 
 
-def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
-
-    QUICK_REFILL_CAPTCHA_QUEUE.append(new_tab_handle)
-
-    for i in range(1000):
-        
-        try:
-            with open("statistics.csv", "r", encoding="utf-8") as f:
-                id = sum(1 for line in f) + 1
-        except:
-            id = 0
-        
-        tab_handle_info = QUICK_REFILL_CAPTCHA_QUEUE[0]
-        if tab_handle_info == new_tab_handle:
-            time.sleep(1)
-            # TODO: adjust this value
-            captcha_element = driver.find_element(By.ID, "theForm_CaptchaImage")
-            captcha_element.screenshot(f"images/{id}.png")
-
-            im = Image.open(f"images/{id}.png")
-            im_resized = im.resize((300, 60))
-            im_resized.save(f"images_resized/{id}.png", dpi=(300,300))
-            print("screenshot taken")
-            log_string = log_string + "screenshot taken" + "\n"
-            logger.info("screenshot taken")
-
-            print("sending solve request")
-            log_string = log_string + "sending solve request" + "\n"
-            logger.info("sending solve request")
-
-            try:
-                result = solver.normal(f"images_resized/{id}.png")
-                QUICK_REFILL_CAPTCHA_QUEUE.pop(0)
-                break
-            except:
-                print("unsolvable captcha. Check screenshot taken")
-                log_string = log_string + "unsolvable captcha. Check screenshot taken" + "\n"
-                logger.warning("unsolvable captcha. Check screenshot taken")
-                return None, None
-            
-        else:
-            time.sleep(1)
-
-    
-    code = result.get("code")
-    captcha_id = result.get("captchaId")
-
-    with open("statistics.csv", "a", encoding="utf-8") as f:
-        writer = csv.writer(f, delimiter=",")
-        writer.writerow([id, code, "incorrect"])
-
-    print("twoCaptcha response: "+code)
-    log_string = log_string + "twoCaptcha response: "+code + "\n"
-    logger.info("twoCaptcha response: "+code)
-    return code, captcha_id
-
 
 def write_correct_statistic():
     with open("statistics.csv", "r", encoding="utf-8") as f:
