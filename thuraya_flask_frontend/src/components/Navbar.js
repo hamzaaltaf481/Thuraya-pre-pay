@@ -29,7 +29,7 @@ const Navbar = () => {
         <Link to="/" className="logo flex items-center gap-1">
           <img
             src="./images/lgg.png"
-            className="w-[75px] h-[50px] mt-2 lg:ml-[600px]"
+            className="w-[75px] h-[50px] mt-2 mx-auto"
             alt="Logo"
           />
           <h1 className="text-4xl font-bold pt-2">
@@ -37,8 +37,8 @@ const Navbar = () => {
           </h1>
         </Link>
         {isMenuOpen && (
-          <div className="md:hidden fixed inset-0 bg-[#2D3E50] text-white z-30 ">
-            <div className="flex justify-end p-4 translate-x-0 w-[33%]">
+          <div className="lg:w-[100px] bg-[#2D3E50] text-white ">
+            <div className="flex justify-end p-4">
               <button onClick={toggleMenu}>
                 <FaTimes size={24} />
               </button>
