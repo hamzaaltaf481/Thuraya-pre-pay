@@ -33,7 +33,7 @@ const Navbar = () => {
             alt="Logo"
           />
           <h1 className="text-4xl font-bold pt-2">
-            Thuraya <span className="text-[#7a9757]">PrePay</span>
+            Thuraya<span className="text-[#7a9757]">PrePay</span>
           </h1>
         </Link>
         {isMenuOpen && (
