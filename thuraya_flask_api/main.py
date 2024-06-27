@@ -178,4 +178,5 @@ if __name__ == "__main__":
     options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
-    app.run(debug=True, use_reloader=False)
+    host = '0.0.0.0' if os.getenv("ENV") == 'production' else 'localhost'
+    app.run(debug=True, use_reloader=False, host=host)
