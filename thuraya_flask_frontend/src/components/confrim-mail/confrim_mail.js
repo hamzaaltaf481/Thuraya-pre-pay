@@ -11,8 +11,9 @@ const ConfirmMail = () => {
   const handleConfirmEmail = async () => {
     try {
       swal("Loading", "Please wait...", "info");
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
       const response = await axios.post(
-        `https://localhost:3000/confirm_email/${token}`,
+        `https://${host}:3000/confirm_email/${token}`,
       );
       console.log(response.data)
       setMessage(response.data);

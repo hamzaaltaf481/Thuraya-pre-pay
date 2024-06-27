@@ -12,10 +12,11 @@ export default function RefillUnits() {
   const [refillUnits, setRefillUnits] = useState([]);
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
 
   const fetchRefillUnits = () => {
     axios
-      .get("http://localhost:5000/api/check-availability")
+      .get(`http://${host}:5000/api/check-availability`)
       .then((response) => {
         console.log("response", response.data);
         refillUnitsAvailability = response.data;
@@ -84,7 +85,7 @@ export default function RefillUnits() {
       }));
       console.log("units", units);
       const response = await axios.post(
-        "http://localhost:5000/api/purchase",
+        `http://${host}:5000/api/purchase`,
         { units },
         {
           headers: {
@@ -110,7 +111,7 @@ export default function RefillUnits() {
       }));
 
       const response = await axios.post(
-        "http://localhost:5000/api/purchase",
+        `http://${host}:5000/api/purchase`,
         {
           units,
           email: `${email}`,
