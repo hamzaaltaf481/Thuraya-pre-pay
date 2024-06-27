@@ -18,7 +18,6 @@
 # TODO: add second input with confirm email
 # TODO: minor adjustments in the frontend
 # TODO: with the current main config does not auto reload the server with changes
-# TODO: signup as a captcha solver to check and optimize
 
 import os
 from dotenv import load_dotenv
