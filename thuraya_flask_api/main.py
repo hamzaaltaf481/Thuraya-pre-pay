@@ -59,7 +59,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 application = app
-CORS(app, origins=['http://localhost:3000','http://localhost:3001'])
+CORS(app, origins=['http://localhost:3000','http://localhost:3001', 'https://signumtechnologies.com'])
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(os.getenv("SECRET_KEY"))
