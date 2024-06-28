@@ -19,4 +19,3 @@ SQLAlchemy==2.0.4
 Werkzeug==2.2.3
 flask-cors==4.0.1
 wheel==0.37.1
-gunicon==20.1.0
