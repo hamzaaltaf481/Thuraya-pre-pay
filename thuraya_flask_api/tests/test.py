@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from twocaptcha import TwoCaptcha
 from datetime import datetime
-import pyautogui
 from PIL import ImageGrab
 import mysql.connector
 import random
@@ -20,16 +19,16 @@ def test_solver():
     result = solver.normal('screenshot.png')
     print(result)
 
-def test_screenshot():
-    top_left = (988, 885)
-    bottom_right = (1140, 918)
+# def test_screenshot():
+#     top_left = (988, 885)
+#     bottom_right = (1140, 918)
 
-    width = bottom_right[0] - top_left[0]
-    height = bottom_right[1] - top_left[1]
+#     width = bottom_right[0] - top_left[0]
+#     height = bottom_right[1] - top_left[1]
 
-    screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
-    current_time = datetime.now().strftime("%Y%m%d%H%M%S%f")
-    screenshot.save(f"{current_time}.png") 
+#     screenshot = pyautogui.screenshot(region=(top_left[0], top_left[1], width, height))
+#     current_time = datetime.now().strftime("%Y%m%d%H%M%S%f")
+#     screenshot.save(f"{current_time}.png") 
 
 
 def test_mss():

@@ -20,8 +20,9 @@ export default function Signup() {
       swal("Loading", "Please wait...", "info");
 
       // Send form data to backend API
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
       const response = await axios.post(
-        "http://localhost:5000/api/signup",
+        `http://${host}:5000/api/signup`,
         formData
       );
       console.log(response);

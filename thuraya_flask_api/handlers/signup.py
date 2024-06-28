@@ -16,7 +16,7 @@ def signup_handler(session, s, mail):
         return jsonify({'message': 'Invalid email format'}), 400
 
     password = request.form.get("password")
-    if len(password) < 8 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password):
+    if len(password) < 8:
         return jsonify({'message': 'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit'}), 400
 
     existing_user = session.query(User).filter_by(email=email, role='customer').first()

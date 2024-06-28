@@ -19,10 +19,11 @@ export default function QuickRefill() {
     return setIsOpen(true);
   };
   const token = localStorage.getItem("token");
+  const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
 
   const fetchRefillUnits = () => {
     axios
-      .get("http://localhost:5000/api/check-availability")
+      .get(`http://${host}:5000/api/check-availability`)
       .then((response) => {
         console.log("response", response.data);
         refillUnitsAvailability = response.data;
@@ -44,7 +45,7 @@ export default function QuickRefill() {
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
-        "http://localhost:5000/api/quick_refill",
+        `http://${host}:5000/api/quick_refill`,
         {
           phone: `${thurayaNumber}`,
           price: `${unitPrice}`,
@@ -90,7 +91,7 @@ export default function QuickRefill() {
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
-        "http://localhost:5000/api/quick_refill",
+        `http://${host}:5000/api/quick_refill`,
         {
           phone: `${thurayaNumber}`,
           price: `${unitPrice}`,

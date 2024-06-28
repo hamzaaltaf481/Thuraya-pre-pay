@@ -13,17 +13,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support import expected_conditions as EC
 from bot.bot import fill_refill_captcha_code, fill_scratch_data
-from bot.captcha import solve_refill_captcha, write_correct_statistic
+from bot.captcha import write_correct_statistic
 import os
 from twocaptcha import TwoCaptcha
 from handlers.transaction import create_transaction
 from handlers.transaction import create_transaction_detail
 from utils.check_balance import find_details
 from datetime import datetime
+from PIL import Image
+import csv
 
 load_dotenv()
 
-def quick_refill_handler(request, session, logger):
+QUICK_REFILL_QUEUE = []
+
+def quick_refill_handler(request, session, logger, driver):
     log_string = ""
     try:
         start_time = time.time()
@@ -65,6 +69,7 @@ def quick_refill_handler(request, session, logger):
         valid = check_valid(phone, price)
 
         if not valid:
+            # TODO: log here and return error message
             return jsonify({"message": "Phone or Price invalid!"}), 400
             
         card_number, card_id, selling_price, error = get_card(price, session)
@@ -113,7 +118,7 @@ def quick_refill_handler(request, session, logger):
             logger.info("Refill not allowed")
             # TODO: maybe send email in this case
             return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
-        log_string = perform_quick_refill(log_string, logger, card_number, phone)
+        log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
         discount = 0
         try:
             promo_code = data.get("promo_code")
@@ -139,7 +144,7 @@ def quick_refill_handler(request, session, logger):
     except Exception as e:
         print(str(e))
         # create an instance of failed_transaction
-        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.datetime.now())
+        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.now())
         session.add(failed_transaction)
 
         # commit the transaction
@@ -149,59 +154,80 @@ def quick_refill_handler(request, session, logger):
 
 
 
-def perform_quick_refill(log_string, logger, card_number, phone):
+def perform_quick_refill(log_string, logger, card_number, phone, driver):
     return log_string
     with open("constants.json") as f:
         constants = json.load(f)
+    direct_refill_url = constants["directRefilUrl"]
     
-    driver = webdriver.Chrome()
-    driver.minimize_window()
+    for z in range(1000): 
+        if len(QUICK_REFILL_QUEUE) > 1:
+            time.sleep(1)
+        else:
+            break
+
+    driver.execute_script("window.open('');")
+    new_tab_handle = driver.window_handles[-1]
+    QUICK_REFILL_QUEUE.append(new_tab_handle)
+    driver.switch_to.window(new_tab_handle)
+    driver.get(direct_refill_url)
+    WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.ID, 'captchaCode')))
+
     print("driver initiated")
     log_string = log_string + "driver initiated" + "\n"
     logger.info("driver initiated")
 
-    driver.get(constants["directRefilUrl"])
     solver = TwoCaptcha(os.getenv("CAPTCHA_SOLVER_API_KEY"))
 
     while True:
         html_content = driver.page_source
 
-        if constants["scratchSuccessfulMessage"] in html_content:
-            try:
-                solver.report(captcha_id, True)
-            except:
-                pass
-            break
-        else:
-            body = driver.find_element(By.TAG_NAME, "body")
-            fill_scratch_data(driver, phone, card_number)
-            print("phone and card data filled")
-            log_string = log_string + "phone and card data filled" + "\n"
-            logger.info("phone and card data filled")
+        tab_handle_info = QUICK_REFILL_QUEUE[0]
+        if tab_handle_info == new_tab_handle:
 
-            error_page = False
-            if "captcha error" in html_content:
+            if constants["scratchSuccessfulMessage"] in html_content:
                 try:
-                    solver.report(captcha_id, False)
+                    solver.report(captcha_id, True)
+                    print("captcha reported as solved")
                 except:
                     pass
-                print("captcha not solved")
-                log_string = log_string + "captcha not solved" + "\n"
-                logger.warning("captcha not solved")
-                error_page = True
+                # close the current tab chrome
+                QUICK_REFILL_QUEUE.remove(new_tab_handle)
+                driver.close()
+                driver.switch_to.window(driver.window_handles[0])
+                break
+            else:
+                body = driver.find_element(By.TAG_NAME, "body")
+                fill_scratch_data(driver, phone, card_number)
+                print("phone and card data filled")
+                log_string = log_string + "phone and card data filled" + "\n"
+                logger.info("phone and card data filled")
 
-            code, captcha_id = solve_refill_captcha(error_page, driver, logger, log_string, solver)
-            if code == None:
-                driver.refresh()
-                continue 
+                error_page = False
+                if "captcha error" in html_content:
+                    try:
+                        solver.report(captcha_id, False)
+                        print("captcha reported as not solved")
+                    except:
+                        pass
+                    print("captcha not solved")
+                    log_string = log_string + "captcha not solved" + "\n"
+                    logger.warning("captcha not solved")
+                    error_page = True
 
-            fill_refill_captcha_code(driver, code)
-            print("captcha solution entered")
-            log_string = log_string + "captcha solution entered" + "\n"
-            logger.info("captcha solution entered")
-            WebDriverWait(driver, float("inf")).until(staleness_of(body))
+                code, captcha_id = solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver)
+                if code is None:
+                    driver.refresh()
+                    continue
 
-    driver.quit()
+                fill_refill_captcha_code(driver, code)
+                print("captcha solution entered")
+                log_string = log_string + "captcha solution entered" + "\n"
+                logger.info("captcha solution entered")
+                WebDriverWait(driver, float("inf")).until(staleness_of(body))
+        else:
+            time.sleep(1)
+
     write_correct_statistic()
     print("refill successful")
     log_string = log_string + "refill successful" + "\n"
@@ -209,3 +235,65 @@ def perform_quick_refill(log_string, logger, card_number, phone):
 
     return log_string
 
+
+def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
+
+    if new_tab_handle not in QUICK_REFILL_QUEUE:
+        QUICK_REFILL_QUEUE.append(new_tab_handle)
+
+    try:
+        with open("statistics.csv", "r", encoding="utf-8") as f:
+            id = sum(1 for line in f) + 1
+    except:
+        id = 0
+
+    for i in range(1000):
+        
+        tab_handle_info = QUICK_REFILL_QUEUE[0]
+        if tab_handle_info == new_tab_handle:
+            time.sleep(1)
+            # TODO: adjust this value
+            captcha_element = driver.find_element(By.ID, "theForm_CaptchaImage")
+            captcha_element.screenshot(f"images/{id}.png")
+
+            im = Image.open(f"images/{id}.png")
+            im_resized = im.resize((300, 60))
+            im_resized.save(f"images_resized/{id}.png", dpi=(300,300))
+            print("screenshot taken")
+            log_string = log_string + "screenshot taken" + "\n"
+            logger.info("screenshot taken")
+
+            print("sending solve request")
+            log_string = log_string + "sending solve request" + "\n"
+            logger.info("sending solve request")
+
+            try:
+                result = solver.normal(f"images_resized/{id}.png")
+                break
+            except:
+                print("unsolvable captcha. Check screenshot taken")
+                log_string = log_string + "unsolvable captcha. Check screenshot taken" + "\n"
+                logger.warning("unsolvable captcha. Check screenshot taken")
+                return None, None
+            
+        else:
+            time.sleep(1)
+
+    QUICK_REFILL_QUEUE.remove(new_tab_handle)
+    code = result.get("code")
+    QUICK_REFILL_QUEUE.append(new_tab_handle)
+    for i in range(1000):
+        if QUICK_REFILL_QUEUE[0] == new_tab_handle:
+            break
+        else:
+            time.sleep(1)
+    captcha_id = result.get("captchaId")
+
+    with open("statistics.csv", "a", encoding="utf-8") as f:
+        writer = csv.writer(f, delimiter=",")
+        writer.writerow([id, code, "incorrect"])
+
+    print("twoCaptcha response: "+code)
+    log_string = log_string + "twoCaptcha response: "+code + "\n"
+    logger.info("twoCaptcha response: "+code)
+    return code, captcha_id
