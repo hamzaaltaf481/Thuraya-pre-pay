@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer
-      className=" py-10 border-t"
+      className="py-10 border-t"
       style={{ backgroundColor: "var(--blue-color)" }}
-      
     >
-      <div className="container mx-auto flex flex-wrap justify-between items-center">
-        <div className="w-full md:w-1/4 text-center md:text-left mb-4 md:mb-0">
+      <div className="container mx-auto flex flex-wrap justify-between items-start px-5 space-y-4 md:space-y-0">
+        <div className="w-full md:w-1/4 text-center md:text-left">
           <h2
-            className="text-4xl font-bold"
+            className="text-3xl md:text-4xl font-bold"
             style={{ color: "var(--green-color)" }}
           >
             Thuraya<span className="text-white">PrePay</span>
@@ -22,15 +21,14 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#7a9757] hover:text-blue-500"
-              style={{color: "#7a9757",}}
             >
-              <i className="fab fa-linkedin text-[#7a9757]" style={{color: "#7a9757",}} ></i>
+              <i className="fab fa-linkedin" style={{ color: "#7a9757" }}></i>
             </a>
             <a
               href="https://www.twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-blue-500"
+              className="text-[#7a9757] hover:text-blue-500"
             >
               <i className="fab fa-twitter"></i>
             </a>
@@ -38,7 +36,7 @@ const Footer = () => {
               href="https://www.instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-blue-500"
+              className="text-[#7a9757] hover:text-blue-500"
             >
               <i className="fab fa-instagram"></i>
             </a>
@@ -46,18 +44,18 @@ const Footer = () => {
               href="https://www.facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-blue-500"
+              className="text-[#7a9757] hover:text-blue-500"
             >
               <i className="fab fa-facebook"></i>
             </a>
           </div>
         </div>
-        <div className="w-full md:w-1/4 text-center md:text-left mb-4 md:mb-0">
+        <div className="w-full md:w-1/4 text-center md:text-left">
           <ul className="space-y-2">
             <li>
               <Link
                 to="/"
-                className="text-white text-3xl font-bold border-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757]"
+                className="text-white text-lg md:text-xl font-bold border-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757]"
               >
                 Home
               </Link>
@@ -65,7 +63,7 @@ const Footer = () => {
             <li>
               <a
                 href="/support"
-                className="text-white border-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757] text-3xl font-bold"
+                className="text-white text-lg md:text-xl font-bold border-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757]"
               >
                 Support
               </a>
@@ -73,28 +71,30 @@ const Footer = () => {
             <li>
               <a
                 href="/about"
-                className="text-white hborder-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757] text-3xl font-bold"
+                className="text-white text-lg md:text-xl font-bold border-b-4 border-transparent focus:border-[#7a9757] hover:border-[#7a9757] hover:text-[#7a9757]"
               >
                 About
               </a>
             </li>
           </ul>
         </div>
-        <div className="w-full md:w-1/4 text-center md:text-left mb-4 md:mb-0">
-          <h3 className="font-bold mb-2 text-white text-3xl">We Accept</h3>
+        <div className="w-full md:w-1/4 text-center md:text-left">
+          <h3 className="font-bold mb-2 text-white text-lg md:text-xl">
+            We Accept
+          </h3>
           <div className="flex justify-center md:justify-start space-x-4">
             <img
               src="./images/Visa_logo.png"
-              alt="MasterCard"
-              className="w-40"
+              alt="Visa"
+              className="w-20 md:w-40"
             />
           </div>
         </div>
-        <div className="w-full md:w-1/4 text-center md:text-left mb-4 md:mb-0">
+        <div className="w-full md:w-1/4 text-center md:text-left">
           <img
             src="./images/lg.jpg"
             alt="Thuraya"
-            className="w-[250px] mx-auto md:mx-0"
+            className="w-40 md:w-[250px] mx-auto md:mx-0"
           />
         </div>
       </div>
@@ -106,7 +106,7 @@ const Footer = () => {
           L.L.C.
         </p>
         <div className="mt-2">
-          <a href="/terms" className=" hover:underline mx-2 text-white">
+          <a href="/terms" className="hover:underline mx-2 text-white">
             Terms & Conditions
           </a>
           <a href="/privacy" className="text-white hover:underline mx-2">
