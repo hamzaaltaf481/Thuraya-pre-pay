@@ -8,7 +8,7 @@ load_dotenv()
 def confirm_email_handler(session, s, token):
     frontend_url = os.getenv("FRONTEND_URL")
     try:
-        email = s.loads(token, salt=os.getenv("PASSWORD_RESET_SALT"), max_age=3600)
+        email = s.loads(token, salt=os.getenv("PASSWORD_RESET_SALT"))
     except:
         return redirect(f"http://{frontend_url}/?message=invalid_or_expired_token")
 
