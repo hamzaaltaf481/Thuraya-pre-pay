@@ -88,8 +88,7 @@ def quick_refill_handler(request, session, logger, driver):
         log_string = log_string + "email: "+email + "\n"
 
         # TODO: uncomment this line
-        # ip_address = request.remote_addr
-        ip_address = "39.47.126.137"
+        ip_address = request.remote_addr
         print("ip_address: "+ip_address)
         log_string = log_string + "ip_address: "+ip_address + "\n"
         logger.info("ip_address: "+ip_address)
