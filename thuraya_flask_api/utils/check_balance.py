@@ -33,11 +33,6 @@ def find_details(phone, log_string, logger):
         log_string = log_string + "expiry date: " + response_json["Last Active Date"] + "\n"
         logger.info("expiry date: " + response_json["Last Active Date"])
 
-        print("current status: ")
-        print(response_json["Current Status"])
-        log_string = log_string + "current status: " + response_json["Current Status"] + "\n"
-        logger.info("current status: " + response_json["Current Status"])
-        # TODO: maybe no need to return current status
         return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], None
     except:
         error = response_json["Error"]
