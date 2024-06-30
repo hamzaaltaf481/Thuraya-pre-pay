@@ -208,7 +208,6 @@
 #                 writer.writerow([total_time, phone, "failed", log_string])
 
 
-#             # TODO: remove this jsonify        
 #             return jsonify({"message": "Log in Failed"}), 500    
 
 
@@ -222,7 +221,6 @@
 #             print("emailing codes")
 #             log_string = log_string + "emailing codes" + "\n"
 #             email_codes_password(codes, email, log_string)
-#             # TODO: add create transaction and create transaction detail
 #             return jsonify({"message": "success", "refill_status": "mailed"}), 200
         
 #         print("logged in")
@@ -247,7 +245,6 @@
 #             writer.writerow([total_time, phone, password, log_string])
 
 
-#         # TODO: remove this jsonify        
 #         return jsonify({"message": "Logged in!"}), 200    
 
 #         ################################
@@ -267,7 +264,6 @@
 #             log_string = log_string + "not active" + "\n"
 #             log_string = log_string + "emailing codes" + "\n"
 #             email_codes_password(codes, email, log_string)
-#             # TODO: add create transaction and create transaction detail
 #             return jsonify({"message": "success", "scraped": scraped, "refill_status": "mailed"}), 200
         
 #         print(scraped)
@@ -303,7 +299,6 @@
 #         return jsonify({"message": "success", "scraped": scraped, "scraped_after_refill": scraped_after_refill, "refill_status": status}), 200
 #     except Exception as e:
 #         print(str(e))
-#         # TODO: uncomment this when going prod
 
 #         # msg = Message('Crash Report', recipients=["mrni8mare@gmail.com"])
 #         # msg.body = 'Server crashed with error: '+str(e)

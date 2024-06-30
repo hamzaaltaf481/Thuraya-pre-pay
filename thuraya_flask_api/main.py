@@ -18,6 +18,7 @@
 # TODO: add second input with confirm email
 # TODO: minor adjustments in the frontend
 # TODO: with the current main config does not auto reload the server with changes
+# TODO: add better monitoring with either emails or with discord
 
 import os
 from dotenv import load_dotenv
