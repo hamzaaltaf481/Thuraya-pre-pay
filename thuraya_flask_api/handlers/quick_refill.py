@@ -69,7 +69,9 @@ def quick_refill_handler(request, session, logger, driver):
         valid = check_valid(phone, price)
 
         if not valid:
-            # TODO: log here and return error message
+            print("phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price))
+            log_string = log_string + "phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price) + "\n"
+            logger.info("phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price))
             return jsonify({"message": "Phone or Price invalid!"}), 400
             
         card_number, card_id, selling_price, error = get_card(price, session)
