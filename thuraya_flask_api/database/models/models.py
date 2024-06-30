@@ -25,7 +25,6 @@ class User(Base):
     email_confirmed = Column(Boolean)
 
     transactions = relationship('UserTransaction', back_populates='user')
-    transaction_details = relationship('TransactionDetail', back_populates='user')
 
 class Card(Base):
     __tablename__ = 'cards'
@@ -110,12 +109,9 @@ class TransactionDetail(Base):
     __tablename__ = 'transaction_details'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    #TODO: can remove user_id and type from this table and model
     promo_id = Column(Integer, ForeignKey('promo_codes.id'))
     transaction_id = Column(Integer, ForeignKey('transactions.id'))
     card_details_id = Column(Integer, ForeignKey('card_details.id'))
-    type = Column(String(255))
     transaction_details = Column(Text)
     sat_phone_number = Column(Integer)
     selling_price = Column(Integer)
@@ -126,7 +122,6 @@ class TransactionDetail(Base):
     email_status = Column(Boolean)
     remarks = Column(String(255))
 
-    user = relationship('User', back_populates='transaction_details')
     promo = relationship('PromoCode', back_populates='transaction_details')
     transaction = relationship('UserTransaction', back_populates='transaction_details')
     card_detail = relationship('CardDetail', back_populates='transaction_details')
