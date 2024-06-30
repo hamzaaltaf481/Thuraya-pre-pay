@@ -62,9 +62,7 @@ def purchase_handler(request, session, logger, mail):
             logger.info("no promo code")
 
         recharge_status = None
-        # ip_address = request.remote_addr
-        ip_address = "39.47.126.137"
-        # TODO: dynamic ip address
+        ip_address = request.remote_addr
         print("ip_address:" + ip_address)
         transaction_logs = transaction_logs + "ip_address: " + ip_address + "\n"
         logger.info("ip_address: " + ip_address)

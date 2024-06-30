@@ -50,8 +50,7 @@ def view_scratch_codes_handler(session, request):
         key = os.getenv("ENCRYPTION_KEY")
         cipher_suite = Fernet(key)
         decrypted_number = cipher_suite.decrypt(scratch_code).decode('utf-8')
-        # TODO: only send the last 4 characters
-        card_detail_dict["scratch_code"] = decrypted_number
+        card_detail_dict["scratch_code"] = decrypted_number[-4:]
 
     return jsonify(card_dict), 200
 
