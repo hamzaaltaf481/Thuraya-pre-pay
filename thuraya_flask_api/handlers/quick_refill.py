@@ -108,8 +108,7 @@ def quick_refill_handler(request, session, logger, driver):
         log_string = log_string + str(codes) + "\n"
         logger.info(str(codes))
 
-        # TODO: maybe current status not needed
-        log_string, previous_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        log_string, previous_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
         if error:
             return jsonify({"message": "Invalid Account"}), 400
         if refill_allowed != "Yes":
@@ -131,7 +130,7 @@ def quick_refill_handler(request, session, logger, driver):
             log_string = log_string + "no promo code" + "\n"
             logger.info("no promo code")
 
-        log_string, new_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+        log_string, new_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
         transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill", "stripe", session)
         create_transaction_detail(promo_code, transaction_id, log_string, discount, False, "", session, codes)
 

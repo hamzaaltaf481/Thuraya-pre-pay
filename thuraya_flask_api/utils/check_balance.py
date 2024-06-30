@@ -38,10 +38,10 @@ def find_details(phone, log_string, logger):
         log_string = log_string + "current status: " + response_json["Current Status"] + "\n"
         logger.info("current status: " + response_json["Current Status"])
         # TODO: maybe no need to return current status
-        return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], response_json["Current Status"], None
+        return log_string, response_json["Credit Available"], response_json["Refill Allowed"], response_json["Last Active Date"], None
     except:
         error = response_json["Error"]
         print("Invalid Account")
         log_string = log_string + "Invalid Account" + "\n"
         logger.info("Invalid Account")
-        return log_string, None, None, None, None, error
+        return log_string, None, None, None, error
