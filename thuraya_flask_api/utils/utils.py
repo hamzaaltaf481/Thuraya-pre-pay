@@ -1,5 +1,3 @@
-# TODO: use flask mail object instead of custom mail function
-
 import secrets
 import string
 from fpdf import FPDF

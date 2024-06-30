@@ -25,13 +25,23 @@ def signup_handler(session, s, mail):
 
     hashed_password = generate_password_hash(request.form.get("password"), method='sha256')
     
-    # ip_address = request.remote_addr
-    ip_address = "39.47.126.137"
-    # TODO: dynamic ip address
+    ip_address = str(request.remote_addr)
 
     ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
     location = ip_info.json()
-    from_location = {"city": location["city"], "region": location["region"], "country": location["country"]}
+    try:
+        city = location["city"]
+    except:
+        city = "Unknown"
+    try:
+        region = location["region"]
+    except:
+        region = "Unknown"
+    try:
+        country = location["country"]
+    except:
+        country = "Unknown"
+    from_location = {"city": city, "region": region, "country": country}
 
     new_user = User(email=email, password=hashed_password, first_name=request.form.get("first_name"), last_name=request.form.get("last_name"), country_region=str(from_location), role='customer')
     session.add(new_user)
