@@ -61,7 +61,7 @@ CORS(app, origins=['http://localhost:3000','http://localhost:3001'])
 mail = Mail(app)
 s = URLSafeTimedSerializer(os.getenv("SECRET_KEY"))
 jwt = JWTManager(app)
-engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}")
+engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}:3307/{os.getenv('MYSQL_DB')}")
 Session = sessionmaker(bind=engine)
 
 # IN CASE OF DB ISSUES
