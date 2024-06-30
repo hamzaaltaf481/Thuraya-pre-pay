@@ -9,13 +9,7 @@
 # TODO: format all code maybe
 # TODO: ask Sir if to send the reciept to the user email for refill
 # TODO: add timestamps for all tables
-# TODO: move the archived code to new folder
-# TODO: use single driver and use tabs for all the requests
-# TODO: increase resolution of screenshot before solve request
-# TODO: add the http protocol to .env. Maybe remove .env from .gitignore
 # TODO: add logs for even when the return is not 200
-# TODO: design the admin frontend with html
-# TODO: add second input with confirm email
 # TODO: minor adjustments in the frontend
 # TODO: with the current main config does not auto reload the server with changes
 # TODO: add better monitoring with either emails or with discord
