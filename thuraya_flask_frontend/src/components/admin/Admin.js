@@ -91,8 +91,8 @@ const Admin = () => {
     setOpen(false);
   };
 
-  const handleRowClick = (index) => {
-    navigate(`/admin_card/${index}`, { state: { csvData } });
+  const handleRowClick = (id) => {
+    navigate(`/admin_card/${id}`, { state: { csvData } });
   };
 
   return (
