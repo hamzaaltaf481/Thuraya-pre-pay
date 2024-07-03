@@ -1,44 +1,50 @@
-from flask import jsonify
+from flask import jsonify, request
 from cryptography.fernet import Fernet
 import os
-from database.models.models import Card, CardDetail
-from flask_jwt_extended import decode_token
-from datetime import datetime
+from database.models.models import Card, CardDetail, User
+from flask_jwt_extended import decode_token, create_access_token
+from datetime import datetime, timedelta
 from utils.import_file import import_csv
+from werkzeug.security import check_password_hash
 
 
 def view_cards_handler(session, request):
     token = request.headers.get('Authorization')
     # TODO: add check for if decoding fails
-    # payload = decode_token(token)
-    # user_role = payload['user_role']
+    payload = decode_token(token)
+    user_role = payload['user_role']
 
-    # if user_role != "admin":
-    #     return jsonify({'message': 'Unauthorized'}), 401
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
     
     cards = session.query(Card)
     cards_dict = [card.to_dict() for card in cards]
 
-    # for card_dict in cards_dict:
-    #     cards_detail_dict = card_dict["card_details"]
-    #     for card_detail_dict in cards_detail_dict:
-    #         scratch_code = card_detail_dict["scratch_code"]
-    #         key = os.getenv("ENCRYPTION_KEY")
-    #         cipher_suite = Fernet(key)
-    #         decrypted_number = cipher_suite.decrypt(scratch_code).decode('utf-8')
-    #         card_detail_dict["scratch_code"] = decrypted_number
-    
     return jsonify(cards_dict), 200
+
+def admin_login_handler(session):
+    user = session.query(User).filter_by(email=request.form.get("email")).filter(User.role == 'admin').first()
+    if not user or not check_password_hash(user.password, request.form.get("password")):
+        return jsonify({'message': 'Login Unsuccessful. Please check email and password'}), 401
+    
+    if user.email_confirmed == False or user.email_confirmed == None:
+        return jsonify({'message': 'Email not confirmed'}), 401
+    
+    additional_claims = {"user_role": user.role, "user_id": user.id}
+    expires = timedelta(minutes=300000)
+    # TODO: make expire time lower for prod
+    access_token = create_access_token(identity=user.email, additional_claims=additional_claims, expires_delta=expires)
+    return jsonify({'message': 'Logged in successfully', 'access_token': access_token, 'first_name': user.first_name, 'last_name': user.last_name, "user_role": user.role}), 200
 
 
 def view_scratch_codes_handler(session, request):
     token = request.headers.get('Authorization')
     # TODO: add check for if decoding fails
-    # payload = decode_token(token)
-    # user_role = payload['user_role']
+    payload = decode_token(token)
+    user_role = payload['user_role']
 
-    # if user_role != "admin":
-    #     return jsonify({'message': 'Unauthorized'}), 401
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
     card_id = request.form.get("card_id")
 
     card = session.query(Card).filter(Card.id == card_id).first()
@@ -59,14 +65,16 @@ def import_card_handler(request, session):
 
     token = request.headers.get('Authorization')
     # TODO: add check for if decoding fails
-    # payload = decode_token(token)
-    # user_role = payload['user_role']
+    payload = decode_token(token)
+    user_role = payload['user_role']
 
     # TODO: uncomment this check after testing
-    # if user_role != "admin":
-    #     return jsonify({'message': 'Unauthorized'}), 401
-    
-    file = request.files['file']
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
+    try:
+        file = request.files['file']
+    except:
+        return jsonify({'message': 'No file provided'}), 400
     
     po_number = request.form.get("po_number")
     pl_number = request.form.get("pl_number")
@@ -85,12 +93,12 @@ def add_card_detail_handler(session, request):
 
     token = request.headers.get('Authorization')
     # TODO: add check for if decoding fails
-    # payload = decode_token(token)
-    # user_role = payload['user_role']
+    payload = decode_token(token)
+    user_role = payload['user_role']
 
     # TODO: uncomment this check after testing
-    # if user_role != "admin":
-    #     return jsonify({'message': 'Unauthorized'}), 401
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
 
     new_card_detail = CardDetail(
         card_id=request.form.get("card_id"),

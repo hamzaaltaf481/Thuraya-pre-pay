@@ -23,7 +23,7 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler, admin_login_handler
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
@@ -106,6 +106,12 @@ def migrate_db():
     session = Session()
     migrate_tables(session)
     return jsonify({"message": "success"}), 200
+
+@app.route('/api/admin/login', methods=['POST'])
+def admin_login():
+    session = Session()
+    response, code = admin_login_handler(session)
+    return response, code
 
 @app.route("/api/admin/import", methods=["POST"])
 def import_cards():

@@ -306,10 +306,51 @@
 			"response": []
 		},
 		{
-			"name": "admin-import_cards",
+			"name": "admin-login",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "0123456789aB",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "mrni8mare@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-import_cards",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -346,7 +387,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/home/zain/hamzaaltaf/myapp/thuraya_flask_api/cards.csv"
+							"src": "/home/zain/Development/Thuraya-pre-pay/thuraya_flask_api/cards.csv"
 						}
 					]
 				},
@@ -372,7 +413,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0NTQ4MCwianRpIjoiODFkMmY2YmEtOTE1NS00MjI3LWFmMWQtOGZkNWE3OGZlOGQ3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDU0ODAsImNzcmYiOiI1NmFkZDRiYi1lMjZhLTQ1OGEtYjM4Yi0yMjljYmY0MzBiZjEiLCJleHAiOjE3MzUzNDU0ODAsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.fCZ_KIapCNv_vc93_-a0mYj6sCuoOu-Zb_JWm1bs03Y",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
 						"type": "text"
 					}
 				],
@@ -395,7 +436,13 @@
 			"name": "admin-add-single-card",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -460,7 +507,13 @@
 			"name": "admin-view-scratch-codes",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
