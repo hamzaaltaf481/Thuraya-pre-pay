@@ -19,6 +19,7 @@ from twocaptcha import TwoCaptcha
 from handlers.transaction import create_transaction
 from handlers.transaction import create_transaction_detail
 from utils.check_balance import find_details
+from utils.utils import email_codes_password
 from datetime import datetime
 from PIL import Image
 import csv
@@ -27,7 +28,7 @@ load_dotenv()
 
 QUICK_REFILL_QUEUE = []
 
-def quick_refill_handler(request, session, logger, driver):
+def quick_refill_handler(request, session, logger, driver, mail):
     log_string = ""
     try:
         start_time = time.time()
@@ -89,7 +90,6 @@ def quick_refill_handler(request, session, logger, driver):
         log_string = log_string + "price: "+price + "\n"
         log_string = log_string + "email: "+email + "\n"
 
-        # TODO: uncomment this line
         ip_address = request.remote_addr
         print("ip_address: "+ip_address)
         log_string = log_string + "ip_address: "+ip_address + "\n"
@@ -100,25 +100,12 @@ def quick_refill_handler(request, session, logger, driver):
         log_string = log_string + "user_agent: "+str(user_agent) + "\n"
         logger.info("user_agent: "+str(user_agent))
         
-        # TODO: not sure about the point of this
-        last_4_digits = phone[-4:]
-
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
         print(codes)
         log_string = log_string + str(codes) + "\n"
         logger.info(str(codes))
 
-        log_string, previous_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
-        if error:
-            return jsonify({"message": "Invalid Account"}), 400
-        if refill_allowed != "Yes":
-            print("Refill not allowed")
-            log_string = log_string + "Refill not allowed" + "\n"
-            logger.info("Refill not allowed")
-            # TODO: maybe send email in this case
-            return jsonify({"message": "Refill not allowed. Phone is inactive. Maybe implement email."}), 400
-        log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
         discount = 0
         try:
             promo_code = data.get("promo_code")
@@ -131,11 +118,29 @@ def quick_refill_handler(request, session, logger, driver):
             log_string = log_string + "no promo code" + "\n"
             logger.info("no promo code")
 
+        log_string, previous_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
+        if error:
+            email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
+            transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
+            create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+            return jsonify({"message": "Invalid Account"}), 400
+        
+        if refill_allowed != "Yes":
+            email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
+            transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
+            create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+
+            print("Refill not allowed")
+            log_string = log_string + "Refill not allowed" + "\n"
+            logger.info("Refill not allowed")
+            return jsonify({"message": "Refill not allowed. Phone is inactive."}), 400
+        log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
+
         log_string, new_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
         transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill", "stripe", session)
         create_transaction_detail(promo_code, transaction_id, log_string, discount, False, "", session, codes)
 
-        time.sleep(3)
+        # time.sleep(3)
         total_time = time.time() - start_time
         with open("request_cycle_stats.csv", "a") as f:
             f.write(f"{total_time}\n")
@@ -155,7 +160,6 @@ def quick_refill_handler(request, session, logger, driver):
 
 
 def perform_quick_refill(log_string, logger, card_number, phone, driver):
-    return log_string
     with open("constants.json") as f:
         constants = json.load(f)
     direct_refill_url = constants["directRefilUrl"]

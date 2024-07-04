@@ -79,7 +79,7 @@ def index():
 @app.route("/api/quick_refill", methods=["POST"])
 def quick_refill():
     session = Session()
-    response, code = quick_refill_handler(request, session, logger, driver)
+    response, code = quick_refill_handler(request, session, logger, driver, mail)
     return response, code
 
 @app.route("/api/balance_check", methods=["POST"])
