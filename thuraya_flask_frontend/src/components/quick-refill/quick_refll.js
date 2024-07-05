@@ -137,17 +137,17 @@ export default function QuickRefill() {
       {isOpen === true && (
         <div
           id="slider"
-          className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden"
+          className="flex content-center items-center justify-center  fixed w-full h-screen backdrop-blur z-20 overflow-y-hidden"
         >
           <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
-            <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
-              <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
+            <div className="w-[90%] sm:w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl">
+              <h1 className="text-3xl font-bold text-left text-[#2D3E50]">
                 Enter Your Email
               </h1>
               <form className="mt-6">
                 <div className="mb-2 mt-6">
                   <input
-                    type="eamil"
+                    type="email"
                     placeholder=" Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -158,9 +158,9 @@ export default function QuickRefill() {
                 <div className="flex mt-6">
                   <button
                     onClick={handleGuestRefill}
-                    className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
+                    className="flex w-full sm:w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
                   >
-                    <h1 className=" text-xl ml-3 ">Enter</h1>
+                    <h1 className="text-xl ml-3">Enter</h1>
                     <img
                       src="/images/arrow.png"
                       alt="i"
@@ -174,13 +174,13 @@ export default function QuickRefill() {
         </div>
       )}
 
-      <div className="static">
-        <div className="  relative flex flex-col justify-start min-h-screen overflow-hidden">
-          <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-20 ">
+<div className="static">
+        <div className="relative flex flex-col justify-start min-h-screen overflow-hidden">
+          <div className="backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-4 sm:px-20">
             <div className="w-full p-5">
-              <div className="flex  justify-between mt-32">
+              <div className="flex justify-between mt-32">
                 <h1
-                  className="text-3xl font-bold  flex gap-4 items-center"
+                  className="text-3xl font-bold flex gap-4 items-center"
                   style={{ color: "var(--green-color)" }}
                 >
                   <FaArrowDown className="inline-block" />
@@ -191,7 +191,7 @@ export default function QuickRefill() {
                   to="/refill_units"
                   className="text-3xl font-bold text-black flex gap-4 items-center opacity-40"
                 >
-                  <FaArrowRight className=" inline-block" />
+                  <FaArrowRight className="inline-block" />
                   Refill Units
                 </Link>
               </div>
@@ -201,12 +201,13 @@ export default function QuickRefill() {
               <div className="flex gap-5">
                 <input
                   type="text"
-                  className={`mt-3 w-[7%] p-3 text-2xl border rounded-lg`}
+                  className="mt-3 w-[20%] sm:w-[7%] p-3 text-2xl border rounded-lg"
                   value={"+88216"}
+                  readOnly
                 />
                 <input
                   type="text"
-                  className={`mt-3 w-[10%] p-3 text-2xl border rounded-lg`}
+                  className="mt-3 w-[60%] sm:w-[10%] p-3 text-2xl border rounded-lg"
                   placeholder="XXXXXXXX"
                   value={thurayaNumber}
                   onChange={(e) =>
@@ -218,68 +219,129 @@ export default function QuickRefill() {
                 />
               </div>
 
-              {thurayaNumber.length === maxNoLength && ( // Show refill units only when 12 digits are entered
-                <div className=" transition-transform duration-300 delay-500">
-                  <p className="mt-5 text-lg text-gray-600  ">
+              {thurayaNumber.length === maxNoLength && (
+                <div className="transition-transform duration-300 delay-500">
+                  <p className="mt-5 text-lg text-gray-600">
                     Select refill units
                   </p>
-                  <div className="grid grid-cols-6  gap-10 mt-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3 lg:mr-[600px] ">
                     {refillUnits.map((unit, index) => (
                       <div
                         key={index}
-                        className={`p-4 border rounded-lg text-center ${
-                          unit.price === "Out of Stock"
-                            ? "text-gray-400"
-                            : "text-black"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="refillUnit"
-                          id={`unit-${unit.units}`}
-                          className="mr-2"
-                          disabled={unit.price === "Out of Stock"}
-                          onClick={() => {
-                            setUnitPrice(unit.price);
-                          }}
-                        />
-                        <label htmlFor={`unit-${unit.units}`}>
-                          <p className="text-xl font-bold">
-                            {unit.units} units
-                          </p>
-                          <p>{unit.price}</p>
-                        </label>
+                        className={`py-[4px] border-y-[3px] rounded text-center w-full h-full sm:w-[200px]  ${
+                            unit.price === "Out of Stock"
+                            ? "text-gray-400 hover:border-[#f04d55]"
+                            : unit.units === 10
+                              ? "hover:border-[#f78d40]"
+                              : unit.units === 39
+                              ? "hover:border-[#c640c2]"
+                              : unit.units === 50
+                              ? "hover:border-[#8bc441]"
+                              : unit.units === 80
+                              ? "hover:border-[#75d0f5]"
+                              : unit.units === 160
+                              ? "hover:border-[#a8b6b6]"
+                              : unit.units === 500
+                              ? "hover:border-[#3f48cc]"
+                              : unit.units === 1000
+                              ? "hover:border-[#880015]"
+                              : unit.units === 2500
+                              ? "hover:border-[#22b14c]"
+                              : "border-black"
+                              } `}
+                            >
+                        <div
+                          className={`flex border-x-[3px] w-full px-2 h-full sm:w-[200px] flex-row ${
+                              unit.units === 10
+                                ? "hover:border-[#f78d40]"
+                                : unit.units === 20
+                                ? "hover:border-[#f04d55]"
+                                : unit.units === 39
+                                ? "hover:border-[#c640c2]"
+                                : unit.units === 50
+                                ? "hover:border-[#8bc441]"
+                                : unit.units === 80
+                                ? "hover:border-[#75d0f5]"
+                                : unit.units === 160
+                                ? "hover:border-[#a8b6b6]"
+                                : unit.units === 500
+                                ? "hover:border-[#3f48cc]"
+                                : unit.units === 1000
+                                ? "hover:border-[#880015]"
+                                : unit.units === 2500
+                                ? "hover:border-[#22b14c]"
+                                : "border-black"
+                          }`}
+                        >
+                          <div
+                            className={`rounded-full text-white text-lg ${
+                              unit.units === 10
+                                ? "bg-[#f78d40] w-12 h-12 pt-2 "
+                                : unit.units === 20
+                                ? "bg-[#f04d55] w-12 h-12 pt-2 "
+                                : unit.units === 39
+                                ? "bg-[#c640c2] w-12 h-12 pt-2 "
+                                : unit.units === 50
+                                ? "bg-[#8bc441] w-12 h-12 pt-2 "
+                                : unit.units === 80
+                                ? "bg-[#75d0f5] w-12 h-12 pt-2 "
+                                : unit.units === 160
+                                ? "bg-[#a8b6b6] w-12 h-12 pt-2 "
+                                : unit.units === 500
+                                ? "bg-[#3f48cc] w-12 h-12 pt-2 "
+                                : unit.units === 1000
+                                ? "bg-[#880015] w-12 h-12 pt-2 "
+                                : unit.units === 2500
+                                ? "bg-[#22b14c] w-12 h-12 pt-2 "
+                                : "text-black"
+                            }`}
+                          >
+                            {unit.units}
+                          </div>
+                          <div className="">
+                            <input
+                              type="radio"
+                              name="refillUnit"
+                              id={`unit-${unit.units}`}
+                              className="ml-4 mb-5 mr-2"
+                              disabled={unit.price === "Out of Stock"}
+                              onClick={() => {
+                                setUnitPrice(unit.price);
+                              }}
+                            />
+                            <label htmlFor={`unit-${unit.units}`}>
+                              <p className="text-xl font-bold">
+                                {unit.units} units
+                              </p>
+                              <p>{unit.price}</p>
+                            </label>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
                   <hr
-                    className="my-8 bottom-4 border-1 "
+                    className="my-8 border-1"
                     style={{ borderColor: "var(--green-color)" }}
                   />
                   {token ? (
                     <button
                       className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-                      style={{
-                        backgroundColor: "var(--blue-color)",
-                      }}
+                      style={{ backgroundColor: "var(--blue-color)" }}
                       onClick={handleLoginRefill}
                     >
                       <FaArrowRight className="mr-2" />
                       Proceed to payment
                     </button>
                   ) : (
-                    <>
-                      <button
-                        className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
-                        style={{
-                          backgroundColor: "var(--blue-color)",
-                        }}
-                        onClick={handlePopup}
-                      >
-                        <FaArrowRight className="mr-2" />
-                        Proceed to payment as guest
-                      </button>
-                    </>
+                    <button
+                      className="mt-10 px-7 py-4 text-white text-xl rounded flex items-center"
+                      style={{ backgroundColor: "var(--blue-color)" }}
+                      onClick={handlePopup}
+                    >
+                      <FaArrowRight className="mr-2" />
+                      Proceed to payment as guest
+                    </button>
                   )}
                 </div>
               )}

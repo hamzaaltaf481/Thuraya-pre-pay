@@ -4,53 +4,17 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer
-      className="py-10 border-t"
-      style={{ backgroundColor: "var(--blue-color)" }}
+      className="py-10 border-t bg-[#183567]"
     >
-      <div className="container mx-auto flex flex-wrap justify-between items-start px-5 space-y-4 md:space-y-0">
-        <div className="w-full md:w-1/4 text-center md:text-left">
-          <h2
-            className="text-3xl md:text-4xl font-bold"
-            style={{ color: "var(--green-color)" }}
-          >
-            Thuraya<span className="text-white">PrePay</span>
-          </h2>
-          <div className="mt-4 flex justify-center md:justify-start space-x-4">
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#7a9757] hover:text-blue-500"
-            >
-              <i className="fab fa-linkedin" style={{ color: "#7a9757" }}></i>
-            </a>
-            <a
-              href="https://www.twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#7a9757] hover:text-blue-500"
-            >
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#7a9757] hover:text-blue-500"
-            >
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#7a9757] hover:text-blue-500"
-            >
-              <i className="fab fa-facebook"></i>
-            </a>
-          </div>
+      <div className="container mx-auto flex flex-wrap justify-between items-start px-5 ">
+        <div className="w-full md:w-1/4 text-start md:text-left">
+          <img
+            src="./images/fl_logo.png"
+            alt="Thuraya"
+            className=" w-60 md:w-[500px] mx-auto md:mx-0"
+          />
         </div>
-        <div className="w-full md:w-1/4 text-center md:text-left">
+        <div className="w-full md:w-1/4 text-center md:text-center">
           <ul className="space-y-2">
             <li>
               <Link
@@ -90,20 +54,18 @@ const Footer = () => {
             />
           </div>
         </div>
-        <div className="w-full md:w-1/4 text-center md:text-left">
+        <div className="w-full md:w-1/4 text-center text-white text-xl  md:text-left font-bold">
+        Developed by ePatronus
           <img
-            src="./images/lg.jpg"
+            src="./images/ePatronus-logo.png"
             alt="Thuraya"
-            className="w-40 md:w-[250px] mx-auto md:mx-0"
+            className="w-40 md:w-[250px] mx-auto md:mx-0 bg-white lg:mt-2"
           />
         </div>
       </div>
       <div className="border-t mt-10 pt-4 text-center text-white text-sm">
         <p>
           ThurayaPrePay 2024. All rights reserved.
-          <br />
-          ThurayaPrePay.com is fully owned and operated by Oodi Electronics
-          L.L.C.
         </p>
         <div className="mt-2">
           <a href="/terms" className="hover:underline mx-2 text-white">

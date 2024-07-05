@@ -27,9 +27,9 @@ function App() {
   return (
     <>
       <Navbar />
-      {/* <div className=" overflow-hidden">
+      <div className=" overflow-hidden">
         <Routes>
-          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/" element={<LandingPage/>} />
           <Route exact path="/quick_refill" element={<QuickRefill />} />
           <Route exact path="/refill_units" element={<RefillUnits />} />
           <Route
@@ -41,11 +41,11 @@ function App() {
           <Route exact path="/forget-pass" element={<Forgetpass />} />
           <Route exact path="/confirm_email/:token" element={<ConfirmMail />} />
         </Routes>
-      </div> */}
-      <Routes>
-        <Route path="/" element={<Admin />} />
-        <Route path="/admin_card/:index" element={<AdminCard />} />
-      </Routes>
+      </div>
+      {/* <Routes>
+      <Route path="/" element={<Admin setData={setData} data={data} />} />
+      <Route path="/admin_card/:index" element={<Admin_cards data={data} />} />
+      </Routes> */}
       <Footer className="" />
     </>
   );
