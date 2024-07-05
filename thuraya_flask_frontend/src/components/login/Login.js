@@ -27,7 +27,7 @@ export default function Login() {
         setTimeout(() => {
           window.location.href = "/";
         }, 3000);
-      localStorage.setItem('token', response.data.access_token);
+        localStorage.setItem("token", response.data.access_token);
       } else {
         throw new Error("Error logging in");
       }
@@ -39,9 +39,9 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-      <div className="w-full pt-10 pl-10 pr-10 pb-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
-        <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">Login</h1>
+    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden mx-2">
+      <div className=" w-full p-6 sm:p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl">
+        <h1 className="text-3xl font-bold text-left text-[#2D3E50]">Login</h1>
         <form onSubmit={handleLogin} className="mt-6">
           <div className="mb-2 mt-6">
             <input
@@ -61,21 +61,21 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="flex mt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-6 items-center">
             <button
               type="submit"
-              className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#2D3E50]  pt-2 gap-1 shadow-md font-medium"
+              className="flex w-full sm:w-auto h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#2D3E50] pt-2 gap-1 shadow-md font-medium mb-4 sm:mb-0 justify-center"
             >
-              <h1 className=" text-xl ml-3">Login</h1>
+              <h1 className="text-xl ml-3 ">Login</h1>
               <img
                 src="/images/arrow.png"
-                alt="i"
+                alt="arrow"
                 className="w-[20.25px] h-[24px] mt-1"
               />
             </button>
             <a
               href="/forget-pass"
-              className="text-md text-[#2D3E50] hover:underline ml-[210px] mt-4"
+              className="text-md text-[#2D3E50] hover:underline mt-4 sm:mt-0 "
             >
               Forget Password?
             </a>
@@ -83,7 +83,6 @@ export default function Login() {
         </form>
 
         <p className="mt-8 text-sm font-light text-center text-gray-700">
-          {" "}
           Don't have an account?{" "}
           <Link to="/signup" className="font-medium text-[#2D3E50] hover:underline">
             Signup
