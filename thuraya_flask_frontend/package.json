@@ -1,6 +1,6 @@
 {
   "name": "thuraya_flask_frontend",
-  "homepage":"https://signumtechnologies.com/",
+  "homepage": "https://signumtechnologies.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

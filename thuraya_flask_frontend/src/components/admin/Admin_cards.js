@@ -8,7 +8,12 @@ const AdminCard = () => {
   const { index } = useParams();
  
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const fetchData = async () => {
+    const token = localStorage.getItem("token");
+
     try {
       const formdata = new FormData();
       formdata.append("card_id", `${index}`);
@@ -19,6 +24,7 @@ const AdminCard = () => {
         url: "http://localhost:5000/api/admin/view-scratch-codes",
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `${token}`
         },
       };
 
@@ -26,10 +32,12 @@ const AdminCard = () => {
       console.log("response data: ", response.data);
       swal("Success!", "Data Fetch successfully", "success");
       setData(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
       swal("Error!", `Failed to Fetch data: ${error.message}`, "error");
-
+      setError(error.message);
+      setLoading(false);
     }
   };
 
@@ -37,11 +45,21 @@ const AdminCard = () => {
     fetchData();
   }, []);
 
-  if (!data) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-          <span className="visually-hidden">...</span>
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-red-500 text-xl">
+          Error while loading data: {error}
         </div>
       </div>
     );
@@ -106,7 +124,7 @@ const AdminCard = () => {
                   <h2>{card.expiry_date}</h2>
                 </div>
                 <div className="md:w-2/12">
-                  <h2 className="md:hidden font-bold">Remarks</h2>
+                  <h2 className="md-hidden font-bold">Remarks</h2>
                   <h2>{card.remarks}</h2>
                 </div>
               </div>

@@ -19,33 +19,76 @@ import { useEffect, useState } from "react";
 import ConfirmMail from "./components/confrim-mail/confrim_mail";
 import Admin from "./components/admin/Admin";
 import Admin_cards from "./components/admin/Admin_cards";
-import AdminCard from "./components/admin/Admin_cards";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const token = localStorage.getItem("token");
+  const [data, setData] = useState([]);
+  let userRole = null;
+  if (token && typeof token === "string") {
+    try {
+      const decoded = jwtDecode(token);
+      userRole = decoded?.user_role;
+    } catch (error) {
+      console.error("Invalid token specified:", error);
+    }
+  }
+  console.log("user role", userRole);
 
   return (
     <>
       <Navbar />
-      {/* <div className=" overflow-hidden">
+      <div className=" overflow-hidden">
         <Routes>
-          <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/quick_refill" element={<QuickRefill />} />
-          <Route exact path="/refill_units" element={<RefillUnits />} />
-          <Route
-            exact
-            path="/login"
-            element={token ? <Navigate to="/Login" /> : <Login />}
-          />
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/forget-pass" element={<Forgetpass />} />
-          <Route exact path="/confirm_email/:token" element={<ConfirmMail />} />
+          {userRole === "customer" && token && (
+            <>
+              <Route exact path="/" element={<LandingPage />} />
+              <Route exact path="/quick_refill" element={<QuickRefill />} />
+              <Route exact path="/refill_units" element={<RefillUnits />} />
+              <Route
+                exact
+                path="/login"
+                element={token ? <Navigate to="/" /> : <Login />}
+              />
+              <Route exact path="/signup" element={<Signup />} />
+              <Route exact path="/forget-pass" element={<Forgetpass />} />
+              <Route
+                exact
+                path="/confirm_email/:token"
+                element={<ConfirmMail />}
+              />
+            </>
+          )}
+          {userRole === "admin" && token && (
+            <>
+              <Route
+                path="/"
+                element={<Admin setData={setData} data={data} />}
+              />
+              <Route
+                path="/admin_card/:index"
+                element={<Admin_cards data={data} />}
+              />
+              <Route path="*" element={<Navigate to="/admin" />} />
+            </>
+          )}
+          {(!userRole && !token) && (
+            <>
+              <Route exact path="/" element={<LandingPage />} />
+              <Route exact path="/quick_refill" element={<QuickRefill />} />
+              <Route exact path="/refill_units" element={<RefillUnits />} />
+              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/signup" element={<Signup />} />
+              <Route exact path="/forget-pass" element={<Forgetpass />} />
+              <Route
+                exact
+                path="/confirm_email/:token"
+                element={<ConfirmMail />}
+              />
+            </>
+          )}
         </Routes>
-      </div> */}
-      <Routes>
-        <Route path="/" element={<Admin />} />
-        <Route path="/admin_card/:index" element={<AdminCard />} />
-      </Routes>
+      </div>
       <Footer className="" />
     </>
   );

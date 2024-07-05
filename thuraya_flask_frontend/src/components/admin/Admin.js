@@ -22,16 +22,25 @@ const Admin = () => {
 
   const navigate = useNavigate();
   const fetchData = async () => {
+      const token = localStorage.getItem("token");
+
     try {
+      const myHeaders = {
+        Authorization: `${token}`
+      };
+
       const response = await axios.post(
-        "http://localhost:5000/api/admin/view-cards"
+        "http://localhost:5000/api/admin/view-cards",
+        {},
+        {
+          headers: myHeaders,
+        }
       );
       setData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -70,9 +79,15 @@ const Admin = () => {
     console.log("date", formattedDate);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://localhost:5000/api/admin/import",
-        formdata
+        formdata,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
       fetchData();
       swal("Success!", "Data imported successfully", "success");
