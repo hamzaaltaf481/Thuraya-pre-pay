@@ -1,9 +1,7 @@
 import csv
 from database.models.models import PhoneNumber
-from database.database import database_session
 
-def run_test():
-    session = database_session()
+def run_test(session):
     with open('passwords_complete.csv', mode='r') as file:
         # iterate over each row in the csv file
         csvFile = csv.reader(file)
@@ -15,5 +13,3 @@ def run_test():
             session.add(phone_number_model)
             session.commit()
             print(f"Processed row number: {count}")
-
-run_test()

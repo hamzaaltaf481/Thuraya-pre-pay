@@ -4,7 +4,19 @@ import json
 
 def create_transaction(user_id, ip_address, ip_info, user_agent, type, mode, session):
     location = ip_info.json()
-    from_location = {"city": location["city"], "region": location["region"], "country": location["country"]}
+    try:
+        city = location["city"]
+    except:
+        city = "Unknown"
+    try:
+        region = location["region"]
+    except:
+        region = "Unknown"
+    try:
+        country = location["country"]
+    except:
+        country = "Unknown"
+    from_location = {"city": city, "region": region, "country": country}
     from_location_str = json.dumps(from_location)  # Convert dict to string
     print(user_id)
     print(ip_address)

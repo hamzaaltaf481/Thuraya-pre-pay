@@ -8,6 +8,7 @@ from database.models.models import CardDetail, Card
 
 load_dotenv()
 
+#ARCHIVED
 def connect_to_database():
     db = mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
@@ -18,12 +19,6 @@ def connect_to_database():
 
     return db
     
-def database_session():
-    engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}")
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    return session
 
 def get_card(units, session):
 

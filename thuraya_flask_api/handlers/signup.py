@@ -16,31 +16,41 @@ def signup_handler(session, s, mail):
         return jsonify({'message': 'Invalid email format'}), 400
 
     password = request.form.get("password")
-    if len(password) < 8 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password):
+    if len(password) < 8:
         return jsonify({'message': 'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit'}), 400
 
-    existing_user = session.query(User).filter_by(email=email).first()
+    existing_user = session.query(User).filter(User.email == email, User.role != 'guest').first()
     if existing_user:
         return jsonify({'message': 'User with this email already exists'}), 400
 
     hashed_password = generate_password_hash(request.form.get("password"), method='sha256')
     
-    # ip_address = request.remote_addr
-    ip_address = "39.47.126.137"
-    # TODO: dynamic ip address
+    ip_address = str(request.remote_addr)
 
     ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
     location = ip_info.json()
-    from_location = {"city": location["city"], "region": location["region"], "country": location["country"]}
+    try:
+        city = location["city"]
+    except:
+        city = "Unknown"
+    try:
+        region = location["region"]
+    except:
+        region = "Unknown"
+    try:
+        country = location["country"]
+    except:
+        country = "Unknown"
+    from_location = {"city": city, "region": region, "country": country}
 
-    new_user = User(email=email, password=hashed_password, name=request.form.get("name"), country_region=str(from_location), role='customer')
+    new_user = User(email=email, password=hashed_password, first_name=request.form.get("first_name"), last_name=request.form.get("last_name"), country_region=str(from_location), role='customer')
     session.add(new_user)
     session.commit()
 
     token = s.dumps(email, salt=os.getenv("PASSWORD_RESET_SALT"))
     msg = Message('Confirm Email', recipients=[email])
     link = url_for('confirm_email', token=token, _external=True)
-    link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
+    # link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
     msg.body = 'Your email confirmation link is {}'.format(link)
     mail.send(msg)
 

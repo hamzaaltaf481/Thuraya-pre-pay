@@ -1,5 +1,3 @@
-# TODO: use flask mail object instead of custom mail function
-
 import secrets
 import string
 from fpdf import FPDF
@@ -7,6 +5,7 @@ from PyPDF2 import PdfWriter, PdfReader
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from flask_mail import Message
 from dotenv import load_dotenv
 import os
 from datetime import datetime
@@ -26,7 +25,7 @@ def check_valid(phone, price):
 
     return True
 
-def email_codes_password(card_numbers, email, transaction_logs):
+def email_codes_password(card_numbers, email, transaction_logs, mail):
 
     alphabet = string.ascii_letters + string.digits
     password = ''.join(secrets.choice(alphabet) for i in range(10))
@@ -46,26 +45,20 @@ def email_codes_password(card_numbers, email, transaction_logs):
 
 
     send_email(
+        mail=mail,
         subject="Thuraya Refill Codes",
         message="Password protected pdf file is attached",
         from_addr=os.getenv("SMTP_MAIL"),
         to_addr=email,
-        smtp_server=os.getenv("SMTP_SERVER"),
-        smtp_port=os.getenv("SMTP_PORT"),
-        username=os.getenv("SMTP_MAIL"),
-        password=os.getenv("SMTP_PASSWORD"), 
-        attachment_path=protected_pdf_filename
+        attachment_path=protected_pdf_filename, 
     )
 
     send_email(
+        mail=mail,
         subject="Password for Thuraya Refill Codes",
         message="Password for the refill Codes PDF file: " + password,
         from_addr=os.getenv("SMTP_MAIL"),
         to_addr=email,
-        smtp_server=os.getenv("SMTP_SERVER"),
-        smtp_port=os.getenv("SMTP_PORT"),
-        username=os.getenv("SMTP_MAIL"),
-        password=os.getenv("SMTP_PASSWORD"), 
     )
 
     print("emails sent")
@@ -101,28 +94,13 @@ def create_pdf(card_numbers, email):
     return pdf_filename
 
 
-def send_email(subject, message, from_addr, to_addr, smtp_server, smtp_port, username, password, attachment_path=None):
-    msg = MIMEMultipart()
-    msg['From'] = from_addr
-    msg['To'] = to_addr
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(message, 'plain'))
+def send_email(mail, subject, message, from_addr, to_addr, attachment_path=None):
+    msg = Message(subject, sender=from_addr, recipients=[to_addr])
+    msg.body = message
 
     if attachment_path is not None:
         with open(attachment_path, "rb") as attachment:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
-        encoders.encode_base64(part)
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename= {os.path.basename(attachment_path)}",
-        )
-        msg.attach(part)
+            filename = os.path.basename(attachment_path)
+            msg.attach(filename, "application/octet-stream", attachment.read())
 
-    server = smtplib.SMTP(smtp_server, smtp_port)
-    server.starttls()
-    server.login(username, password)
-    text = msg.as_string()
-    server.sendmail(from_addr, to_addr, text)
-    server.quit()
+    mail.send(msg)

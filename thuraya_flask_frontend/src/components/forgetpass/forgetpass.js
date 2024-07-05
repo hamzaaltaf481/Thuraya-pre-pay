@@ -11,8 +11,9 @@ const Forgetpass = () => {
     data.append("email", email);
     try {
       swal("Loading", "Please wait...", "info");
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
       const response = await axios.post(
-        "http://localhost:5000/api/forgot-password",
+        `http://${host}:5000/api/forgot-password`,
         data
       );
       if (response.status === 200) {

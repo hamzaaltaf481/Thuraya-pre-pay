@@ -19,10 +19,11 @@ import { useEffect, useState } from "react";
 import ConfirmMail from "./components/confrim-mail/confrim_mail";
 import Admin from "./components/admin/Admin";
 import Admin_cards from "./components/admin/Admin_cards";
+import AdminCard from "./components/admin/Admin_cards";
 
 function App() {
   const token = localStorage.getItem("token");
-  const [data, setData] = useState([]);
+
   return (
     <>
       <Navbar />
@@ -38,7 +39,7 @@ function App() {
           />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/forget-pass" element={<Forgetpass />} />
-          <Route exact path="/confirm_mail/:token" element={<ConfirmMail />} />
+          <Route exact path="/confirm_email/:token" element={<ConfirmMail />} />
         </Routes>
       </div>
       {/* <Routes>

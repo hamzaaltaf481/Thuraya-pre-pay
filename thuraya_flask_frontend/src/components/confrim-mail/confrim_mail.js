@@ -11,17 +11,17 @@ const ConfirmMail = () => {
   const handleConfirmEmail = async () => {
     try {
       swal("Loading", "Please wait...", "info");
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
       const response = await axios.post(
-        "https://your-backend-api.com/confirm_email",
-        { token }
+        `https://${host}:3000/confirm_email/${token}`,
       );
-      setMessage(response.data.message);
+      console.log(response.data)
+      setMessage(response.data);
       swal("Success!", "Email confrim in successfully", "success");
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (error) {
-     
       swal("Error!", "Failed to confirm email. Please try again.", "error");
     }
   };
@@ -40,7 +40,6 @@ const ConfirmMail = () => {
         >
           Confirm Email
         </button>
-       
       </div>
     </div>
   );

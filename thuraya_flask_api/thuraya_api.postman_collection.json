@@ -45,8 +45,13 @@
 							"type": "text"
 						},
 						{
-							"key": "name",
+							"key": "first_name",
 							"value": "User1",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Last1",
 							"type": "text"
 						}
 					]
@@ -148,7 +153,36 @@
 			"response": []
 		},
 		{
-			"name": "guest_login_refill",
+			"name": "balance_check",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "phone",
+							"value": "21297776",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/balance_check",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"balance_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest_new_quick_refill",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -162,27 +196,27 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/api/login_refill",
+					"raw": "localhost:5000/api/quick_refill",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"api",
-						"login_refill"
+						"quick_refill"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "logged_in_login_refill",
+			"name": "logged_in_new_quick_refill",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0OTM0MiwianRpIjoiZmRlNTc2MWEtYzg2Yi00Yzc1LWJlZTktNmMxNGVlYWQzNmEwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDkzNDIsImNzcmYiOiJjM2NhZmRkNy0xZWM0LTQwZWEtOGYxOS1mMmMyOGFmMGQ1ZjUiLCJleHAiOjE3MzUzNDkzNDIsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6M30.v2aNPZHPnp7GLsccGXdo1JKQu3z_A62Hl_RHkOglFHk",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODQ1NjU4NiwianRpIjoiNTFkMzA1ZWItYTg0Ny00NGU4LWIwYzktNjhlODNhMDc4NWFlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTg0NTY1ODYsImNzcmYiOiI4MDE5ZTE3MC04YTZjLTRkYmUtODc5Mi0yMTM1ZTZkODRkZDYiLCJleHAiOjE3MzY0NTY1ODYsInVzZXJfcm9sZSI6ImN1c3RvbWVyIiwidXNlcl9pZCI6MX0.p-c4F6n1bynk7d27jhEJ063EE2DZIFU-AAxQflDiUDg",
 						"type": "text"
 					}
 				],
@@ -196,14 +230,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/api/login_refill",
+					"raw": "localhost:5000/api/quick_refill",
 					"host": [
 						"localhost"
 					],
 					"port": "5000",
 					"path": [
 						"api",
-						"login_refill"
+						"quick_refill"
 					]
 				}
 			},
@@ -272,10 +306,51 @@
 			"response": []
 		},
 		{
-			"name": "import_cards",
+			"name": "admin-login",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "0123456789aB",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "mrni8mare@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-import_cards",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -312,7 +387,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/home/zain/mobile_data_flask/cards.csv"
+							"src": "/home/zain/Development/Thuraya-pre-pay/thuraya_flask_api/cards.csv"
 						}
 					]
 				},
@@ -332,25 +407,16 @@
 			"response": []
 		},
 		{
-			"name": "view-cards",
+			"name": "admin-view-cards",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzM0NTQ4MCwianRpIjoiODFkMmY2YmEtOTE1NS00MjI3LWFmMWQtOGZkNWE3OGZlOGQ3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MTczNDU0ODAsImNzcmYiOiI1NmFkZDRiYi1lMjZhLTQ1OGEtYjM4Yi0yMjljYmY0MzBiZjEiLCJleHAiOjE3MzUzNDU0ODAsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.fCZ_KIapCNv_vc93_-a0mYj6sCuoOu-Zb_JWm1bs03Y",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "localhost:5000/api/admin/view-cards",
 					"host": [
@@ -367,10 +433,16 @@
 			"response": []
 		},
 		{
-			"name": "add-single-card",
+			"name": "admin-add-single-card",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -426,6 +498,42 @@
 						"api",
 						"admin",
 						"add-single-card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-view-scratch-codes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "card_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-scratch-codes",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-scratch-codes"
 					]
 				}
 			},
