@@ -19,7 +19,7 @@ def signup_handler(session, s, mail):
     if len(password) < 8:
         return jsonify({'message': 'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit'}), 400
 
-    existing_user = session.query(User).filter_by(email=email, role='customer').first()
+    existing_user = session.query(User).filter(User.email == email, User.role != 'guest').first()
     if existing_user:
         return jsonify({'message': 'User with this email already exists'}), 400
 
