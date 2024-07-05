@@ -42,10 +42,10 @@ function App() {
           <Route exact path="/confirm_email/:token" element={<ConfirmMail />} />
         </Routes>
       </div>
-      {/* <Routes>
-      <Route path="/" element={<Admin setData={setData} data={data} />} />
-      <Route path="/admin_card/:index" element={<Admin_cards data={data} />} />
-      </Routes> */}
+      <Routes>
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin_card/:index" element={<Admin_cards />} />
+      </Routes>
       <Footer className="" />
     </>
   );
