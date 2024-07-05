@@ -19,10 +19,11 @@ import { useEffect, useState } from "react";
 import ConfirmMail from "./components/confrim-mail/confrim_mail";
 import Admin from "./components/admin/Admin";
 import Admin_cards from "./components/admin/Admin_cards";
+import AdminCard from "./components/admin/Admin_cards";
 
 function App() {
   const token = localStorage.getItem("token");
-  const [data, setData] = useState([]);
+
   return (
     <>
       <Navbar />
@@ -42,8 +43,8 @@ function App() {
         </Routes>
       </div> */}
       <Routes>
-      <Route path="/" element={<Admin setData={setData} data={data} />} />
-      <Route path="/admin_card/:index" element={<Admin_cards data={data} />} />
+        <Route path="/" element={<Admin />} />
+        <Route path="/admin_card/:index" element={<AdminCard />} />
       </Routes>
       <Footer className="" />
     </>
