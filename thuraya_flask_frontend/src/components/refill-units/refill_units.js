@@ -285,42 +285,42 @@ export default function RefillUnits() {
                       {unit.units}
                     </div>
                     <div className=" flex flex-col px-2">
-                    <input
-                      type="checkbox"
-                      name="refillUnit"
-                      id={`unit-${unit.units}`}
-                      className="mr-2 h-4 "
-                      disabled={unit.price === "Out of Stock"}
-                      onChange={() => handleUnitSelect(unit)}
-                      checked={!!selectedUnits[unit.units]}
-                    />
-                    <label htmlFor={`unit-${unit.units}`}>
-                      <p className="text-xl font-bold">{unit.units} units</p>
-                      <p>{unit.price}</p>
-                    </label>
+                      <input
+                        type="checkbox"
+                        name="refillUnit"
+                        id={`unit-${unit.units}`}
+                        className="mr-2 h-4 "
+                        disabled={unit.price === "Out of Stock"}
+                        onChange={() => handleUnitSelect(unit)}
+                        checked={!!selectedUnits[unit.units]}
+                      />
+                      <label htmlFor={`unit-${unit.units}`}>
+                        <p className="text-xl font-bold">{unit.units} units</p>
+                        <p>{unit.price}</p>
+                      </label>
+                      {selectedUnits[unit.units] && (
+                        <div className="flex items-center justify-center mt-2">
+                          <button
+                            className="px-2 py-1 border rounded-l"
+                            onClick={() => handleDecrement(unit)}
+                          >
+                            -
+                          </button>
+                          <input
+                            type="text"
+                            className="mx-2 border rounded text-center w-12"
+                            value={selectedUnits[unit.units].quantity}
+                            readOnly
+                          />
+                          <button
+                            className="px-2 py-1 border rounded-r"
+                            onClick={() => handleIncrement(unit)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    {selectedUnits[unit.units] && (
-                      <div className="flex items-center justify-center mt-2">
-                        <button
-                          className="px-2 py-1 border rounded-l"
-                          onClick={() => handleDecrement(unit)}
-                        >
-                          -
-                        </button>
-                        <input
-                          type="text"
-                          className="mx-2 border rounded text-center w-12"
-                          value={selectedUnits[unit.units].quantity}
-                          readOnly
-                        />
-                        <button
-                          className="px-2 py-1 border rounded-r"
-                          onClick={() => handleIncrement(unit)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
               ))}
