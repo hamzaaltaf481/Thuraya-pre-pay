@@ -12,7 +12,10 @@ export default function RefillUnits() {
   const [refillUnits, setRefillUnits] = useState([]);
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
+  const host =
+    process.env.REACT_APP_ENV === "production"
+      ? process.env.REACT_APP_PROD_HOSTNAME
+      : "localhost";
 
   const fetchRefillUnits = () => {
     axios
@@ -143,9 +146,7 @@ export default function RefillUnits() {
   return (
     <>
       {isOpen === true && (
-        <div
-          className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden"
-        >
+        <div className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden">
           <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
             <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
               <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
@@ -203,51 +204,124 @@ export default function RefillUnits() {
             </div>
 
             <p className="mt-5 text-lg text-gray-600">Select refill units</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-10 mt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-3 lg:mr-[600px] ">
               {refillUnits.map((unit, index) => (
                 <div
                   key={index}
-                  className={`p-4 border rounded-lg text-center ${
+                  className={`py-[4px] border-y-[3px] rounded text-center w-full h-full sm:w-[200px]  ${
                     unit.price === "Out of Stock"
-                      ? "text-gray-400"
-                      : "text-black"
+                      ? "text-gray-400 hover:border-gray-400 "
+                      : unit.units === 10
+                      ? "hover:border-[#f78d40]"
+                      : unit.units === 20
+                      ? "hover:border-[#f04d55]"
+                      : unit.units === 39
+                      ? "hover:border-[#c640c2]"
+                      : unit.units === 50
+                      ? "hover:border-[#8bc441]"
+                      : unit.units === 80
+                      ? "hover:border-[#75d0f5]"
+                      : unit.units === 160
+                      ? "hover:border-[#a8b6b6]"
+                      : unit.units === 500
+                      ? "hover:border-[#3f48cc]"
+                      : unit.units === 1000
+                      ? "hover:border-[#880015]"
+                      : unit.units === 2500
+                      ? "hover:border-[#22b14c]"
+                      : "border-black"
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    name="refillUnit"
-                    id={`unit-${unit.units}`}
-                    className="mr-2"
-                    disabled={unit.price === "Out of Stock"}
-                    onChange={() => handleUnitSelect(unit)}
-                    checked={!!selectedUnits[unit.units]}
-                  />
-                  <label htmlFor={`unit-${unit.units}`}>
-                    <p className="text-xl font-bold">{unit.units} units</p>
-                    <p>{unit.price}</p>
-                  </label>
-                  {selectedUnits[unit.units] && (
-                    <div className="flex items-center justify-center mt-2">
-                      <button
-                        className="px-2 py-1 border rounded-l"
-                        onClick={() => handleDecrement(unit)}
-                      >
-                        -
-                      </button>
-                      <input
-                        type="text"
-                        className="mx-2 border rounded text-center w-12"
-                        value={selectedUnits[unit.units].quantity}
-                        readOnly
-                      />
-                      <button
-                        className="px-2 py-1 border rounded-r"
-                        onClick={() => handleIncrement(unit)}
-                      >
-                        +
-                      </button>
+                  <div
+                    className={`flex border-x-[3px] w-full px-2 h-full sm:w-[200px] flex-row gap-x1 ${
+                      unit.price === "Out of Stock"
+                        ? "text-gray-400 hover:border-gray-400 "
+                        : unit.units === 10
+                        ? "hover:border-[#f78d40]"
+                        : unit.units === 20
+                        ? "hover:border-[#f04d55]"
+                        : unit.units === 39
+                        ? "hover:border-[#c640c2]"
+                        : unit.units === 50
+                        ? "hover:border-[#8bc441]"
+                        : unit.units === 80
+                        ? "hover:border-[#75d0f5]"
+                        : unit.units === 160
+                        ? "hover:border-[#a8b6b6]"
+                        : unit.units === 500
+                        ? "hover:border-[#3f48cc]"
+                        : unit.units === 1000
+                        ? "hover:border-[#880015]"
+                        : unit.units === 2500
+                        ? "hover:border-[#22b14c]"
+                        : "border-black"
+                    }`}
+                  >
+                    <div
+                      className={`rounded-full text-white text-lg ${
+                        unit.price === "Out of Stock"
+                          ? "text-white bg-gray-400 w-12 h-12 pt-2 "
+                          : unit.units === 10
+                          ? "bg-[#f78d40] w-12 h-12 pt-2 "
+                          : unit.units === 20
+                          ? "bg-[#f04d55] w-12 h-12 pt-2 "
+                          : unit.units === 39
+                          ? "bg-[#c640c2] w-12 h-12 pt-2 "
+                          : unit.units === 50
+                          ? "bg-[#8bc441] w-12 h-12 pt-2 "
+                          : unit.units === 80
+                          ? "bg-[#75d0f5] w-12 h-12 pt-2 "
+                          : unit.units === 160
+                          ? "bg-[#a8b6b6] w-12 h-12 pt-2 "
+                          : unit.units === 500
+                          ? "bg-[#3f48cc] w-12 h-12 pt-2 "
+                          : unit.units === 1000
+                          ? "bg-[#880015] w-12 h-12 pt-2 "
+                          : unit.units === 2500
+                          ? "bg-[#22b14c] w-12 h-12 pt-2 "
+                          : "text-black"
+                      }`}
+                    >
+                      {unit.units}
                     </div>
-                  )}
+                    <div className=" flex flex-col px-2">
+                    <input
+                      type="checkbox"
+                      name="refillUnit"
+                      id={`unit-${unit.units}`}
+                      className="mr-2 h-4 "
+                      disabled={unit.price === "Out of Stock"}
+                      onChange={() => handleUnitSelect(unit)}
+                      checked={!!selectedUnits[unit.units]}
+                    />
+                    <label htmlFor={`unit-${unit.units}`}>
+                      <p className="text-xl font-bold">{unit.units} units</p>
+                      <p>{unit.price}</p>
+                    </label>
+                    </div>
+                    {selectedUnits[unit.units] && (
+                      <div className="flex items-center justify-center mt-2">
+                        <button
+                          className="px-2 py-1 border rounded-l"
+                          onClick={() => handleDecrement(unit)}
+                        >
+                          -
+                        </button>
+                        <input
+                          type="text"
+                          className="mx-2 border rounded text-center w-12"
+                          value={selectedUnits[unit.units].quantity}
+                          readOnly
+                        />
+                        <button
+                          className="px-2 py-1 border rounded-r"
+                          onClick={() => handleIncrement(unit)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
