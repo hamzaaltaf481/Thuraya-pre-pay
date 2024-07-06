@@ -70,7 +70,7 @@ export default function LandingPage() {
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-      <div className="flex flex-col md:flex-row justify-center gap-10 items-center container mx-auto mt-20 pb-10 px-5">
+      <div className="flex flex-col md:flex-row justify-center gap-10 items-center container mx-auto mt-16 pb-10 px-5">
         <Link
           to="/quick_refill"
           className="flex flex-col items-center gap-3 w-full md:w-1/2 lg:h-[500px] hover:bg-[#b6db948c] transition duration-900 rounded-xl p-5 md:p-10"
@@ -80,11 +80,11 @@ export default function LandingPage() {
             <div
               className="w-full h-full"
               ref={phone}
-              style={{ height: "200px" }}
+              style={{ height: "300px" }}
             ></div>
           </div>
-          <h1 className="flex text-center font-extrabold text-xl md:text-2xl lg:text-4xl justify-center items-center gap-5 mt-5 md:mt-0">
-            <FaArrowRight style={{ color: "var(--green-color)" }} />
+          <h1 className="flex text-center font-bold text-xl md:text-2xl lg:text-4xl justify-center items-center gap-5 mt-5 md:mt-0">
+            <FaArrowRight style={{ color: "#cad70d" }} />
             Thuraya Quick Refill
           </h1>
         </Link>
@@ -97,12 +97,12 @@ export default function LandingPage() {
             <div
               className="w-full h-full pb-10"
               ref={cards}
-              style={{ height: "200px" }}
+              style={{ height: "300px" }}
             ></div>
           </div>
-          <h1 className="flex text-center font-extrabold text-xl md:text-2xl lg:text-4xl justify-center items-center gap-5 mt-5 md:mt-0">
-            <FaArrowRight style={{ color: "var(--green-color)" }} />
-            Thuraya Prepaid Units
+          <h1 className="flex text-center font-bold text-xl md:text-2xl lg:text-4xl justify-center items-center gap-5 mt-5 md:mt-0">
+            <FaArrowRight style={{ color: "#cad70d" }} />
+            Thuraya Purchase Units
           </h1>
         </Link>
       </div>
