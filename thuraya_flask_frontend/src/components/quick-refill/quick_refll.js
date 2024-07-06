@@ -204,12 +204,12 @@ export default function QuickRefill() {
               <div className="flex gap-5">
                 <input
                   type="text"
-                  className={`mt-3 w-[7%] p-3 text-2xl border rounded-lg`}
+                  className={`mt-3 w-[20%] sm:w-[7%] p-3 text-2xl border rounded-lg`}
                   value={"+88216"}
                 />
                 <input
                   type="text"
-                  className={`mt-3 w-[10%] p-3 text-2xl border rounded-lg`}
+                  className={`mt-3 w-[60%] sm:w-[10%] p-3 text-2xl border rounded-lg`}
                   placeholder="XXXXXXXX"
                   value={thurayaNumber}
                   onChange={(e) =>
