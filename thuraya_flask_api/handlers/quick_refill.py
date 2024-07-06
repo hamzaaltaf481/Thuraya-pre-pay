@@ -160,6 +160,8 @@ def quick_refill_handler(request, session, logger, driver, mail):
 
 
 def perform_quick_refill(log_string, logger, card_number, phone, driver):
+    # TODO: remove this for production
+    return log_string
     with open("constants.json") as f:
         constants = json.load(f)
     direct_refill_url = constants["directRefilUrl"]
