@@ -143,7 +143,7 @@ export default function QuickRefill() {
           className="flex content-center items-center justify-center absolute w-full h-screen backdrop-blur z-20 overflow-y-hidden"
         >
           <div className="z-30 relative flex flex-col justify-center min-h-screen overflow-hidden ">
-            <div className="w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl ">
+            <div className="w-[90%] sm:w-[450px] p-10 m-auto bg-white rounded-xl shadow-lg border-[1px] lg:max-w-xl">
               <h1 className="text-3xl font-bold text-left text-[#2D3E50] ">
                 Enter Your Email
               </h1>
@@ -161,7 +161,7 @@ export default function QuickRefill() {
                 <div className="flex mt-6">
                   <button
                     onClick={handleGuestRefill}
-                    className="flex w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
+                    className="flex w-full sm:w-[150px] h-[50px] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#2D3E50] rounded-md hover:bg-[#7a9757] focus:outline-none focus:bg-[#7a9757] pt-2 gap-1 shadow-md font-medium"
                   >
                     <h1 className=" text-xl ml-3 ">Enter</h1>
                     <img
@@ -179,7 +179,7 @@ export default function QuickRefill() {
 
       <div className="static">
         <div className="  relative flex flex-col justify-start min-h-screen overflow-hidden">
-          <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-20 ">
+          <div className=" backdrop-blur-3xl flex justify-between items-start gap-60 w-full px-4 sm:px-20">
             <div className="w-full p-5">
               <div className="flex  justify-between mt-32">
                 <h1
