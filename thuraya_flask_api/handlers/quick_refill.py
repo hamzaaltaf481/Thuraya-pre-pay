@@ -120,15 +120,15 @@ def quick_refill_handler(request, session, logger, driver, mail):
 
         log_string, previous_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
         if error:
-            email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
+            email_status, log_string = email_codes_password(codes, email, log_string, mail)
             transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
-            create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+            create_transaction_detail(promo_code, transaction_id, log_string, discount, email_status, "", session, codes)
             return jsonify({"message": "Invalid Account"}), 400
         
         if refill_allowed != "Yes":
-            email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
+            email_status, log_string = email_codes_password(codes, email, log_string, mail)
             transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
-            create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+            create_transaction_detail(promo_code, transaction_id, log_string, discount, email_status, "", session, codes)
 
             print("Refill not allowed")
             log_string = log_string + "Refill not allowed" + "\n"
