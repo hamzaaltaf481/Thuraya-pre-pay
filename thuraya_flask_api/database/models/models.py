@@ -25,6 +25,9 @@ class User(Base):
     email_confirmed = Column(Boolean)
 
     transactions = relationship('UserTransaction', back_populates='user')
+    
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
 class Card(Base):
     __tablename__ = 'cards'

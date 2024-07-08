@@ -5,7 +5,7 @@ from database.models.models import Card, CardDetail, User
 from flask_jwt_extended import decode_token, create_access_token
 from datetime import datetime, timedelta
 from utils.import_file import import_csv
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 def view_cards_handler(session, request):
@@ -14,7 +14,7 @@ def view_cards_handler(session, request):
     payload = decode_token(token)
     user_role = payload['user_role']
 
-    if user_role != "admin":
+    if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
     
     cards = session.query(Card)
@@ -23,7 +23,7 @@ def view_cards_handler(session, request):
     return jsonify(cards_dict), 200
 
 def admin_login_handler(session):
-    user = session.query(User).filter_by(email=request.form.get("email")).filter(User.role == 'admin').first()
+    user = session.query(User).filter_by(email=request.form.get("email")).filter(User.role == 'admin' or User.role == 'sub-admin').first()
     if not user or not check_password_hash(user.password, request.form.get("password")):
         return jsonify({'message': 'Login Unsuccessful. Please check email and password'}), 401
     
@@ -42,8 +42,7 @@ def view_scratch_codes_handler(session, request):
     # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
-
-    if user_role != "admin":
+    if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
     card_id = request.form.get("card_id")
 
@@ -69,7 +68,7 @@ def import_card_handler(request, session):
     user_role = payload['user_role']
 
     # TODO: uncomment this check after testing
-    if user_role != "admin":
+    if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
     try:
         file = request.files['file']
@@ -97,7 +96,7 @@ def add_card_detail_handler(session, request):
     user_role = payload['user_role']
 
     # TODO: uncomment this check after testing
-    if user_role != "admin":
+    if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
 
     new_card_detail = CardDetail(
@@ -116,3 +115,48 @@ def add_card_detail_handler(session, request):
     session.commit()
 
     return jsonify({'message': 'Card detail added successfully'}), 200
+
+
+def view_sub_admins_handler(session, request):
+
+    token = request.headers.get('Authorization')
+    # TODO: add check for if decoding fails
+    payload = decode_token(token)
+    user_role = payload['user_role']
+
+    # TODO: uncomment this check after testing
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
+
+    sub_admins = session.query(User).filter(User.role == 'sub-admin')
+    sub_admins_dict = [sub_admin.to_dict() for sub_admin in sub_admins]
+
+    return jsonify(sub_admins_dict), 200
+
+
+def change_sub_admin_password_handler(session, request):
+
+    token = request.headers.get('Authorization')
+    # TODO: add check for if decoding fails
+    payload = decode_token(token)
+    user_role = payload['user_role']
+
+    # TODO: uncomment this check after testing
+    if user_role != "admin":
+        return jsonify({'message': 'Unauthorized'}), 401
+    
+    sub_admin_id = request.form.get("sub_admin_id")
+    new_password = request.form.get("new_password")
+    
+    if len(new_password) < 8:
+        return jsonify({'message': 'Password must be at least 8 characters long'}), 400
+
+    sub_admin = session.query(User).filter(User.id == sub_admin_id).first()
+    if sub_admin.role != "sub-admin":
+        return jsonify({'message': 'User is not a sub-admin'}), 400
+    
+    hashed_password = generate_password_hash(request.form.get("password"), method='sha256')
+    sub_admin.password = hashed_password
+    session.commit()
+
+    return jsonify({'message': 'Password changed successfully'}), 200

@@ -18,8 +18,8 @@ def reset_password(s, token, session):
         return jsonify({'message': 'User not found!'}), 404
 
     password = data.get("password")
-    if len(password) < 8 or not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password):
-        return jsonify({'message': 'Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, and one digit'}), 400
+    if len(password) < 8:
+        return jsonify({'message': 'Password must be at least 8 characters long'}), 400
     
     hashed_password = generate_password_hash(password, method='sha256')
     user.password = hashed_password
