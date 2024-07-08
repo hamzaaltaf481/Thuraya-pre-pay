@@ -71,6 +71,12 @@ class CardDetail(Base):
     
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+    
+    def to_dict_with_transaction(self):
+        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        if self.transaction_details:
+            data['transaction_details'] = [transaction_detail.to_dict_with_transaction() for transaction_detail in self.transaction_details]
+        return data
          
 
 class PromoCode(Base):
@@ -95,7 +101,7 @@ class UserTransaction(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.id'))
-    date_time = Column(DateTime)
+    date_time = Column(DateTime, default=datetime.now)
     from_ip = Column(String(255))
     from_location = Column(String(255))
     from_device = Column(String(255))
@@ -107,6 +113,15 @@ class UserTransaction(Base):
 
     user = relationship('User', back_populates='transactions')
     transaction_details = relationship('TransactionDetail', back_populates='transaction')  # new relationship
+
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+    
+    def to_dict_with_user(self):
+        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        if self.user:
+            data['user'] = self.user.to_dict()
+        return data
 
 class TransactionDetail(Base):
     __tablename__ = 'transaction_details'
@@ -129,6 +144,14 @@ class TransactionDetail(Base):
     transaction = relationship('UserTransaction', back_populates='transaction_details')
     card_detail = relationship('CardDetail', back_populates='transaction_details')
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+
+    def to_dict_with_transaction(self):
+        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        if self.transaction:
+            data['transaction'] = self.transaction.to_dict_with_user()
+        return data
 
 class FailedTransactions(Base):
     __tablename__ = 'failed_transactions'

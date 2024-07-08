@@ -258,7 +258,6 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
         tab_handle_info = QUICK_REFILL_QUEUE[0]
         if tab_handle_info == new_tab_handle:
             time.sleep(1)
-            # TODO: adjust this value
             captcha_element = driver.find_element(By.ID, "theForm_CaptchaImage")
             captcha_element.screenshot(f"images/{id}.png")
 

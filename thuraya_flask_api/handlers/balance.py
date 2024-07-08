@@ -23,7 +23,6 @@ def balance_check_handler(request, session, logger):
         print("Refill not allowed")
         log_string = log_string + "Refill not allowed" + "\n"
         logger.info("Refill not allowed")
-        # TODO: maybe send email in this case
         return jsonify({"message": "Refill not allowed. Phone is inactive."}), 400
 
     return jsonify({"message": "Balance check successful", "current_balance": current_balance, "refill_allowed": refill_allowed, "expiry_date": last_active_date}), 200

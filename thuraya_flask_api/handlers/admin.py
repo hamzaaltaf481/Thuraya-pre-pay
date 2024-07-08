@@ -10,7 +10,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 def view_cards_handler(session, request):
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
 
@@ -39,7 +38,6 @@ def admin_login_handler(session):
 
 def view_scratch_codes_handler(session, request):
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
     if user_role != "admin" and user_role != "sub-admin":
@@ -55,19 +53,38 @@ def view_scratch_codes_handler(session, request):
         key = os.getenv("ENCRYPTION_KEY")
         cipher_suite = Fernet(key)
         decrypted_number = cipher_suite.decrypt(scratch_code).decode('utf-8')
-        card_detail_dict["scratch_code"] = decrypted_number[-4:]
+        card_detail_dict["scratch_code"] = "***" +decrypted_number[-4:]
 
     return jsonify(card_dict), 200
+
+
+def view_scratch_code_transaction_handler(session, request):
+    token = request.headers.get('Authorization')
+    payload = decode_token(token)
+    user_role = payload['user_role']
+    if user_role != "admin" and user_role != "sub-admin":
+        return jsonify({'message': 'Unauthorized'}), 401
+
+    card_detail_id = request.form.get("scratch_code_id")
+    card_detail = session.query(CardDetail).filter(CardDetail.id == card_detail_id).first()
+    if card_detail.card_status != 1:
+        return jsonify({'message': 'Card has not been used yet'}), 400
+    card_detail_dict = card_detail.to_dict_with_transaction()
+    scratch_code = card_detail_dict["scratch_code"]
+    key = os.getenv("ENCRYPTION_KEY")
+    cipher_suite = Fernet(key)
+    decrypted_number = cipher_suite.decrypt(scratch_code).decode('utf-8')
+    card_detail_dict["scratch_code"] = "***" + decrypted_number[-4:]
+
+    return jsonify(card_detail_dict), 200
 
 
 def import_card_handler(request, session):
 
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
 
-    # TODO: uncomment this check after testing
     if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
     try:
@@ -91,11 +108,9 @@ def import_card_handler(request, session):
 def add_card_detail_handler(session, request):
 
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
 
-    # TODO: uncomment this check after testing
     if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
 
@@ -120,11 +135,9 @@ def add_card_detail_handler(session, request):
 def view_sub_admins_handler(session, request):
 
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
 
-    # TODO: uncomment this check after testing
     if user_role != "admin":
         return jsonify({'message': 'Unauthorized'}), 401
 
@@ -137,11 +150,9 @@ def view_sub_admins_handler(session, request):
 def change_sub_admin_password_handler(session, request):
 
     token = request.headers.get('Authorization')
-    # TODO: add check for if decoding fails
     payload = decode_token(token)
     user_role = payload['user_role']
 
-    # TODO: uncomment this check after testing
     if user_role != "admin":
         return jsonify({'message': 'Unauthorized'}), 401
     
