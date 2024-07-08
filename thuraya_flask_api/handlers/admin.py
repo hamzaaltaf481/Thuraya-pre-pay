@@ -42,7 +42,7 @@ def view_scratch_codes_handler(session, request):
     user_role = payload['user_role']
     if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
-    card_id = request.form.get("card_id")
+    card_id = request.args.get("card_id")
 
     card = session.query(Card).filter(Card.id == card_id).first()
     card_dict = card.to_dict_with_cards()  # Assuming to_dict() is a method that converts a card to a dictionary
@@ -65,7 +65,7 @@ def view_scratch_code_transaction_handler(session, request):
     if user_role != "admin" and user_role != "sub-admin":
         return jsonify({'message': 'Unauthorized'}), 401
 
-    card_detail_id = request.form.get("scratch_code_id")
+    card_detail_id = request.args.get("scratch_code_id")
     card_detail = session.query(CardDetail).filter(CardDetail.id == card_detail_id).first()
     if card_detail.card_status != 1:
         return jsonify({'message': 'Card has not been used yet'}), 400

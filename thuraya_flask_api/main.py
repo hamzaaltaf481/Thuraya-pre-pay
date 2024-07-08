@@ -131,13 +131,13 @@ def view_cards():
     response, code = view_cards_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-scratch-codes', methods=['POST'])
+@app.route('/api/admin/view-scratch-codes', methods=['GET'])
 def view_scratch_codes():
     session = Session()
     response, code = view_scratch_codes_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-scratch-code-transaction', methods=['POST'])
+@app.route('/api/admin/view-scratch-code-transaction', methods=['GET'])
 def view_scratch_code_transaction():
     session = Session()
     response, code = view_scratch_code_transaction_handler(session, request)
