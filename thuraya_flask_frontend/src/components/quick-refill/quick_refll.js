@@ -91,6 +91,7 @@ export default function QuickRefill() {
   };
 
   const handleGuestRefill = async () => {
+    setIsOpen(false)
     try {
       swal("Loading", "Please wait...", "info");
       const response = await axios.post(
