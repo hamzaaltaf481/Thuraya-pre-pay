@@ -122,6 +122,14 @@ class UserTransaction(Base):
         if self.user:
             data['user'] = self.user.to_dict()
         return data
+    
+    def to_dict_with_user_and_details(self):
+        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        if self.user:
+            data['user'] = self.user.to_dict()
+        if self.transaction_details:
+            data['transaction_details'] = [transaction_detail.to_dict() for transaction_detail in self.transaction_details]
+        return data
 
 class TransactionDetail(Base):
     __tablename__ = 'transaction_details'

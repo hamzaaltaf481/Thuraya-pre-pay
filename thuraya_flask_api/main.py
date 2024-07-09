@@ -23,7 +23,7 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler, admin_login_handler, view_sub_admins_handler, change_sub_admin_password_handler, view_scratch_code_transaction_handler
+from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler, admin_login_handler, view_sub_admins_handler, change_sub_admin_password_handler, view_scratch_code_transaction_handler, view_transactions_handler
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
@@ -129,6 +129,12 @@ def add_card_detail():
 def view_cards():
     session = Session()
     response, code = view_cards_handler(session, request)
+    return response, code
+
+@app.route('/api/admin/view-transactions', methods=['GET'])
+def view_transactions():
+    session = Session()
+    response, code = view_transactions_handler(session, request)
     return response, code
 
 @app.route('/api/admin/view-scratch-codes', methods=['GET'])

@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from cryptography.fernet import Fernet
 import os
-from database.models.models import Card, CardDetail, User
+from database.models.models import Card, CardDetail, User, UserTransaction
 from flask_jwt_extended import decode_token, create_access_token
 from datetime import datetime, timedelta
 from utils.import_file import import_csv
@@ -171,3 +171,24 @@ def change_sub_admin_password_handler(session, request):
     session.commit()
 
     return jsonify({'message': 'Password changed successfully'}), 200
+
+
+def view_transactions_handler(session, request):
+
+    token = request.headers.get('Authorization')
+    payload = decode_token(token)
+    user_role = payload['user_role']
+
+    if user_role != "admin" and user_role != "sub-admin":
+        return jsonify({'message': 'Unauthorized'}), 401
+    
+    filter = request.args.get("filter")
+    if filter:
+        transactions = session.query(UserTransaction).filter(UserTransaction.type == filter)
+    else:
+        transactions = session.query(UserTransaction)
+
+    transactions_dict = [transaction.to_dict_with_user_and_details() for transaction in transactions]
+
+    return jsonify(transactions_dict), 200
+

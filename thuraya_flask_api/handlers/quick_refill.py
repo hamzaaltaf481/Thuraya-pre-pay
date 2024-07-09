@@ -123,7 +123,7 @@ def quick_refill_handler(request, session, logger, driver, mail):
             email_status, log_string = email_codes_password(codes, email, log_string, mail)
             transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
             create_transaction_detail(promo_code, transaction_id, log_string, discount, email_status, "", session, codes)
-            return jsonify({"message": "Invalid Account"}), 400
+            return jsonify({"message": "Invalid Account. You have been emailed with scratch code"}), 400
         
         if refill_allowed != "Yes":
             email_status, log_string = email_codes_password(codes, email, log_string, mail)
@@ -133,7 +133,7 @@ def quick_refill_handler(request, session, logger, driver, mail):
             print("Refill not allowed")
             log_string = log_string + "Refill not allowed" + "\n"
             logger.info("Refill not allowed")
-            return jsonify({"message": "Refill not allowed. Phone is inactive."}), 400
+            return jsonify({"message": "Refill not allowed. Phone is inactive. You have been emailed with scratch code"}), 400
         log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
 
         log_string, new_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
