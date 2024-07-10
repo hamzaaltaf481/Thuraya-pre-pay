@@ -505,6 +505,117 @@
 		},
 		{
 			"name": "admin-view-scratch-codes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDQ1MTQzOSwianRpIjoiZjY4NjIxMmItMDNjMy00MGU0LTkyMjYtYzdiOTdkYzgwNDgwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjA0NTE0MzksImNzcmYiOiJjOTZhYmEwZC1jYzlmLTQyZjEtYjIxOS03ZmVkYmIzZTIyMjUiLCJleHAiOjE3Mzg0NTE0MzksInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.g94JhM8eX12DrgbccAMPeglnZ9TS0brDb7UqIxnNQKA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-scratch-codes?card_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-scratch-codes"
+					],
+					"query": [
+						{
+							"key": "card_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-view-scratch-code-transaction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDQ1MTQzOSwianRpIjoiZjY4NjIxMmItMDNjMy00MGU0LTkyMjYtYzdiOTdkYzgwNDgwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjA0NTE0MzksImNzcmYiOiJjOTZhYmEwZC1jYzlmLTQyZjEtYjIxOS03ZmVkYmIzZTIyMjUiLCJleHAiOjE3Mzg0NTE0MzksInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.g94JhM8eX12DrgbccAMPeglnZ9TS0brDb7UqIxnNQKA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-scratch-code-transaction?scratch_code_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-scratch-code-transaction"
+					],
+					"query": [
+						{
+							"key": "scratch_code_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-view-sub-admins",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-sub-admins",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-sub-admins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-change-sub-admin-password",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -518,14 +629,19 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "card_id",
+							"key": "sub_admin_id",
 							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "new_password",
+							"value": "newpass123",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:5000/api/admin/view-scratch-codes",
+					"raw": "localhost:5000/api/admin/change-sub-admin-password",
 					"host": [
 						"localhost"
 					],
@@ -533,9 +649,136 @@
 					"path": [
 						"api",
 						"admin",
-						"view-scratch-codes"
+						"change-sub-admin-password"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-add-sub-admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "Zain",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Javed",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "zain_sub_admin@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "sub-admin-password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/add-sub-admin",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"add-sub-admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-delete-sub-admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDAyNjYyNywianRpIjoiOWE3NmUyNjctMzZkNi00ODBiLWEwMTEtNmY0NmY4ZWQzNjA1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjAwMjY2MjcsImNzcmYiOiI0Mjc3MTQwZS1iNzc1LTRhNmItOWE4MC1kMTYxYWRkM2RjNmEiLCJleHAiOjE3MzgwMjY2MjcsInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.Pr0m_XXHLBoFc3P49M6u4b8TTq1chAABGegCFTj6fkE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/delete-sub-admin?sub_admin_id=4",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"delete-sub-admin"
+					],
+					"query": [
+						{
+							"key": "sub_admin_id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-view-transactions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDQ1MTQzOSwianRpIjoiZjY4NjIxMmItMDNjMy00MGU0LTkyMjYtYzdiOTdkYzgwNDgwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im1ybmk4bWFyZUBnbWFpbC5jb20iLCJuYmYiOjE3MjA0NTE0MzksImNzcmYiOiJjOTZhYmEwZC1jYzlmLTQyZjEtYjIxOS03ZmVkYmIzZTIyMjUiLCJleHAiOjE3Mzg0NTE0MzksInVzZXJfcm9sZSI6ImFkbWluIiwidXNlcl9pZCI6MX0.g94JhM8eX12DrgbccAMPeglnZ9TS0brDb7UqIxnNQKA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:5000/api/admin/view-transactions?filter=purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"admin",
+						"view-transactions"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "purchase"
+						}
+					]
+				},
+				"description": "filter query parameter can have possible values of refill, purchase and refill_failed_so_emailed"
 			},
 			"response": []
 		}

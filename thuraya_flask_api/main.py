@@ -190,7 +190,7 @@ def add_sub_admin():
     return response, code
 
 
-@app.route("/api/admin/delete-sub-admin", methods=["POST"])
+@app.route("/api/admin/delete-sub-admin", methods=["DELETE"])
 def delete_sub_admin():
     session = Session()
     response, code = delete_sub_admin_handler(session, request)

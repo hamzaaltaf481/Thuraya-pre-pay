@@ -213,7 +213,7 @@ def delete_sub_admin_handler(session, request):
     if user_role != "admin":
         return jsonify({"message": "Unauthorized"}), 401
 
-    sub_admin_id = request.form.get("sub_admin_id")
+    sub_admin_id = request.args.get("sub_admin_id")
     sub_admin = session.query(User).filter(User.id == sub_admin_id).first()
     if sub_admin.role != "sub-admin":
         return jsonify({"message": "User is not a sub-admin"}), 400
