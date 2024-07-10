@@ -34,6 +34,7 @@ from handlers.admin import (
     view_scratch_code_transaction_handler,
     view_transactions_handler,
     add_sub_admin_handler,
+    delete_sub_admin_handler,
 )
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
@@ -186,6 +187,13 @@ def view_scratch_code_transaction():
 def add_sub_admin():
     session = Session()
     response, code = add_sub_admin_handler(session, request)
+    return response, code
+
+
+@app.route("/api/admin/delete-sub-admin", methods=["POST"])
+def delete_sub_admin():
+    session = Session()
+    response, code = delete_sub_admin_handler(session, request)
     return response, code
 
 
