@@ -44,7 +44,7 @@
 #     input_field = browser.find_element(By.ID, "captchaCode")
 #     time.sleep(0.1)
 #     input_field.send_keys("ABCD")
-    
+
 #     button = browser.find_element(By.NAME, "submit")
 #     time.sleep(0.1)
 #     button.click()
@@ -73,4 +73,3 @@
 
 
 # test_display()
-

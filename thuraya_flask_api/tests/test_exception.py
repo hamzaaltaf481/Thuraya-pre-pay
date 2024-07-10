@@ -8,4 +8,5 @@ def test():
         print(log_string)
         print(e)
 
+
 test()

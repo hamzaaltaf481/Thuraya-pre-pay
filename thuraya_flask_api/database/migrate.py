@@ -1,11 +1,13 @@
 from database.database import connect_to_database
 
+
 # ARCHIVED
 def migrate_tables():
     db = connect_to_database()
     cursor = db.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE users (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user VARCHAR(255),
@@ -16,9 +18,11 @@ def migrate_tables():
             role VARCHAR(255),
             email_confirmed BOOLEAN
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE promo_codes (
             id INT AUTO_INCREMENT PRIMARY KEY,
             code VARCHAR(255),
@@ -29,9 +33,11 @@ def migrate_tables():
             end_date DATETIME,
             status BOOLEAN
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE cards (
             id INT AUTO_INCREMENT PRIMARY KEY,
             po_number INT,
@@ -41,9 +47,11 @@ def migrate_tables():
             payment_status BOOLEAN,
             attachment_path VARCHAR(255)
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE card_details (
             id INT AUTO_INCREMENT PRIMARY KEY,
             card_id INT,
@@ -57,9 +65,11 @@ def migrate_tables():
             remarks VARCHAR(255),
             FOREIGN KEY (card_id) REFERENCES cards(id)
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE transactions (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
@@ -74,9 +84,11 @@ def migrate_tables():
             payment_status BOOLEAN,
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE transaction_details (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
@@ -98,16 +110,19 @@ def migrate_tables():
             FOREIGN KEY (transaction_id) REFERENCES transactions(id),
             FOREIGN KEY (card_details_id) REFERENCES card_details(id)
         )
-    """)
+    """
+    )
 
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE phone_numbers (
             id INT AUTO_INCREMENT PRIMARY KEY,
             phone VARCHAR(255),
             password VARCHAR(255),
             status VARCHAR(255) DEFAULT 'ACTIVE'
             )
-    """)
+    """
+    )
 
     db.commit()
     return

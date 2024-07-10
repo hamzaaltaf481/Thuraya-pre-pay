@@ -11,15 +11,17 @@ from datetime import datetime
 def purchase_handler(request, session, logger, mail):
     transaction_logs = ""
     try:
-        token = request.headers.get('Authorization')
+        token = request.headers.get("Authorization")
         data = request.get_json()
-        
+
         if not token:
-            email=data.get('email')
+            email = data.get("email")
             transaction_logs = transaction_logs + "guest user" + "\n"
             logger.info("guest user")
             print("guest user")
-            new_user = User(email=email, country_region=data.get('country_region'), role='guest')
+            new_user = User(
+                email=email, country_region=data.get("country_region"), role="guest"
+            )
             session.add(new_user)
             session.commit()
             user_id = new_user.id
@@ -27,7 +29,7 @@ def purchase_handler(request, session, logger, mail):
         else:
             try:
                 payload = decode_token(token)
-                user_id = payload['user_id']
+                user_id = payload["user_id"]
                 user = session.query(User).filter(User.id == user_id).first()
                 if user:
                     email = user.email
@@ -37,7 +39,7 @@ def purchase_handler(request, session, logger, mail):
             except Exception as e:
                 print(str(e))
                 return jsonify({"message": "Invalid token"}), 401
-        
+
         transaction_logs = transaction_logs + "email: " + email + "\n"
         print("email: " + email)
         logger.info("email: " + email)
@@ -45,7 +47,7 @@ def purchase_handler(request, session, logger, mail):
         print("user_id: " + str(user_id))
         logger.info("user_id: " + str(user_id))
 
-        discount =0
+        discount = 0
         try:
             promo_code = data.get("promo_code")
             # TODO: discount and promo code
@@ -74,23 +76,38 @@ def purchase_handler(request, session, logger, mail):
         print("units: " + str(units))
         transaction_logs = transaction_logs + "units: " + str(units) + "\n"
         logger.info("units: " + str(units))
-        transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session)
+        transaction_id = create_transaction(
+            user_id, ip_address, ip_info, user_agent, "purchase", "stripe", session
+        )
 
         codes, error = get_codes(units, session)
         if error:
             return jsonify({"message": error}), 400
-        transaction_logs = transaction_logs + "codes: " +str(codes) + "\n"
+        transaction_logs = transaction_logs + "codes: " + str(codes) + "\n"
         print("codes: ")
         print(codes)
         logger.info("codes: ")
         logger.info(codes)
 
-        email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
-        create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+        email_status, transaction_logs = email_codes_password(
+            codes, email, transaction_logs, mail
+        )
+        create_transaction_detail(
+            promo_code,
+            transaction_id,
+            transaction_logs,
+            discount,
+            email_status,
+            "",
+            session,
+            codes,
+        )
         return jsonify({"message": "success"}), 200
     except Exception as e:
         print(str(e))
-        failed_transaction = FailedTransactions(log_string=transaction_logs, date_time=datetime.now())
+        failed_transaction = FailedTransactions(
+            log_string=transaction_logs, date_time=datetime.now()
+        )
         session.add(failed_transaction)
         # commit the transaction
         session.commit()

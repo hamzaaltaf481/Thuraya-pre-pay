@@ -9,13 +9,20 @@ from flask import url_for
 
 def forgot_password_handler(s, session, mail):
     data = request.form
-    user = session.query(User).filter_by(email=data.get('email')).first()
+    user = session.query(User).filter_by(email=data.get("email")).first()
     if user:
         token = s.dumps(user.email, salt=os.getenv("PASSWORD_RESET_SALT"))
-        msg = Message('Password Reset Request', recipients=[user.email])
-        link = url_for('reset_token', token=token, _external=True)
-        link = link.replace('localhost:5000/api', os.getenv('FRONTEND_URL'))
-        msg.body = f'To reset your password, visit the following link: {link}'
+        msg = Message("Password Reset Request", recipients=[user.email])
+        link = url_for("reset_token", token=token, _external=True)
+        link = link.replace("localhost:5000/api", os.getenv("FRONTEND_URL"))
+        msg.body = f"To reset your password, visit the following link: {link}"
         mail.send(msg)
         print(msg)
-    return jsonify({'message': 'If an account with that email exists, we have sent a password reset email'}), 200
+    return (
+        jsonify(
+            {
+                "message": "If an account with that email exists, we have sent a password reset email"
+            }
+        ),
+        200,
+    )

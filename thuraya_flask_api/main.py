@@ -5,7 +5,7 @@
 # TODO: make sure to use json for refill and purchase and form elswewhere
 # TODO: create admin and sub admin panels
 # TODO: add admin checks when going into production
-# TODO: make the message more detailed. but can mess up the frontend 
+# TODO: make the message more detailed. but can mess up the frontend
 # TODO: format all code maybe
 # TODO: ask Sir if to send the reciept to the user email for refill
 # TODO: add timestamps for all tables
@@ -23,7 +23,18 @@ from handlers.forgot_password import forgot_password_handler
 from handlers.login import login_handler
 from handlers.confirm_email import confirm_email_handler
 from handlers.signup import signup_handler
-from handlers.admin import view_cards_handler, import_card_handler, add_card_detail_handler, view_scratch_codes_handler, admin_login_handler, view_sub_admins_handler, change_sub_admin_password_handler, view_scratch_code_transaction_handler, view_transactions_handler, add_sub_admin_handler
+from handlers.admin import (
+    view_cards_handler,
+    import_card_handler,
+    add_card_detail_handler,
+    view_scratch_codes_handler,
+    admin_login_handler,
+    view_sub_admins_handler,
+    change_sub_admin_password_handler,
+    view_scratch_code_transaction_handler,
+    view_transactions_handler,
+    add_sub_admin_handler,
+)
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
 from handlers.check_availability import check_availability_handler
@@ -42,24 +53,33 @@ load_dotenv()
 logger = setup_logger()
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['JWT_SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['SECURITY_PASSWORD_SALT'] = os.getenv("SECURITY_PASSWORD_SALT")
-app.config['MAIL_DEFAULT_SENDER'] = os.getenv("SMTP_MAIL")
-app.config['MAIL_SERVER'] = os.getenv("SMTP_SERVER")
-app.config['MAIL_PORT'] = os.getenv("SMTP_PORT")
-app.config['MAIL_USERNAME'] = os.getenv("SMTP_MAIL")
-app.config['MAIL_PASSWORD'] = os.getenv("SMTP_PASSWORD")
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config["JWT_SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config["SECURITY_PASSWORD_SALT"] = os.getenv("SECURITY_PASSWORD_SALT")
+app.config["MAIL_DEFAULT_SENDER"] = os.getenv("SMTP_MAIL")
+app.config["MAIL_SERVER"] = os.getenv("SMTP_SERVER")
+app.config["MAIL_PORT"] = os.getenv("SMTP_PORT")
+app.config["MAIL_USERNAME"] = os.getenv("SMTP_MAIL")
+app.config["MAIL_PASSWORD"] = os.getenv("SMTP_PASSWORD")
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
 
 application = app
-CORS(app, origins=['http://localhost:3000','http://localhost:3001', 'https://signumtechnologies.com'])
+CORS(
+    app,
+    origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://signumtechnologies.com",
+    ],
+)
 
 mail = Mail(app)
 s = URLSafeTimedSerializer(os.getenv("SECRET_KEY"))
 jwt = JWTManager(app)
-engine = create_engine(f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}")
+engine = create_engine(
+    f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}"
+)
 Session = sessionmaker(bind=engine)
 
 # IN CASE OF DB ISSUES
@@ -72,9 +92,11 @@ Session = sessionmaker(bind=engine)
 #         session.rollback()
 #     return jsonify({"status": "OK"}), 200
 
+
 @app.route("/api", methods=["GET"])
 def index():
     return jsonify({"status": "OK"}), 200
+
 
 @app.route("/api/quick_refill", methods=["POST"])
 def quick_refill():
@@ -82,18 +104,20 @@ def quick_refill():
     response, code = quick_refill_handler(request, session, logger, driver, mail)
     return response, code
 
+
 @app.route("/api/balance_check", methods=["POST"])
 def balance_check():
     session = Session()
     response, code = balance_check_handler(request, session, logger)
     return response, code
 
+
 @app.route("/api/purchase", methods=["POST"])
 def purchase():
     session = Session()
     response, code = purchase_handler(request, session, logger, mail)
     return response, code
-    
+
 
 @app.route("/api/check-availability", methods=["GET"])
 def check_availability():
@@ -101,17 +125,20 @@ def check_availability():
     response, code = check_availability_handler(session)
     return response, code
 
+
 @app.route("/api/migrate", methods=["GET"])
 def migrate_db():
     session = Session()
     migrate_tables(session)
     return jsonify({"message": "success"}), 200
 
-@app.route('/api/admin/login', methods=['POST'])
+
+@app.route("/api/admin/login", methods=["POST"])
 def admin_login():
     session = Session()
     response, code = admin_login_handler(session)
     return response, code
+
 
 @app.route("/api/admin/import", methods=["POST"])
 def import_cards():
@@ -119,88 +146,97 @@ def import_cards():
     response, code = import_card_handler(request, session)
     return response, code
 
-@app.route('/api/admin/add-single-card', methods=['POST'])
+
+@app.route("/api/admin/add-single-card", methods=["POST"])
 def add_card_detail():
     session = Session()
     response, code = add_card_detail_handler(session)
     return response, code
 
-@app.route('/api/admin/view-cards', methods=['POST'])
+
+@app.route("/api/admin/view-cards", methods=["POST"])
 def view_cards():
     session = Session()
     response, code = view_cards_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-transactions', methods=['GET'])
+
+@app.route("/api/admin/view-transactions", methods=["GET"])
 def view_transactions():
     session = Session()
     response, code = view_transactions_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-scratch-codes', methods=['GET'])
+
+@app.route("/api/admin/view-scratch-codes", methods=["GET"])
 def view_scratch_codes():
     session = Session()
     response, code = view_scratch_codes_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-scratch-code-transaction', methods=['GET'])
+
+@app.route("/api/admin/view-scratch-code-transaction", methods=["GET"])
 def view_scratch_code_transaction():
     session = Session()
     response, code = view_scratch_code_transaction_handler(session, request)
     return response, code
 
-@app.route('/api/admin/add-sub-admin', methods=['POST'])
+
+@app.route("/api/admin/add-sub-admin", methods=["POST"])
 def add_sub_admin():
     session = Session()
     response, code = add_sub_admin_handler(session, request)
     return response, code
 
-@app.route('/api/admin/view-sub-admins', methods=['GET'])
+
+@app.route("/api/admin/view-sub-admins", methods=["GET"])
 def view_sub_admins():
     session = Session()
     response, code = view_sub_admins_handler(session, request)
     return response, code
 
-@app.route('/api/admin/change-sub-admin-password', methods=['POST'])
+
+@app.route("/api/admin/change-sub-admin-password", methods=["POST"])
 def change_sub_admin_password():
     session = Session()
     response, code = change_sub_admin_password_handler(session, request)
     return response, code
 
 
-@app.route('/api/signup', methods=['POST'])
+@app.route("/api/signup", methods=["POST"])
 def signup():
     session = Session()
     response, code = signup_handler(session, s, mail)
     return response, code
 
 
-
-@app.route('/api/confirm_email/<token>')
+@app.route("/api/confirm_email/<token>")
 def confirm_email(token):
     session = Session()
     response = confirm_email_handler(session, s, token)
     return response
 
 
-@app.route('/api/login', methods=['POST'])
+@app.route("/api/login", methods=["POST"])
 def login():
     session = Session()
     response, code = login_handler(session)
     return response, code
 
 
-@app.route('/api/forgot-password', methods=['POST'])
+@app.route("/api/forgot-password", methods=["POST"])
 def forgot_password():
     session = Session()
     response, code = forgot_password_handler(s, session, mail)
     return response, code
 
-@app.route('/api/reset-password/<token>', methods=['POST'])
+
+@app.route("/api/reset-password/<token>", methods=["POST"])
 def reset_token(token):
     session = Session()
     response, code = reset_password(s, token, session)
     return response, code
+
 
 if __name__ == "__main__":
     options = Options()
@@ -209,5 +245,5 @@ if __name__ == "__main__":
     options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
-    host = '0.0.0.0' if os.getenv("ENV") == 'production' else 'localhost'
+    host = "0.0.0.0" if os.getenv("ENV") == "production" else "localhost"
     app.run(debug=True, use_reloader=False, host=host)

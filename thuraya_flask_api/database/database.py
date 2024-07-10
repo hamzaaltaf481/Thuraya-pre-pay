@@ -8,7 +8,8 @@ from database.models.models import CardDetail, Card
 
 load_dotenv()
 
-#ARCHIVED
+
+# ARCHIVED
 def connect_to_database():
     db = mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
@@ -18,12 +19,16 @@ def connect_to_database():
     )
 
     return db
-    
+
 
 def get_card(units, session):
 
-    code = session.query(CardDetail).filter(CardDetail.units == units, CardDetail.card_status == 0).first()
-    
+    code = (
+        session.query(CardDetail)
+        .filter(CardDetail.units == units, CardDetail.card_status == 0)
+        .first()
+    )
+
     if code:
         code.card_status = 1
         session.commit()
@@ -34,9 +39,10 @@ def get_card(units, session):
     key = os.getenv("ENCRYPTION_KEY")
     cipher_suite = Fernet(key)
     number = code.scratch_code
-    decrypted_number = cipher_suite.decrypt(number).decode('utf-8')
+    decrypted_number = cipher_suite.decrypt(number).decode("utf-8")
     print(decrypted_number[-4:])
     return decrypted_number, code.id, code.selling_price, None
+
 
 def get_codes(units, session):
     codes = []
@@ -48,5 +54,5 @@ def get_codes(units, session):
             if error:
                 return None, error
             codes.append({"number": number, "price": selling_price, "id": id})
-    
+
     return codes, None

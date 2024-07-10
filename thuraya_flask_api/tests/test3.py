@@ -1,7 +1,7 @@
 import csv
 from collections import Counter
 
-with open('check_dupes.csv', 'r') as f:
+with open("check_dupes.csv", "r") as f:
     reader = csv.reader(f)
     done = []
     for row in reader:

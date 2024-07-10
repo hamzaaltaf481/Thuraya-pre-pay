@@ -1,10 +1,9 @@
-
 # # ARCHIVED ROUTE
 # @app.route("/api/login_refill", methods=["POST"])
 # def start_driver():
 #     response_code = random.randint(1, 4)
 
-#     if response_code == 1: 
+#     if response_code == 1:
 #         return jsonify({"message": "Invalid token"}), 401
 #     elif response_code == 2:
 #         return jsonify({"message": "Phone or Price invalid!"}), 400
@@ -74,7 +73,7 @@
 
 #         if not valid:
 #             return jsonify({"message": "Phone or Price invalid!"}), 400
-            
+
 #         card_number, card_id, selling_price = get_card(price, session)
 #         log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
 #         codes = []
@@ -154,7 +153,7 @@
 #                         driver.refresh()
 #                         outer_continue = True
 #                         break
-                
+
 #                 if outer_continue:
 #                     continue
 
@@ -208,7 +207,7 @@
 #                 writer.writerow([total_time, phone, "failed", log_string])
 
 
-#             return jsonify({"message": "Log in Failed"}), 500    
+#             return jsonify({"message": "Log in Failed"}), 500
 
 
 #             ################################
@@ -222,7 +221,7 @@
 #             log_string = log_string + "emailing codes" + "\n"
 #             email_codes_password(codes, email, log_string)
 #             return jsonify({"message": "success", "refill_status": "mailed"}), 200
-        
+
 #         print("logged in")
 #         # create an instance of PhoneNumber model with password and phone_number and store in the database
 #         phone_number_model = PhoneNumber(phone=phone, password=password, status="ACTIVE")
@@ -245,7 +244,7 @@
 #             writer.writerow([total_time, phone, password, log_string])
 
 
-#         return jsonify({"message": "Logged in!"}), 200    
+#         return jsonify({"message": "Logged in!"}), 200
 
 #         ################################
 #         ################################
@@ -265,7 +264,7 @@
 #             log_string = log_string + "emailing codes" + "\n"
 #             email_codes_password(codes, email, log_string)
 #             return jsonify({"message": "success", "scraped": scraped, "refill_status": "mailed"}), 200
-        
+
 #         print(scraped)
 #         log_string = log_string + str(scraped) + "\n"
 #         logger.info(scraped)

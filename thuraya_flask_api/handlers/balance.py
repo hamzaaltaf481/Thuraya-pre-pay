@@ -11,11 +11,18 @@ def balance_check_handler(request, session, logger):
 
     phone = request.form.get("phone")
 
-    logger.info("phone: "+phone)
-    print("phone: "+phone)
-    log_string = log_string + "phone: "+phone + "\n"
+    logger.info("phone: " + phone)
+    print("phone: " + phone)
+    log_string = log_string + "phone: " + phone + "\n"
 
-    log_string, current_balance, refill_allowed, last_active_date, current_status, error = find_details(phone, log_string, logger)
+    (
+        log_string,
+        current_balance,
+        refill_allowed,
+        last_active_date,
+        current_status,
+        error,
+    ) = find_details(phone, log_string, logger)
 
     if error:
         return jsonify({"message": "Invalid Account"}), 400
@@ -25,4 +32,14 @@ def balance_check_handler(request, session, logger):
         logger.info("Refill not allowed")
         return jsonify({"message": "Refill not allowed. Phone is inactive."}), 400
 
-    return jsonify({"message": "Balance check successful", "current_balance": current_balance, "refill_allowed": refill_allowed, "expiry_date": last_active_date}), 200
+    return (
+        jsonify(
+            {
+                "message": "Balance check successful",
+                "current_balance": current_balance,
+                "refill_allowed": refill_allowed,
+                "expiry_date": last_active_date,
+            }
+        ),
+        200,
+    )

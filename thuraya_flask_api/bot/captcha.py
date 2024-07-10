@@ -8,7 +8,7 @@ from PIL import Image
 
 load_dotenv()
 LOGIN_CAPTCHA_QUEUE = []
-QUICK_REFILL_CAPTCHA_QUEUE=[]
+QUICK_REFILL_CAPTCHA_QUEUE = []
 
 
 # def solve_login_captcha(error_page, wrong_creds, driver, logger, log_string):
@@ -25,7 +25,7 @@ QUICK_REFILL_CAPTCHA_QUEUE=[]
 
 #     LOGIN_CAPTCHA_QUEUE.append(driver)
 #     for i in range(1000):
-            
+
 #         try:
 #             with open("statistics.csv", "r", encoding="utf-8") as f:
 #                 id = sum(1 for line in f) + 1
@@ -42,7 +42,7 @@ QUICK_REFILL_CAPTCHA_QUEUE=[]
 #             log_string = log_string + "screenshot taken" + "\n"
 #             logger.info("screenshot taken")
 #             screenshot.save(f"images/{id}.png")
-            
+
 #             LOGIN_CAPTCHA_QUEUE.pop(0)
 #             break
 #         else:
@@ -78,13 +78,12 @@ QUICK_REFILL_CAPTCHA_QUEUE=[]
 #     return code
 
 
-
 def write_correct_statistic():
     with open("statistics.csv", "r", encoding="utf-8") as f:
         lines = list(csv.reader(f))
 
     if lines:
-        lines[-1][2] = "correct" 
+        lines[-1][2] = "correct"
     else:
         print("File is empty.")
 

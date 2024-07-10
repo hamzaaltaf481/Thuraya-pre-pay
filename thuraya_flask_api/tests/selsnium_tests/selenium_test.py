@@ -25,6 +25,3 @@ from datetime import datetime
 def test():
     driver = webdriver.Chrome()
     driver.execute_script("window.open('');")
-
-
-    

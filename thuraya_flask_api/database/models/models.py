@@ -12,8 +12,9 @@ load_dotenv()
 
 Base = declarative_base()
 
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     password = Column(String(255))
@@ -24,13 +25,14 @@ class User(Base):
     role = Column(String(255))
     email_confirmed = Column(Boolean)
 
-    transactions = relationship('UserTransaction', back_populates='user')
-    
+    transactions = relationship("UserTransaction", back_populates="user")
+
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
+
 class Card(Base):
-    __tablename__ = 'cards'
+    __tablename__ = "cards"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     po_number = Column(Integer)
@@ -40,23 +42,25 @@ class Card(Base):
     payment_status = Column(Boolean)
     attachment_path = Column(String(255))
 
-    card_details = relationship('CardDetail', back_populates='card')
+    card_details = relationship("CardDetail", back_populates="card")
 
     def to_dict_with_cards(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.card_details:
-            data['card_details'] = [card_detail.to_dict() for card_detail in self.card_details]
+            data["card_details"] = [
+                card_detail.to_dict() for card_detail in self.card_details
+            ]
         return data
-    
+
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
 
 class CardDetail(Base):
-    __tablename__ = 'card_details'
+    __tablename__ = "card_details"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    card_id = Column(Integer, ForeignKey('cards.id'))
+    card_id = Column(Integer, ForeignKey("cards.id"))
     serial_number = Column(Integer)
     scratch_code = Column(String(255))
     units = Column(Integer)
@@ -66,21 +70,26 @@ class CardDetail(Base):
     card_status = Column(Boolean)
     remarks = Column(String(255))
 
-    card = relationship('Card', back_populates='card_details')
-    transaction_details = relationship('TransactionDetail', back_populates='card_detail') 
-    
+    card = relationship("Card", back_populates="card_details")
+    transaction_details = relationship(
+        "TransactionDetail", back_populates="card_detail"
+    )
+
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
-    
+
     def to_dict_with_transaction(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.transaction_details:
-            data['transaction_details'] = [transaction_detail.to_dict_with_transaction() for transaction_detail in self.transaction_details]
+            data["transaction_details"] = [
+                transaction_detail.to_dict_with_transaction()
+                for transaction_detail in self.transaction_details
+            ]
         return data
-         
+
 
 class PromoCode(Base):
-    __tablename__ = 'promo_codes'
+    __tablename__ = "promo_codes"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(String(255))
@@ -91,16 +100,14 @@ class PromoCode(Base):
     end_date = Column(DateTime)
     status = Column(Boolean)
 
-    transaction_details = relationship('TransactionDetail', back_populates='promo')
-
-
+    transaction_details = relationship("TransactionDetail", back_populates="promo")
 
 
 class UserTransaction(Base):
-    __tablename__ = 'transactions'
+    __tablename__ = "transactions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey("users.id"))
     date_time = Column(DateTime, default=datetime.now)
     from_ip = Column(String(255))
     from_location = Column(String(255))
@@ -111,33 +118,39 @@ class UserTransaction(Base):
     payment_mode = Column(String(255))
     payment_status = Column(Boolean)
 
-    user = relationship('User', back_populates='transactions')
-    transaction_details = relationship('TransactionDetail', back_populates='transaction')  # new relationship
+    user = relationship("User", back_populates="transactions")
+    transaction_details = relationship(
+        "TransactionDetail", back_populates="transaction"
+    )  # new relationship
 
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
-    
+
     def to_dict_with_user(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.user:
-            data['user'] = self.user.to_dict()
+            data["user"] = self.user.to_dict()
         return data
-    
+
     def to_dict_with_user_and_details(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.user:
-            data['user'] = self.user.to_dict()
+            data["user"] = self.user.to_dict()
         if self.transaction_details:
-            data['transaction_details'] = [transaction_detail.to_dict() for transaction_detail in self.transaction_details]
+            data["transaction_details"] = [
+                transaction_detail.to_dict()
+                for transaction_detail in self.transaction_details
+            ]
         return data
 
+
 class TransactionDetail(Base):
-    __tablename__ = 'transaction_details'
+    __tablename__ = "transaction_details"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    promo_id = Column(Integer, ForeignKey('promo_codes.id'))
-    transaction_id = Column(Integer, ForeignKey('transactions.id'))
-    card_details_id = Column(Integer, ForeignKey('card_details.id'))
+    promo_id = Column(Integer, ForeignKey("promo_codes.id"))
+    transaction_id = Column(Integer, ForeignKey("transactions.id"))
+    card_details_id = Column(Integer, ForeignKey("card_details.id"))
     transaction_details = Column(Text)
     sat_phone_number = Column(Integer)
     selling_price = Column(Integer)
@@ -148,9 +161,9 @@ class TransactionDetail(Base):
     email_status = Column(Boolean)
     remarks = Column(String(255))
 
-    promo = relationship('PromoCode', back_populates='transaction_details')
-    transaction = relationship('UserTransaction', back_populates='transaction_details')
-    card_detail = relationship('CardDetail', back_populates='transaction_details')
+    promo = relationship("PromoCode", back_populates="transaction_details")
+    transaction = relationship("UserTransaction", back_populates="transaction_details")
+    card_detail = relationship("CardDetail", back_populates="transaction_details")
 
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
@@ -158,15 +171,17 @@ class TransactionDetail(Base):
     def to_dict_with_transaction(self):
         data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
         if self.transaction:
-            data['transaction'] = self.transaction.to_dict_with_user()
+            data["transaction"] = self.transaction.to_dict_with_user()
         return data
 
+
 class FailedTransactions(Base):
-    __tablename__ = 'failed_transactions'
+    __tablename__ = "failed_transactions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     log_string = Column(Text)
     date_time = Column(DateTime)
+
 
 def migrate_tables(session):
     # TODO: delete this before going production
@@ -176,12 +191,13 @@ def migrate_tables(session):
     Base.metadata.create_all(bind=engine)
     seed_data(session)
 
+
 def seed_data(session):
-    
+
     po_number = 123456
     pl_number = 654321
     date_purchased = "01-01-2022"
-    date_purchased = datetime.strptime(date_purchased, '%d-%m-%Y')
+    date_purchased = datetime.strptime(date_purchased, "%d-%m-%Y")
     total_amount = 1000
     payment_status = "True"
     payment_status = bool(payment_status)
@@ -193,7 +209,7 @@ def seed_data(session):
         date_purchased=date_purchased,
         total_amount=total_amount,
         payment_status=payment_status,
-        attachment_path=attachment_path
+        attachment_path=attachment_path,
     )
 
     session.add(card)
@@ -202,13 +218,13 @@ def seed_data(session):
     key = os.getenv("ENCRYPTION_KEY")
 
     for i in range(10):
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             reader = csv.reader(f)
             for row in reader:
                 print(row)
-                expiry_date = datetime.strptime(row[5], '%d-%m-%Y')
-                cipher_suite = Fernet(key.encode('utf-8'))
-                encrypted_scratch_code = cipher_suite.encrypt(row[1].encode('utf-8'))
+                expiry_date = datetime.strptime(row[5], "%d-%m-%Y")
+                cipher_suite = Fernet(key.encode("utf-8"))
+                encrypted_scratch_code = cipher_suite.encrypt(row[1].encode("utf-8"))
                 card_detail = CardDetail(
                     card_id=card.id,
                     serial_number=row[0],

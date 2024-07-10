@@ -1,10 +1,9 @@
-
-
 from twocaptcha import TwoCaptcha
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 def test_captcha_response():
 

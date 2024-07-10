@@ -28,6 +28,7 @@ load_dotenv()
 
 QUICK_REFILL_QUEUE = []
 
+
 def quick_refill_handler(request, session, logger, driver, mail):
     log_string = ""
     try:
@@ -41,11 +42,13 @@ def quick_refill_handler(request, session, logger, driver, mail):
         price = data.get("price")
         # remove $ from price
         price = price.replace("$", "")
-        token = request.headers.get('Authorization')
+        token = request.headers.get("Authorization")
 
         if not token:
-            email=data.get('email')
-            new_user = User(email=email, country_region=data.get('country_region'), role='guest')
+            email = data.get("email")
+            new_user = User(
+                email=email, country_region=data.get("country_region"), role="guest"
+            )
             session.add(new_user)
             session.commit()
             user_id = new_user.id
@@ -56,7 +59,7 @@ def quick_refill_handler(request, session, logger, driver, mail):
         else:
             try:
                 payload = decode_token(token)
-                user_id = payload['user_id']
+                user_id = payload["user_id"]
                 user = session.query(User).filter(User.id == user_id).first()
                 if user:
                     email = user.email
@@ -66,40 +69,60 @@ def quick_refill_handler(request, session, logger, driver, mail):
             except Exception as e:
                 print(str(e))
                 return jsonify({"message": "Invalid token"}), 401
-            
+
         valid = check_valid(phone, price)
 
         if not valid:
-            print("phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price))
-            log_string = log_string + "phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price) + "\n"
-            logger.info("phone or price invalid " + "phone: "  + str(phone) + "price: " + str(price))
+            print(
+                "phone or price invalid "
+                + "phone: "
+                + str(phone)
+                + "price: "
+                + str(price)
+            )
+            log_string = (
+                log_string
+                + "phone or price invalid "
+                + "phone: "
+                + str(phone)
+                + "price: "
+                + str(price)
+                + "\n"
+            )
+            logger.info(
+                "phone or price invalid "
+                + "phone: "
+                + str(phone)
+                + "price: "
+                + str(price)
+            )
             return jsonify({"message": "Phone or Price invalid!"}), 400
-            
+
         card_number, card_id, selling_price, error = get_card(price, session)
         if error:
             return jsonify({"message": error}), 400
         log_string = log_string + "scratch_card: " + card_number[-4:] + "\n"
 
-        logger.info("phone: "+phone)
-        print("phone: "+phone)
-        logger.info("price: "+price)
-        print("price: "+price)
-        logger.info("email: "+email)
-        print("email: "+email)
-        log_string = log_string + "phone: "+phone + "\n"
-        log_string = log_string + "price: "+price + "\n"
-        log_string = log_string + "email: "+email + "\n"
+        logger.info("phone: " + phone)
+        print("phone: " + phone)
+        logger.info("price: " + price)
+        print("price: " + price)
+        logger.info("email: " + email)
+        print("email: " + email)
+        log_string = log_string + "phone: " + phone + "\n"
+        log_string = log_string + "price: " + price + "\n"
+        log_string = log_string + "email: " + email + "\n"
 
         ip_address = request.remote_addr
-        print("ip_address: "+ip_address)
-        log_string = log_string + "ip_address: "+ip_address + "\n"
-        logger.info("ip_address: "+ip_address)
+        print("ip_address: " + ip_address)
+        log_string = log_string + "ip_address: " + ip_address + "\n"
+        logger.info("ip_address: " + ip_address)
         ip_info = requests.get(f"https://ipinfo.io/{ip_address}/json")
         user_agent = request.user_agent
-        print("user_agent: "+str(user_agent))
-        log_string = log_string + "user_agent: "+str(user_agent) + "\n"
-        logger.info("user_agent: "+str(user_agent))
-        
+        print("user_agent: " + str(user_agent))
+        log_string = log_string + "user_agent: " + str(user_agent) + "\n"
+        logger.info("user_agent: " + str(user_agent))
+
         codes = []
         codes.append({"number": card_number, "price": selling_price, "id": card_id})
         print(codes)
@@ -118,38 +141,112 @@ def quick_refill_handler(request, session, logger, driver, mail):
             log_string = log_string + "no promo code" + "\n"
             logger.info("no promo code")
 
-        log_string, previous_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
+        log_string, previous_balance, refill_allowed, last_active_date, error = (
+            find_details(phone, log_string, logger)
+        )
         if error:
-            email_status, log_string = email_codes_password(codes, email, log_string, mail)
-            transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
-            create_transaction_detail(promo_code, transaction_id, log_string, discount, email_status, "", session, codes)
-            return jsonify({"message": "Invalid Account. You have been emailed with scratch code"}), 400
-        
+            email_status, log_string = email_codes_password(
+                codes, email, log_string, mail
+            )
+            transaction_id = create_transaction(
+                user_id,
+                ip_address,
+                ip_info,
+                user_agent,
+                "refill_failed_so_emailed",
+                "stripe",
+                session,
+            )
+            create_transaction_detail(
+                promo_code,
+                transaction_id,
+                log_string,
+                discount,
+                email_status,
+                "",
+                session,
+                codes,
+            )
+            return (
+                jsonify(
+                    {
+                        "message": "Invalid Account. You have been emailed with scratch code"
+                    }
+                ),
+                400,
+            )
+
         if refill_allowed != "Yes":
-            email_status, log_string = email_codes_password(codes, email, log_string, mail)
-            transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill_failed_so_emailed", "stripe", session)
-            create_transaction_detail(promo_code, transaction_id, log_string, discount, email_status, "", session, codes)
+            email_status, log_string = email_codes_password(
+                codes, email, log_string, mail
+            )
+            transaction_id = create_transaction(
+                user_id,
+                ip_address,
+                ip_info,
+                user_agent,
+                "refill_failed_so_emailed",
+                "stripe",
+                session,
+            )
+            create_transaction_detail(
+                promo_code,
+                transaction_id,
+                log_string,
+                discount,
+                email_status,
+                "",
+                session,
+                codes,
+            )
 
             print("Refill not allowed")
             log_string = log_string + "Refill not allowed" + "\n"
             logger.info("Refill not allowed")
-            return jsonify({"message": "Refill not allowed. Phone is inactive. You have been emailed with scratch code"}), 400
-        log_string = perform_quick_refill(log_string, logger, card_number, phone, driver)
+            return (
+                jsonify(
+                    {
+                        "message": "Refill not allowed. Phone is inactive. You have been emailed with scratch code"
+                    }
+                ),
+                400,
+            )
+        log_string = perform_quick_refill(
+            log_string, logger, card_number, phone, driver
+        )
 
-        log_string, new_balance, refill_allowed, last_active_date, error = find_details(phone, log_string, logger)
-        transaction_id = create_transaction(user_id, ip_address, ip_info, user_agent, "refill", "stripe", session)
-        create_transaction_detail(promo_code, transaction_id, log_string, discount, False, "", session, codes)
+        log_string, new_balance, refill_allowed, last_active_date, error = find_details(
+            phone, log_string, logger
+        )
+        transaction_id = create_transaction(
+            user_id, ip_address, ip_info, user_agent, "refill", "stripe", session
+        )
+        create_transaction_detail(
+            promo_code, transaction_id, log_string, discount, False, "", session, codes
+        )
 
         # time.sleep(3)
         total_time = time.time() - start_time
         with open("request_cycle_stats.csv", "a") as f:
             f.write(f"{total_time}\n")
-        return jsonify({"message": "Refill successful", "new_balance": new_balance, "previous_balance": previous_balance, "expiry_date": last_active_date}), 200
+        return (
+            jsonify(
+                {
+                    "message": "Refill successful",
+                    "new_balance": new_balance,
+                    "previous_balance": previous_balance,
+                    "expiry_date": last_active_date,
+                }
+            ),
+            200,
+        )
 
     except Exception as e:
         print(str(e))
         # create an instance of failed_transaction
-        failed_transaction = FailedTransactions(log_string=log_string, date_time=datetime.now())
+        failed_transaction = FailedTransactions(
+            log_string=log_string, date_time=datetime.now()
+        )
         session.add(failed_transaction)
 
         # commit the transaction
@@ -158,15 +255,14 @@ def quick_refill_handler(request, session, logger, driver, mail):
         return jsonify({"message": "An error occurred"}), 500
 
 
-
 def perform_quick_refill(log_string, logger, card_number, phone, driver):
     # TODO: remove this for production
     return log_string
     with open("constants.json") as f:
         constants = json.load(f)
     direct_refill_url = constants["directRefilUrl"]
-    
-    for z in range(1000): 
+
+    for z in range(1000):
         if len(QUICK_REFILL_QUEUE) > 1:
             time.sleep(1)
         else:
@@ -177,7 +273,9 @@ def perform_quick_refill(log_string, logger, card_number, phone, driver):
     QUICK_REFILL_QUEUE.append(new_tab_handle)
     driver.switch_to.window(new_tab_handle)
     driver.get(direct_refill_url)
-    WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.ID, 'captchaCode')))
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_all_elements_located((By.ID, "captchaCode"))
+    )
 
     print("driver initiated")
     log_string = log_string + "driver initiated" + "\n"
@@ -221,7 +319,9 @@ def perform_quick_refill(log_string, logger, card_number, phone, driver):
                     logger.warning("captcha not solved")
                     error_page = True
 
-                code, captcha_id = solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver)
+                code, captcha_id = solve_refill_captcha(
+                    logger, log_string, solver, new_tab_handle, driver
+                )
                 if code is None:
                     driver.refresh()
                     continue
@@ -254,7 +354,7 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
         id = 0
 
     for i in range(1000):
-        
+
         tab_handle_info = QUICK_REFILL_QUEUE[0]
         if tab_handle_info == new_tab_handle:
             time.sleep(1)
@@ -263,7 +363,7 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
 
             im = Image.open(f"images/{id}.png")
             im_resized = im.resize((300, 60))
-            im_resized.save(f"images_resized/{id}.png", dpi=(300,300))
+            im_resized.save(f"images_resized/{id}.png", dpi=(300, 300))
             print("screenshot taken")
             log_string = log_string + "screenshot taken" + "\n"
             logger.info("screenshot taken")
@@ -277,10 +377,12 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
                 break
             except:
                 print("unsolvable captcha. Check screenshot taken")
-                log_string = log_string + "unsolvable captcha. Check screenshot taken" + "\n"
+                log_string = (
+                    log_string + "unsolvable captcha. Check screenshot taken" + "\n"
+                )
                 logger.warning("unsolvable captcha. Check screenshot taken")
                 return None, None
-            
+
         else:
             time.sleep(1)
 
@@ -298,7 +400,7 @@ def solve_refill_captcha(logger, log_string, solver, new_tab_handle, driver):
         writer = csv.writer(f, delimiter=",")
         writer.writerow([id, code, "incorrect"])
 
-    print("twoCaptcha response: "+code)
-    log_string = log_string + "twoCaptcha response: "+code + "\n"
-    logger.info("twoCaptcha response: "+code)
+    print("twoCaptcha response: " + code)
+    log_string = log_string + "twoCaptcha response: " + code + "\n"
+    logger.info("twoCaptcha response: " + code)
     return code, captcha_id

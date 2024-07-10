@@ -1,13 +1,16 @@
 import csv
 from database.models.models import PhoneNumber
 
+
 def run_test(session):
-    with open('passwords_complete.csv', mode='r') as file:
+    with open("passwords_complete.csv", mode="r") as file:
         # iterate over each row in the csv file
         csvFile = csv.reader(file)
         for count, row in enumerate(csvFile, start=1):
             # create an instance of phone number model
-            phone_number_model = PhoneNumber(phone=row[1], password=row[5], status=row[4])
+            phone_number_model = PhoneNumber(
+                phone=row[1], password=row[5], status=row[4]
+            )
             # and set the phone number and password
             # save the phone number to the database
             session.add(phone_number_model)
