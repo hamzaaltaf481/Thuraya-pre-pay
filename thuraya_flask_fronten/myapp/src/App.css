@@ -1,0 +1,112 @@
+@font-face {
+    font-family: "HattoriHanzo";
+    src: url('../fonts/Hattori_Hanzo\ gr8\ \(1\).otf') format('otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+ max-width: 100%;
+ overflow-x: hidden;
+ font-family: "HattoriHanzo";
+}
+
+.prep{
+    position: relative;
+    top: 180px;
+}
+h1{
+    font-family: "HattoriHanzo";
+    font-weight: bold;
+    font-size: 26px;
+}
+
+h2,h3,h4,h5{
+   font-family: "HattoriHanzo";
+   font-size: 16px;
+   font-weight: bold;
+}
+p{
+    font-family: "HattoriHanzo";
+    font-size: 17px;
+    font-weight: normal;
+}
+
+.banfoolast{
+    margin-top: 100px;
+}
+
+
+
+.removeItFromBigScr{
+    display: none;
+}
+
+a{
+    font-family: "HattoriHanzo";
+}
+
+
+@media screen and (max-width:768px){
+    .fbfl{
+        position: relative;
+        top: 1000px;
+    }
+    .BFL{
+        position: relative;
+        top: 420px;
+    }
+    .prep{
+        position: relative;
+        top: 50px;
+        
+    }
+   
+    
+}
+
+@media screen and (min-width:450px) and (max-width:768px){
+    .fbfl{
+        position: relative;
+        top: 450px;
+    }
+    .BFL{
+        position: relative;
+        top: 20px;
+    }
+    .prep{
+        position: relative;
+        top: 50px;
+        
+    }
+    .banfoolast{
+        position: relative;
+        top: -250px;
+    }
+    #removeItFromBigScr{
+        display: block !important;
+        z-index: 1;
+        
+     }
+     
+    
+}
+
+
+body {
+    margin: 0;
+    font-family: 'HattoriHanzo', sans-serif;
+    /* background-color: #282c34; */
+    /* color: white; */
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: 767px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+  

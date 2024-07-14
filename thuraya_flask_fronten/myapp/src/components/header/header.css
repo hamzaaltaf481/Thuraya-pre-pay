@@ -1,0 +1,73 @@
+
+
+.perimery{
+    background-color: #fff !important;
+    color: rgba(0,128,128);
+    
+}
+.perimery>span{
+    margin-left:5px;
+}
+
+.giftIco{
+  margin-top: -5px;
+}
+
+.perimery:hover{
+    background-color: rgba(0,128,128) !important;
+    color: #fff;
+   
+
+}
+
+.secon{
+    background-color:rgba(0,128,128) !important;
+    color: #fff; 
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+}
+
+.header2>button{
+    padding: 5px 20px;
+    margin-left:5px ;
+    border-color: rgba(0,128,128) ;
+}
+
+
+.header1{
+    display: flex;
+}
+
+.header1>div{
+ padding: 2px 0 0;
+ margin-top: 10px;
+}
+
+.header1{
+    display: flex;
+    gap: 1rem;
+}
+
+/* @media screen and (max-width:600px){
+    *{
+        color: red;
+    }
+} */
+
+@media screen and (max-width:450px){
+  .header{
+    display: block;
+    max-width: 100%;
+    
+  }
+  .header1{
+    margin-left: 80px;
+  }
+  .header2{
+    margin-left: 55px;
+  }
+}

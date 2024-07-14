@@ -1,0 +1,179 @@
+.card{
+    position: relative;
+    top: 700px;
+    border-style: solid;
+    border-top-color: #fff;
+    /* background-image: linear-gradient(to right, rgba(0,128,128,1), rgba(0,255,0,0.3)); */
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0px;
+    background: #2c3e50;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #3498db, #2c3e50);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #3498db, #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;}
+.card1{
+    width: 1000px;
+}
+
+.cardcontainer1{
+    width: 300px;
+    /* border-right-style: solid;
+    border-right-color:#fff; */
+    
+}
+
+.cat1{
+    text-align: center ;
+}
+
+.iconhand{
+    margin-left: 70px;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0,128,128,1);
+    border-radius: 50%;
+    border-style:solid;
+    border-color: rgb(31, 122, 122);
+    border-style:double;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    border-width: 10px;
+}
+
+.iconchild{
+    position: absolute;
+    left: 23px;
+    top: 23px;
+    color: #fff;
+    font-size: 35px;
+
+}
+
+.cat2{
+    background-color: #fff;
+    color: rgba(0,128,128,1);
+    width: 60px;
+    border-radius: 3px;
+   
+    position: relative;
+    margin-left: 90px;
+    margin-top: 20px;
+}
+#cat1{
+    color: whitesmoke;
+}
+
+#cat1>p{
+    color: rgb(184, 178, 178);
+}
+
+.card1>h1{
+    margin-left: 69px;
+    word-spacing: 5px;
+    position: relative;
+    color: #fff;
+}
+
+.cardcontainer{
+    margin-top: 50px;
+}
+.card1{
+    margin-top: 30px;
+}
+
+.cardcontainer{
+    display: flex;
+
+}
+.cardcontainer>div{
+    width: 250px;
+}
+.card1>h1{
+  text-align: center;
+  margin-left: -10px;
+  padding-bottom: 20px;
+}
+/* .card2 h1{
+    font-family: "HattoriHanzo";
+    font-weight: bold;
+    
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width:600px){
+    .card{
+        position: relative;
+        top: 2050px;
+    }
+    .card1{
+        max-width: fit-content;
+    }
+    .cardcontainer{
+        max-width: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .cardcontainer>div{
+        border-right-style: solid;
+        border-left-style: solid;
+        border-color: #fff;
+        margin-left: 70px;
+        margin-bottom: 20px;
+    }
+    .iconhand{
+        margin-left: 66px;
+    }
+    .cat2{
+        margin-left: 90px;
+    }
+   
+    
+}
+
+
+@media screen and (min-width:450px) and (max-width:768px){
+    .card{
+        position: relative;
+        top: 1100px;
+    }
+    .card1{
+        max-width: fit-content;
+    }
+    .cardcontainer{
+        max-width: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .cardcontainer>div{
+        border-right-style: solid;
+        border-left-style: solid;
+        border-color: #fff;
+        margin-left: 70px;
+        margin-bottom: 20px;
+    }
+    .iconhand{
+        margin-left: 66px;
+    }
+    .cat2{
+        margin-left: 90px;
+    }
+   
+    
+}
+

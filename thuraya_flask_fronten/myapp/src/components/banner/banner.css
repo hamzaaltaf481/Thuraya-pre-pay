@@ -1,0 +1,111 @@
+.banner {
+  position: relative;
+  top: 820px;
+  color: red;
+  max-width: 100%;
+}
+
+.banner1 {
+  width: 1000px;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  /* background: rgb(131, 58, 180);
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  ); */
+  background: rgb(56,153,89);
+background: linear-gradient(0deg, rgba(56,153,89,1) 8%, rgb(26,124,143) 35%, rgba(6,98,116,1) 52%, rgb(12, 68, 79) 100%);
+  transition: 0.1s ease-in-out;
+}
+.banner1:hover{
+  transform: scale(1);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  cursor: pointer;
+}
+.banner1a {
+  width: 700px;
+  padding: 50px 50px;
+}
+.banner1a > div {
+  width: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.bannertext {
+  padding: 20px 30px 10px 20px;
+  color:rgba(27,118,136,1) !important;
+}
+
+.bannerimage {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  padding: 10px 0px;
+}
+
+@media screen and (max-width:450px){
+  .banner{
+    max-width: 100%;
+  }
+  .banner1{
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0px;
+  }
+  .banner1a{
+    margin-left: -10px;
+  }
+  .banner1a > div{
+    max-width: 300px;
+  }
+  .banner1b{
+    margin-left: 70px;
+    margin-bottom: 30px;
+  }
+  .banner1:hover{
+    border-radius: 20px;
+  }
+
+}
+
+@media screen and (min-width:450px) and (max-width:768px){
+  .banner{
+    max-width: 100%;
+    position: relative;
+    top: 1700px;
+  }
+  .banner1{
+    max-width: 100%;
+    display: flex;
+    /* flex-direction: column; */
+    border-radius: 0px;
+  }
+   .banner1a{
+    margin-left: -10px;
+  }
+  .banner1a > div{
+    max-width: 400px;
+  }
+  .banner1b{
+    margin-left: -200px;
+  }
+
+  .banner1:hover{
+    border-radius: 20px;
+  } 
+  /* .banner1b{
+    margin-left: 70px;
+    margin-bottom: 30px;
+  } */
+  /* .banner1:hover{
+    border-radius: 20px;
+  }  */
+
+}

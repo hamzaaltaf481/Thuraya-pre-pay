@@ -1,0 +1,125 @@
+
+
+.phone-input {
+  display: flex;
+  align-items: center;
+}
+
+.phone-input span {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.input-number {
+  flex: 1;
+  font-size: 18px;
+  font-family: "HattoriHanzo";
+  /* padding: 0.5rem; */
+  padding: 1rem;
+  
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.units-grid {
+  /* margin-left: 200px; */
+  /* display: flex; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  /* width: 600px; */
+  margin-top: 10px;
+  position: relative;
+  left: 10px;
+  /* background: rgb(204,233,238); */
+/* background: linear-gradient(99deg, rgba(204,233,238,1) 0%, rgba(254,254,254,1) 28%, rgba(199,221,226,1) 67%); */
+}
+
+.unit-card {
+  /* border: 1px solid #ccc; */
+  /* background: rgb(27,118,136); */
+  background-color: #000;
+  color: #fff;
+/* background: linear-gradient(0deg, rgba(27,118,136,1) 0%, rgba(27,136,105,1) 38%, rgba(27,118,136,1) 67%); */
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+   
+}
+
+.unit-card.selected  .tryIt{
+  border-color: green;
+  border-width: 2px;
+}
+
+.summary-section {
+  margin-top: 2rem;
+  width: 200px;
+  margin-left: 5px;
+  
+}
+
+.summary {
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+.summary ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.quickRefillBelowSummary{
+  border-bottom:1px solid #fff ;
+}
+
+.summary .total {
+  font-weight: bold;
+  border-bottom: 1px solid #fff;
+}
+
+.btn-proceed {
+  /* background: #00c6ff; */
+  /* background: rgb(27,118,136);
+background: linear-gradient(0deg, rgba(27,118,136,1) 0%, rgba(27,118,136,1) 0%, rgba(79,176,195,1) 6%); */
+background: rgb(34,167,120);
+background: linear-gradient(76deg, rgba(34,167,120,1) 0%, rgba(117,210,135,1) 100%);
+color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+.btn-proceed:hover{
+  background: rgb(34,167,120);
+background: linear-gradient(76deg, rgba(34,167,120,1) 0%, rgba(82,188,208,1) 0%);
+}
+
+.adjustQuickRefillCards{
+  display: flex;
+}
+
+.circleQuick{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: gray;
+  text-align: center;
+  
+}
+.circleQuick>h5{
+  position: relative;
+  top: 11px;
+}
+.tryIt{
+  border: 1px solid gray;
+  margin: -10px;
+  padding: 5px;
+  border-radius: 3px;
+
+}
