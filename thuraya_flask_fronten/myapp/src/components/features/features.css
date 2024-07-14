@@ -1,0 +1,189 @@
+.feature{
+    position:relative;
+    top: -50px;
+    max-width: 100%;
+    
+}
+.feature1{
+    width: 1000px;
+    justify-content: center;
+    align-self: center;
+    position: absolute;
+    left: 150px;
+    
+   
+
+
+}
+
+.feature1b{
+    display: flex;
+    gap: 30px;
+    margin:10px 0px;
+    margin-top: 30px;
+}
+.feature1ba{
+    margin-top: 6px;
+}
+
+.cellpay{
+    color: rgba(0,128,128,1);
+}
+
+.firstCol{
+    width: 33%;
+    height: 200px;
+}
+
+/* .color1{
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+
+    background-image: linear-gradient(to right, rgba(0,128,128,1), rgba(0,255,0,0.3));
+}
+
+.ferozoColor{
+    width: 70px;
+    height: 70px;
+    background: rgb(238,174,202);
+background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+border-radius: 50%;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 10px;
+    
+  }
+  .hori{
+    display: block;
+  } */
+
+  .secondCall{
+    position: relative;
+    margin-top: 100px;
+    
+  }
+/* 
+  /* .imageWali{
+    z-index: 1;
+  } */ 
+  /* .secondCall>.color1{
+    position: absolute;
+    top: 6px;
+    left: -40px;
+    z-index: -1;
+  }
+
+  .secondCall>.ferozoColor{
+    position: absolute;
+    top:5px;
+    right: 50px;
+
+  } */
+
+  /* .secondCall>.hori{
+    position: absolute;
+    top:150px;
+    left: -100px;
+   
+  } */
+
+  
+
+  .firstCol{
+    margin-top: 50px;
+  }
+  .firstCol>div{
+    margin-top: 0px;
+  }
+
+
+ @media screen and (max-width:768px) {
+   .feature{
+    position: absolute;
+    top: 1050px;
+    max-width: 100%;
+    
+   
+   }
+
+   .feature1{
+      margin-left: -120px;
+   }
+   .feature1 .cardoo1{
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    
+   }
+   .firstCol{
+    display: flex;
+    flex-wrap: wrap;
+   }
+   .cardoo1{
+    display: block;
+   }
+   .secondCall{
+    
+   
+    
+    max-width: fit-content;
+    margin-left: -50px !important;
+   /* margin-top: -5px; */
+   margin-top: 200px;
+   
+
+   }
+   .secondCall img{
+    width: 400px !important;
+   }
+   .ferozoColor{
+    display: none;
+   }
+ }
+
+
+ @media screen and (min-width:450px) and (max-width:768px){
+  .feature{
+   position: absolute;
+   top: 1900px;
+   max-width: 100%;
+   margin-top: 30px;
+   
+  
+  }
+
+   .feature1{
+    margin-left: -70px;
+    
+   }
+  .feature1 .cardoo1{
+   max-width: fit-content;
+   display: flex;
+   
+   /* flex-direction: ; */
+   
+  }
+  .secondCall{
+    margin-top: 210px;
+    /* margin-right: 10px; */
+    margin-left: 0px !important;
+  
+  }
+  /* .ferozoColor{
+    display: none;
+  } */
+  .feature1a>h1{
+    margin-bottom: 20px;
+  }
+ 
+   
+  
+   
+}

@@ -1,0 +1,128 @@
+.carrier{
+    max-width: 100%;
+    position: relative;
+    z-index: 999;
+    background-color: aliceblue;
+}
+.carrier1{
+    background-color: #fff;
+    width: 1000px;
+    display: block;
+    justify-content: center;
+    align-self: center;
+    position: absolute;
+    left: 150px;
+    /* border-style: solid; */
+    /* border-color: rgba(0,128,128) ; */
+    border-radius: 10px;
+    top: -90px;
+    z-index: 999;
+    padding-bottom: 30px;
+    padding-top: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+}
+.caro{
+    width: 200px;
+    border-style: none;
+    border-color: none;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    
+}
+.caro img{
+  width: 150px;
+  padding: 10px 10px;
+  margin-left: 22px;
+}
+.cat{
+    margin: 10px 10px;
+    gap: 10px;
+}
+
+.carrier1>h2{
+    text-align: justify;
+    padding-top: 20px;
+    padding-left: 12px;
+    font-size: 30px;
+    margin-bottom: 20px;
+  
+}
+.lyca{
+    height: 94px;
+}
+.caro{
+    transition: 0.2s ease-in;
+}
+.caro:hover{
+    transform: scale(1.1);
+} 
+
+/*for mobile phones */
+
+@media screen and (max-width:450px){
+    .carrier{
+      max-width: 100%;
+    }
+    #carrier11{
+        display: block;
+        max-width: fit-content;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        max-width: fit-content;
+         
+        border-radius: 0px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    }
+    .choosecarrier{
+        margin-left: 85px;
+        /* text-align: center; */
+    
+    }
+    .cro1{
+       display: block;
+       max-width: fit-content;
+       flex-wrap: wrap;
+       margin-left: 70px;
+       
+    }
+    
+}
+
+
+/*for tablet */
+@media screen and (min-width:450px) and (max-width:768px){
+    .carrier{
+      max-width: 100%;
+    }
+    #carrier11{
+        display: block;
+        max-width: fit-content;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        max-width: fit-content;
+         
+        border-radius: 0px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    }
+    .choosecarrier{
+        margin-left: 70px !important;
+    }
+    
+    
+    .cro1{
+       display: block;
+       max-width: fit-content;
+       flex-wrap: wrap;
+       margin-left: 70px;
+       
+    }
+    
+}
+
+
+

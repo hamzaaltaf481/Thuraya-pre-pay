@@ -1,0 +1,33 @@
+.lastfooter{
+    position: relative;
+    top: 700px;
+    background: rgb(26,124,143);
+    background: linear-gradient(0deg, rgba(26,124,143,1) 0%, rgba(13,60,69,1) 2%, rgba(13,60,69,1) 59%, rgba(13,60,69,1) 90%);
+    max-width: 100%;
+    /* text-align: center; */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+   
+}
+.lastfooter>div{
+    padding: 10px 5px 5px 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+/* .lastfooter p{
+    padding: 20px;
+} */
+
+.ePatronus{
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+}
+@media screen and (min-width:450px) and (max-width:768px) {
+    .lastfooter{
+        position: relative;
+        max-width: 100%;
+        top: 2340px;
+    }
+}
