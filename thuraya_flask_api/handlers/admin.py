@@ -9,12 +9,12 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 def view_cards_handler(session, request):
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     cards = session.query(Card)
     cards_dict = [card.to_dict() for card in cards]
@@ -59,11 +59,11 @@ def admin_login_handler(session):
 
 
 def view_scratch_codes_handler(session, request):
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
     card_id = request.args.get("card_id")
 
     card = session.query(Card).filter(Card.id == card_id).first()
@@ -83,11 +83,11 @@ def view_scratch_codes_handler(session, request):
 
 
 def view_scratch_code_transaction_handler(session, request):
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     card_detail_id = request.args.get("scratch_code_id")
     card_detail = (
@@ -107,12 +107,12 @@ def view_scratch_code_transaction_handler(session, request):
 
 def import_card_handler(request, session):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
     try:
         file = request.files["file"]
     except:
@@ -142,12 +142,12 @@ def import_card_handler(request, session):
 
 def add_card_detail_handler(session, request):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     new_card_detail = CardDetail(
         card_id=request.form.get("card_id"),
@@ -169,12 +169,12 @@ def add_card_detail_handler(session, request):
 
 def view_sub_admins_handler(session, request):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     sub_admins = session.query(User).filter(User.role == "sub-admin")
     sub_admins_dict = [sub_admin.to_dict() for sub_admin in sub_admins]
@@ -184,12 +184,12 @@ def view_sub_admins_handler(session, request):
 
 def add_sub_admin_handler(session, request):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     new_sub_admin = User(
         first_name=request.form.get("first_name"),
@@ -206,12 +206,12 @@ def add_sub_admin_handler(session, request):
 
 
 def delete_sub_admin_handler(session, request):
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     sub_admin_id = request.args.get("sub_admin_id")
     sub_admin = session.query(User).filter(User.id == sub_admin_id).first()
@@ -226,12 +226,12 @@ def delete_sub_admin_handler(session, request):
 
 def change_sub_admin_password_handler(session, request):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     sub_admin_id = request.form.get("sub_admin_id")
     new_password = request.form.get("new_password")
@@ -254,12 +254,12 @@ def change_sub_admin_password_handler(session, request):
 
 def view_transactions_handler(session, request):
 
-    token = request.headers.get("Authorization")
-    payload = decode_token(token)
-    user_role = payload["user_role"]
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
 
-    if user_role != "admin" and user_role != "sub-admin":
-        return jsonify({"message": "Unauthorized"}), 401
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
 
     filter = request.args.get("filter")
     if filter:
