@@ -169,7 +169,7 @@ def view_transactions():
     return response, code
 
 
-@app.route("/api/admin/view-scratch-codes", methods=["GET"])
+@app.route("/api/admin/view-scratch-codes", methods=["POST"])
 def view_scratch_codes():
     session = Session()
     response, code = view_scratch_codes_handler(session, request)
