@@ -64,7 +64,7 @@ def view_scratch_codes_handler(session, request):
     # user_role = payload["user_role"]
     # if user_role != "admin" and user_role != "sub-admin":
     #     return jsonify({"message": "Unauthorized"}), 401
-    card_id = request.args.get("card_id")
+    card_id = request.form.get("card_id")
 
     card = session.query(Card).filter(Card.id == card_id).first()
     card_dict = (
