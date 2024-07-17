@@ -27,8 +27,10 @@ class User(Base):
 
     transactions = relationship("UserTransaction", back_populates="user")
 
-    def to_dict(self):
-        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+    def to_dict(self, exclude=None):
+        if exclude is None:
+            exclude = []
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs if c.key not in exclude}
 
 
 class Card(Base):

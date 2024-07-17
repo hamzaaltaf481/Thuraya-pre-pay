@@ -35,6 +35,7 @@ from handlers.admin import (
     view_transactions_handler,
     add_sub_admin_handler,
     delete_sub_admin_handler,
+    view_customers_guests_handler,
 )
 from handlers.purchase import purchase_handler
 from handlers.quick_refill import quick_refill_handler
@@ -201,6 +202,13 @@ def view_sub_admins():
 def change_sub_admin_password():
     session = Session()
     response, code = change_sub_admin_password_handler(session, request)
+    return response, code
+
+
+@app.route("/api/admin/view-customers-guests", methods=["GET"])
+def view_customers_guests():
+    session = Session()
+    response, code = view_customers_guests_handler(session, request)
     return response, code
 
 

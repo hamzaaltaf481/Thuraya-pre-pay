@@ -6,6 +6,7 @@ from flask_jwt_extended import decode_token, create_access_token
 from datetime import datetime, timedelta
 from utils.import_file import import_csv
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import or_
 
 
 def view_cards_handler(session, request):
@@ -261,10 +262,16 @@ def view_transactions_handler(session, request):
     # if user_role != "admin" and user_role != "sub-admin":
     #     return jsonify({"message": "Unauthorized"}), 401
 
-    filter = request.args.get("filter")
-    if filter:
+    type = request.args.get("type")
+    user_id = request.args.get("user_id")
+
+    if type:
         transactions = session.query(UserTransaction).filter(
-            UserTransaction.type == filter
+            UserTransaction.type == type
+        )
+    elif user_id:
+        transactions = session.query(UserTransaction).filter(
+            UserTransaction.user_id == user_id
         )
     else:
         transactions = session.query(UserTransaction)
@@ -274,3 +281,22 @@ def view_transactions_handler(session, request):
     ]
 
     return jsonify(transactions_dict), 200
+
+
+def view_customers_guests_handler(session, request):
+
+    # token = request.headers.get("Authorization")
+    # payload = decode_token(token)
+    # user_role = payload["user_role"]
+
+    # if user_role != "admin" and user_role != "sub-admin":
+    #     return jsonify({"message": "Unauthorized"}), 401
+
+    sub_admins = session.query(User).filter(
+        or_(User.role == "customer", User.role == "guest")
+    )
+    sub_admins_dict = [
+        sub_admin.to_dict(exclude=["password"]) for sub_admin in sub_admins
+    ]
+
+    return jsonify(sub_admins_dict), 200
