@@ -17,11 +17,12 @@ const AdminCard = () => {
     try {
       const formdata = new FormData();
       formdata.append("card_id", `${index}`);
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
 
       const requestOptions = {
         method: "POST",
         data: formdata,
-        url: "http://localhost:5000/api/admin/view-scratch-codes",
+        url: `http://${host}:5000/api/admin/view-scratch-codes`,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `${token}`

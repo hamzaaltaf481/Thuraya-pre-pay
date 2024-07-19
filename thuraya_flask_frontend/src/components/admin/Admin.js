@@ -28,9 +28,10 @@ const Admin = () => {
       const myHeaders = {
         Authorization: `${token}`
       };
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
 
       const response = await axios.post(
-        "http://localhost:5000/api/admin/view-cards",
+        `http://${host}:5000/api/admin/view-cards`,
         {},
         {
           headers: myHeaders,
@@ -80,8 +81,9 @@ const Admin = () => {
 
     try {
       const token = localStorage.getItem("token");
+      const host = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_PROD_HOSTNAME : 'localhost';
       const response = await axios.post(
-        "http://localhost:5000/api/admin/import",
+        `http://${host}:5000/api/admin/import`,
         formdata,
         {
           headers: {
