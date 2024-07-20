@@ -89,20 +89,9 @@ def purchase_handler(request, session, logger, mail):
         logger.info("codes: ")
         logger.info(codes)
 
-        email_status, transaction_logs = email_codes_password(
-            codes, email, transaction_logs, mail
-        )
-        create_transaction_detail(
-            promo_code,
-            transaction_id,
-            transaction_logs,
-            discount,
-            email_status,
-            "",
-            session,
-            codes,
-        )
-        return jsonify({"message": "success"}), 200
+        email_status, transaction_logs = email_codes_password(codes, email, transaction_logs, mail)
+        create_transaction_detail(promo_code, transaction_id, transaction_logs, discount, email_status, "", session, codes)
+        return jsonify({"message": "Units purchased and emailed successfully!"}), 200
     except Exception as e:
         print(str(e))
         failed_transaction = FailedTransactions(
