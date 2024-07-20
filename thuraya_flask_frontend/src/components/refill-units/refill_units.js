@@ -105,6 +105,7 @@ export default function RefillUnits() {
     }
   };
   const handleGuestPayment = async () => {
+    setIsOpen(false)
     try {
       swal("Loading", "Please wait...", "info");
       const selectedUnitsArray = Object.values(selectedUnits);
@@ -126,7 +127,9 @@ export default function RefillUnits() {
         }
       );
       setTimeout(() => {
-        swal("Success!", `${response.data.message}`, "success");
+        swal("Success!", `${response.data.message}`, "success").then(() => {
+          window.location.reload(); // This will reload the window after the "OK" button is pressed
+        });
       }, 3000);
 
       // setTimeout(fetchRefillUnits, 3000); // Reload the latest data from the API after 3 seconds
