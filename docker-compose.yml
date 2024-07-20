@@ -1,0 +1,52 @@
+services:
+  react-app:
+    build:
+      context: thuraya_flask_frontend/
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    networks:
+      - app-network
+    volumes:
+      - ./thuraya_flask_frontend:/app # For react-app
+
+  python-app:
+    build:
+      context: thuraya_flask_api/
+    ports:
+      - "5000:5000"
+    expose:
+      - "5000"
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+    volumes:
+      - ./thuraya_flask_api:/app
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: thuraya
+      MYSQL_USER: prepay-user
+      MYSQL_PASSWORD: kappapride123
+      MYSQL_ROOT_PASSWORD: kappapride123
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  thuraya_flask_frontend:
+  thuraya_flask_api:
